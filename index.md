@@ -1,9 +1,5 @@
 {% include navbar.html %}  {% include top-box.html %}
 
-
-## [Slik lager du et kursrepositorie](readme_no.html){:target="blank"} (Slettes)
-
-
 ## Kursplan  
 
 Forelesnings- og seminarplanene inneholder informasjon om tidspunkt, tema, faglærer samt ressurser/oppgaver til hvert tema.  
@@ -14,17 +10,17 @@ Innleveringsplanen gir oppgaver, frister og ressurser i forbindelse med obligato
 - [Innleveringsplan](innleveringer.html){:target="blank"}   
 
 
-[Timeplan](https://timeplan.uit.no/){:target="blank"} på timeplan.uit.no
+[Timeplan](https://timeplan.uit.no/emne_timeplan.php?sem=24h&module[]=SOK-3011-1){:target="blank"} på timeplan.uit.no
 
 
 ## Kursbeskrivelse 
 
 
-Kurset består av ulike interessante tema  
+Kurset gir studenter erfaring med hvordan lineære modeller og metoder anvendes til å analysere utvalgte samfunnsøkonomiske fenomen. Lineær algebra brukes som matematisk verktøy for å forenkle komplekse sammenhenger. Analyse av data med økonometriske metoder gir innsikt i empiriske sammenhenger som kan oppdages ved hjelp av lineære modeller. Flere anvendelser presenteres, og studenter lærer å replisere tidligere resultater, samt bygge videre på disse. Anvendelsene er case-basert og kan komme fra flere felt innenfor for eksempel konsument- og produsentanalyse, finans, internasjonal handel, og helseøkonomi.
 
 
 ## Faglærerinfo  
-- [Derek J. Clark](https://uit.no/ansatte/derek.clark){:target="blank"} (fagansvarlig)
+- [Tapas Kundu](https://www.oslomet.no/om/ansatt/tapkun/){:target="blank"} (fagansvarlig)
 - [Espen Sirnes](https://uit.no/ansatte/person?p_document_id=41418){:target="blank"}
 
 
@@ -38,7 +34,7 @@ For henvendelser av administrative art send e-post til: <hhcampus@hjelp.uit.no>.
 
 ### Pensum til forelesningene
 
-[Leganto](https://bibsys-c.alma.exlibrisgroup.com/leganto/){:target="blank"}  
+[Leganto](https://bibsys-c.alma.exlibrisgroup.com/leganto/readinglist/searchlists/12268731710002205){:target="blank"}  
 
 
 

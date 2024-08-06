@@ -1,5 +1,5 @@
 {% include navbar.html %}{% include top-box.html %}
-# Forelesningsplan  SOK-3011
+# Forelesningsplan  SOK-3011 Linære modeller i samfunnsøkonomi 
 
 | Uke | Dato       | Beskrivelse                | Lærer   |
 |-----|------------|----------------------------|---------|
