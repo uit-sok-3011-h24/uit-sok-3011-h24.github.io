@@ -41,7 +41,7 @@ For henvendelser av administrative art send e-post til: <hhcampus@hjelp.uit.no>.
 
 ## Kunngjøringer  
 
-Kunngjøringer og beskjeder legges ut i [Canvas](https://uit.instructure.com/){:target="blank"}.
+Kunngjøringer og beskjeder legges ut i [Canvas](https://uit.instructure.com/courses/35410){:target="blank"}.
 
 
 ## Innlevering og eksamen  
