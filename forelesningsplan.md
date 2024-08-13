@@ -12,11 +12,11 @@ Støttelitteratur:
 
 | Uke | Dato       | Beskrivelse                | Lærer   |
 |-----|------------|----------------------------|---------|
-| 34  | 23.08 | Digitalt | TK |
-| 36  | 06.09 |        | TK |
-| 37  | 13.09 |       | TK |
-| 39  | 23.09 |       | TK |
-| 39  | 24.09 |       | TK |
+| 34  | 23.08 | (Digitalt) Production theory - Technology and input substitutability| TK |
+| 36  | 06.09 | Production function - Properties and estimation| TK |
+| 37  | 13.09 | Cost minimization - theory and estimation| TK |
+| 39  | 23.09 | Profit maximization - theory and estimation| TK |
+| 39  | 24.09 | Efficiency analysis| TK |
 | 40  | 24.09 | Introduksjon og presentasjon av case| ES|
 | 39  | 26.09 | Presentasjoner       | TK |
 | 40  | 04.10 | Innlevering case I (WISEFLOW)         |         |
