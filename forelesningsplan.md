@@ -1,6 +1,15 @@
 {% include navbar.html %}{% include top-box.html %}
 # Forelesningsplan  SOK-3011 Linære modeller i samfunnsøkonomi 
 
+[Pensum:](https://bibsys-c.alma.exlibrisgroup.com/leganto/readinglist/searchlists/12268731710002205)
+
+* Arne Henningsen. Introduction to Econometric Production Analysis with R (6th Ed). https://leanpub.com/ProdEconR/
+* Espen Sirnes. Forelesningsnotater (kommer)
+
+Støttelitteratur:
+* Chambers RG. Applied Production Analysis : A Dual Approach. Cambridge University Press; 1988.
+* Varian HR. Microeconomic Analysis. 3rd ed. Norton; 1992.
+
 | Uke | Dato       | Beskrivelse                | Lærer   |
 |-----|------------|----------------------------|---------|
 | 34  | 23.08 | Digitalt | TK |
