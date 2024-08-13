@@ -20,10 +20,10 @@ Støttelitteratur:
 | 40  | 24.09 | Introduksjon og presentasjon av case| ES|
 | 39  | 26.09 | Presentasjoner       | TK |
 | 40  | 04.10 | Innlevering case I (WISEFLOW)         |         |
-| 41  | 09.10 | Forventning og nytte i finans| ES|
+| 41  | 09.10 | Forventning, nytte og risiko| ES|
 | 42  | 17.10 | Optimale porteføljer og matriseregning| ES|
 | 43  | 24.10 | Faktorer og prestasjonsmål| ES|
-| 44  | 31.10 | (VAR) Value At Risk| ES|
+| 44  | 31.10 | VAR (Value At Risk) og risikobudsjettering| ES|
 | 45  | 06.11 | Presentasjoner       | ES|
 | 47  | 22.11 | Innlevering case II (WISEFLOW)         |         |
 
