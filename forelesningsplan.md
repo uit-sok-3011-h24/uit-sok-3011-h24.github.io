@@ -12,7 +12,7 @@ Støttelitteratur:
 
 | Uke | Dato       | Beskrivelse                | Lærer   |
 |-----|------------|----------------------------|---------|
-| 34  | 23.08 | (Digitalt: [Zoom Link](https://oslomet.zoom.us/j/66554734546?pwd=RfzBIvxkWBTcS5Rx2W4KsYpNxZlu8y.1)) Production theory - Technology and input substitutability | TK |
+| 34  | 23.08 | (Digitalt: [Zoom Link](https://oslomet.zoom.us/j/66554734546?pwd=RfzBIvxkWBTcS5Rx2W4KsYpNxZlu8y.1)) Production theory - Technology [Lecture notes]((Lecture01/APA-L01.html)) | TK |
 | 36  | 06.09 | Production function - Properties and estimation| TK |
 | 37  | 13.09 | Cost minimization - theory and estimation| TK |
 | 39  | 23.09 | Profit maximization - theory and estimation| TK |
