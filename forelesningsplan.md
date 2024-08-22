@@ -3,7 +3,7 @@
 
 [Pensum:](https://bibsys-c.alma.exlibrisgroup.com/leganto/readinglist/searchlists/12268731710002205)
 
-* Arne Henningsen. Introduction to Econometric Production Analysis with R (6th Ed). https://leanpub.com/ProdEconR/
+* Arne Henningsen. Introduction to Econometric Production Analysis with R (6th Ed). Available at Zenodo (http://doi.org/10.5281/zenodo.11093657) and Leanpub (http://leanpub.com/ProdEconR/).
 * Espen Sirnes. Forelesningsnotater (kommer)
 
 Støttelitteratur:
