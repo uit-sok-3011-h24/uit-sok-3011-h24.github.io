@@ -322,7 +322,7 @@ The importance of input substitution led to various definition of *elasticities 
 
 $$
 \begin{aligned}
-\sigma= \frac{d(x_2/x_1)}{d(f_1/f_2)}\frac{(f_1/f_2)}{(x_2/x_1)}=\frac{\text{% change in input ratio}}{\text{% change in MRTS}}.
+\sigma= \frac{d(x_2/x_1)}{d(f_1/f_2)}\frac{(f_1/f_2)}{(x_2/x_1)}=\frac{\text{\% change in input ratio}}{\text{\% change in MRTS}}.
 \end{aligned}
 $$
 
