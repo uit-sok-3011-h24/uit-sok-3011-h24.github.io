@@ -44,7 +44,7 @@ In this course, we will focus on the first two methods, which assume that all fi
 
 Efficiency and productivity are distinct technical concepts. The following diagram may help illustrate these distinctions.
 
-![Productivity and technical efficiency](Figures/Figure1.1.png){fig-align="center" width="389"}
+![Productivity and technical efficiency](figures/figure1.1.png){fig-align="center" width="389"}
 
 Consider a simple illustration of production method that converts an input x to an output y, and the relationship is given by the curve OF in Figure 1. There are three firms who are engaged in this productive activity, and their input-output combinations are given by A, B, and C, respectively. We can say that firm producing at A is technically inefficient compared to the firm producing at B, since the former is not producing as much output as the other one, even if both are using the same volume of input. By this argument, any production point below the OF curve are technically inefficient. Are all technically efficient points equally productive? Not necessarily! If we measure productivity by output produced per unit of input, then the firm producing at C has the productive use of its input.
 
@@ -112,11 +112,11 @@ The set of all combinations of inputs and outputs that comprise a technologicall
 
 The function describing the boundary of this set is known as the ***production function***. It measures the maximum possible output from a given amount of input.
 
-![Production set and production function](Figures/Figure1.2.png){fig-align="center" width="389"}
+![Production set and production function](figures/figure1.2.png){fig-align="center" width="389"}
 
 As discussed before, a point in the interior of the production set represents a case of technically inefficient production. In the two-input case there is a convenient way to depict production relations in the form of an isoquant or indifference curve. An ***isoquant*** is the set of all possible combinations of inputs $(x_1,...,x_n)$ producing a given amount of output $y$.
 
-![Isoquants—Linear, Cobb-Douglas, and Leontief production technology](Figures/Figure1.3.png){fig-align="center" width="576" height="250"}
+![Isoquants—Linear, Cobb-Douglas, and Leontief production technology](figures/figure1.3.png){fig-align="center" width="576" height="250"}
 
 The isoquants move in the top-right direction as $y$ goes up, since we need more inputs to produce more output. The top-right section of the isoquants, and including the points on the isoquants, are often referred to as the ***input requirement set***. Observe that for a given volume of output *y*, the input requirement set consists of all points on all the isoquants corresponding to the output level *y* or higher.
 
@@ -322,7 +322,7 @@ The importance of input substitution led to various definition of *elasticities 
 
 $$
 \begin{aligned}
-\sigma= \frac{d(x_2/x_1)}{d(f_1/f_2)}\frac{(f_1/f_2)}{(x_2/x_1)}=\frac{\text{\% change in input ratio}}{\text{\% change in MRTS}}.
+\sigma= \frac{d(x_2/x_1)}{d(f_1/f_2)}\frac{(f_1/f_2)}{(x_2/x_1)}=\frac{\text{percentage change in input ratio}}{\text{percentage change in MRTS}}.
 \end{aligned}
 $$
 
