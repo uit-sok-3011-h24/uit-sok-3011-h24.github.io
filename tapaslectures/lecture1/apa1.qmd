@@ -132,7 +132,7 @@ Linear: $y=\beta_0+\sum_{i=1}^{N}{\beta_i x_i}$
 
 Cobb-Douglas: $y=\beta_0\prod_{i=1}^{N}{x_i}^{\beta_i}$, or equivalently, $\ln y=\beta_0+\sum_{i=1}^{N}{\beta_i \ln x_i}$
 
-Leontief: $y=\min_{i=1}^{N}\{{\beta_i x_i}}$
+Leontief: $y=\min_{i=1}^{N}\{{\beta_i x_i}\}$
 
 CES: $y=\left[\sum_{i=1}^{N}{\beta_i x_i^\rho}\right]^\frac{1}{\rho}$
 
