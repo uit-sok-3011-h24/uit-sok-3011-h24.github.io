@@ -19,7 +19,7 @@ Støttelitteratur:
 | 39  | 24.09 | Efficiency analysis| TK |
 | 40  | 24.09 | Introduksjon og presentasjon av case| ES|
 | 39  | 26.09 | Presentasjoner       | TK |
-| 40  | 04.10 | Innlevering case I (CANVAS)       |         |
+| 40  | 04.10 | Innlevering case I (CANVAS)  [PDF](https://uit-sok-3011-h24.github.io/tapaslectures/qs.pdf)   |         |
 | 41  | 09.10 | Forventning, nytte og risiko| ES|
 | 42  | 17.10 | Optimale porteføljer og matriseregning| ES|
 | 43  | 24.10 | Faktorer og prestasjonsmål| ES|
