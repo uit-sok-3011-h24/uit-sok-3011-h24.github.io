@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-09-03">
+<meta name="dcterms.date" content="2024-09-06">
 
 <title>Linear Model in Economics</title>
 <style>
@@ -127,7 +127,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 3, 2024</p>
+      <p class="date">September 6, 2024</p>
     </div>
   </div>
   
@@ -175,14 +175,12 @@ div.csl-indent {
 If you have questions, suggestions, or comments regarding one of the 'micEcon' packages, please use a forum or 'tracker' at micEcon's R-Forge site:
 https://r-forge.r-project.org/projects/micecon/</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'psych' was built under R version 4.3.3</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( <span class="st">"appleProdFr86"</span>, <span class="at">package =</span> <span class="st">"micEcon"</span> )</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="st">"appleProdFr86"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> appleProdFr86</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(appleProdFr86)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat, <span class="dv">5</span>)  <span class="co"># A truncated preview of the data set</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>( <span class="st">"appleProdFr86"</span>, <span class="at">package =</span> <span class="st">"micEcon"</span> )</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="st">"appleProdFr86"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> appleProdFr86</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(appleProdFr86)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat, <span class="dv">5</span>)  <span class="co"># A truncated preview of the data set</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    vCap   vLab   vMat  qApples qOtherOut      qOut     pCap     pLab     pMat
 1 219183 323991 303155 1.391803  0.977272 1374063.5 2.607756 0.899811 8.893672
@@ -197,7 +195,7 @@ https://r-forge.r-project.org/projects/micecon/</code></pre>
 4 0.5969751   1
 5 0.8253856   1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          vars   n       mean         sd     median    trimmed        mad
 vCap         1 140  102576.24   79992.28   84114.50   89202.88   55160.87
@@ -273,7 +271,7 @@ adv           0.00        1.00        1.00 -0.08    -2.01      0.04</code></pre>
 <h2 class="anchored" data-anchor-id="some-examples-of-useful-production-functions">Some examples of useful production functions</h2>
 <p>Linear: <span class="math inline">\(y=\beta_0+\sum_{i=1}^{N}{\beta_i x_i}\)</span></p>
 <p>Cobb-Douglas: <span class="math inline">\(y=\beta_0\prod_{i=1}^{N}{x_i}^{\beta_i}\)</span>, or equivalently, <span class="math inline">\(\ln y=\beta_0+\sum_{i=1}^{N}{\beta_i \ln x_i}\)</span></p>
-<p>Leontief: <span class="math inline">\(y=\min_{i=1}^{N}\{{\beta_i x_i}\}\)</span></p>
+<p>Leontief: <span class="math inline">\(y=\min_{i=1}^{N} \{ {\beta_i x_i} \}\)</span></p>
 <p>CES: <span class="math inline">\(y=\left[\sum_{i=1}^{N}{\beta_i x_i^\rho}\right]^\frac{1}{\rho}\)</span></p>
 <p>Quadratic: <span class="math inline">\(y=\beta_0+\sum_{i}{\beta_i x_i}+ \frac{1}{2} \sum_{i}\sum_{j}{\beta_{ij} x_i x_j}\)</span></p>
 <p>Translog: <span class="math inline">\(\ln y=\beta_0+\sum_{i}{\beta_i \ln x_i}+ \frac{1}{2} \sum_{i}\sum_{j}{\beta_{ij} \ln x_i \ln x_j}\)</span></p>
@@ -349,100 +347,100 @@ X_j^{P}=\frac{\sum_{i} x_{ij}p_{ij}}{\sum_{i} x_{i0}p_{ij}}
 X_j^{F}=\sqrt{X_j^{L} \times X_j^{P}}
 \]</span></p>
 <div class="cell" data-linebreak="80">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate input quantities</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>qCap <span class="ot">&lt;-</span> dat<span class="sc">$</span>vCap <span class="sc">/</span> dat<span class="sc">$</span>pCap</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>qLab <span class="ot">&lt;-</span> dat<span class="sc">$</span>vLab <span class="sc">/</span> dat<span class="sc">$</span>pLab</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>qMat <span class="ot">&lt;-</span> dat<span class="sc">$</span>vMat <span class="sc">/</span> dat<span class="sc">$</span>pMat</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating quantity indices</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>XP <span class="ot">&lt;-</span> <span class="fu">with</span>( dat, ( vCap <span class="sc">+</span> vLab <span class="sc">+</span> vMat ) <span class="sc">/</span> ( <span class="fu">mean</span>( qCap ) <span class="sc">*</span> pCap <span class="sc">+</span> <span class="fu">mean</span>( qLab ) <span class="sc">*</span> pLab <span class="sc">+</span> <span class="fu">mean</span>( qMat ) <span class="sc">*</span> pMat ) ) <span class="co"># Paasche Index</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>XL <span class="ot">&lt;-</span> <span class="fu">with</span>( dat, ( qCap <span class="sc">*</span> <span class="fu">mean</span>( pCap ) <span class="sc">+</span> qLab <span class="sc">*</span> <span class="fu">mean</span>( pLab ) <span class="sc">+</span> qMat <span class="sc">*</span> <span class="fu">mean</span>( pMat ) ) <span class="sc">/</span> ( <span class="fu">mean</span>( qCap ) <span class="sc">*</span> <span class="fu">mean</span>( pCap ) <span class="sc">+</span> <span class="fu">mean</span>( qLab ) <span class="sc">*</span> <span class="fu">mean</span>( pLab ) <span class="sc">+</span> <span class="fu">mean</span>( qMat ) <span class="sc">*</span> <span class="fu">mean</span>( pMat ) ) ) <span class="co"># Laspeyres Index</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>X <span class="ot">&lt;-</span> <span class="fu">sqrt</span>( dat<span class="sc">$</span>XP <span class="sc">*</span> dat<span class="sc">$</span>XL ) <span class="co"># Fisher Index</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># You can also generate these indices directly using micEconIndex package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate input quantities</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>qCap <span class="ot">&lt;-</span> dat<span class="sc">$</span>vCap <span class="sc">/</span> dat<span class="sc">$</span>pCap</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>qLab <span class="ot">&lt;-</span> dat<span class="sc">$</span>vLab <span class="sc">/</span> dat<span class="sc">$</span>pLab</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>qMat <span class="ot">&lt;-</span> dat<span class="sc">$</span>vMat <span class="sc">/</span> dat<span class="sc">$</span>pMat</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating quantity indices</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>XP <span class="ot">&lt;-</span> <span class="fu">with</span>( dat, ( vCap <span class="sc">+</span> vLab <span class="sc">+</span> vMat ) <span class="sc">/</span> ( <span class="fu">mean</span>( qCap ) <span class="sc">*</span> pCap <span class="sc">+</span> <span class="fu">mean</span>( qLab ) <span class="sc">*</span> pLab <span class="sc">+</span> <span class="fu">mean</span>( qMat ) <span class="sc">*</span> pMat ) ) <span class="co"># Paasche Index</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>XL <span class="ot">&lt;-</span> <span class="fu">with</span>( dat, ( qCap <span class="sc">*</span> <span class="fu">mean</span>( pCap ) <span class="sc">+</span> qLab <span class="sc">*</span> <span class="fu">mean</span>( pLab ) <span class="sc">+</span> qMat <span class="sc">*</span> <span class="fu">mean</span>( pMat ) ) <span class="sc">/</span> ( <span class="fu">mean</span>( qCap ) <span class="sc">*</span> <span class="fu">mean</span>( pCap ) <span class="sc">+</span> <span class="fu">mean</span>( qLab ) <span class="sc">*</span> <span class="fu">mean</span>( pLab ) <span class="sc">+</span> <span class="fu">mean</span>( qMat ) <span class="sc">*</span> <span class="fu">mean</span>( pMat ) ) ) <span class="co"># Laspeyres Index</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>X <span class="ot">&lt;-</span> <span class="fu">sqrt</span>( dat<span class="sc">$</span>XP <span class="sc">*</span> dat<span class="sc">$</span>XL ) <span class="co"># Fisher Index</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># You can also generate these indices directly using micEconIndex package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="data-ap-and-tfp" class="level3">
 <h3 class="anchored" data-anchor-id="data-ap-and-tfp">Data: AP and TFP</h3>
 <div class="cell" data-linebreak="80">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Measuring (partial) average product</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>apCap <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>qCap</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>apLab <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>qLab</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>apMat <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>qMat</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>apCap )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Measuring (partial) average product</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>apCap <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>qCap</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>apLab <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>qLab</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>apMat <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>qMat</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>apCap )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>apLab )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>apLab )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>apMat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>apMat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Average product measures vary considerably across firms, with most firms falling into the relatively low-productivity range.</p>
 <div class="cell" data-linebreak="80">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting average partial productivity of one input against another across firms</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>apCap, dat<span class="sc">$</span>apLab )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting average partial productivity of one input against another across firms</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>apCap, dat<span class="sc">$</span>apLab )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>apCap, dat<span class="sc">$</span>apMat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>apCap, dat<span class="sc">$</span>apMat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>apLab, dat<span class="sc">$</span>apMat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>apLab, dat<span class="sc">$</span>apMat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>It appears that the average products of the three inputs are positively correlated.</p>
 <div class="cell" data-linebreak="80">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting partial average products against output</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>apCap, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting partial average products against output</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>apCap, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>apLab, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>apLab, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>apMat, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>apMat, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>We did not have data on firm size. Assuming the volume of output as a proxy for firm size, we examined the plot of partial average products of each input against output. It appears that firms producing more also exhibit higher output per unit of input used.</p>
 <div class="cell" data-linebreak="80">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Measuring total factor productivity</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tfp <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>X <span class="co"># using Fisher index</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tfpP <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>XP <span class="co"># using Paasche Index</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tfpL <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>XL <span class="co"># using Laspeyres Index</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>tfp )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Measuring total factor productivity</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tfp <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>X <span class="co"># using Fisher index</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tfpP <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>XP <span class="co"># using Paasche Index</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>tfpL <span class="ot">&lt;-</span> dat<span class="sc">$</span>qOut <span class="sc">/</span> dat<span class="sc">$</span>XL <span class="co"># using Laspeyres Index</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>tfp )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>TFP varies considerably across firms, with the majority falling into the relatively low-TFP range.</p>
 <div class="cell" data-linebreak="80">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting tfp against output and input quantity index</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>tfp, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting tfp against output and input quantity index</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>tfp, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>X, dat<span class="sc">$</span>tfp, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>X, dat<span class="sc">$</span>tfp, <span class="at">log =</span> <span class="st">"x"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>These plots indicate that larger firms, characterized by higher output volumes, are typically associated with greater TFP. However, the plot of TFP against the aggregate input index shows only a mild positive association between the two.</p>
 <div class="cell" data-linebreak="80">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Does advisory service (a dummy) affects tfp?</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>( tfp <span class="sc">~</span> adv, <span class="at">data =</span> dat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Does advisory service (a dummy) affects tfp?</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>( tfp <span class="sc">~</span> adv, <span class="at">data =</span> dat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>( <span class="fu">log</span>(qOut) <span class="sc">~</span> adv, <span class="at">data =</span> dat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>( <span class="fu">log</span>(qOut) <span class="sc">~</span> adv, <span class="at">data =</span> dat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
 </div>
@@ -471,7 +469,7 @@ MRTS= \frac{dx_2}{dx_1} &amp;=-\frac{f_1}{f_2}=-\frac{MP_1}{MP_2}.
 <p><span class="math display">\[
 RMRTS=\frac{MRTS}{x_2/x_1}=-\frac{MP_1}{MP_2}\frac{x_1}{x_2}
 \]</span></p>
-<p>Divide both sides by <span class="math inline">\(y\)</span> and using the definition of output elasticity, we can rewrite the above formula as</p>
+<p>It can be interpreted as relative percentage change in one input (say, capital) needed to compensate for a relative percentage change in another input (say, labour) while maintaining the same level of output. Divide both sides by <span class="math inline">\(y\)</span> and using the definition of output elasticity, we can rewrite the above formula as</p>
 <p><span class="math display">\[
 RMRTS=-\frac{MP_1}{y/x_1}\frac{y/x_2}{MP_2}=-\frac{MP_1}{AP_1}\frac{AP_2}{MP_2}=-\frac{\varepsilon_1}{\varepsilon_2}
 \]</span></p>
@@ -714,9 +712,9 @@ y=\beta_0+\sum_{i=1}^{N}{\beta_i x_i}+\epsilon
 <section id="estimation" class="level3">
 <h3 class="anchored" data-anchor-id="estimation">Estimation</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting a linear model</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>prodlinear <span class="ot">&lt;-</span> <span class="fu">lm</span>( qOut <span class="sc">~</span> qCap <span class="sc">+</span> qLab <span class="sc">+</span> qMat, <span class="at">data =</span> dat )</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( prodlinear )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting a linear model</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>prodlinear <span class="ot">&lt;-</span> <span class="fu">lm</span>( qOut <span class="sc">~</span> qCap <span class="sc">+</span> qLab <span class="sc">+</span> qMat, <span class="at">data =</span> dat )</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>( prodlinear )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -727,293 +725,240 @@ Residuals:
 -3888955  -773002    86119   769073  7091521 
 
 Coefficients:
-              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -1.616e+06  2.318e+05  -6.972 1.23e-10 ***
-qCap         1.788e+00  1.995e+00   0.896    0.372    
-qLab         1.183e+01  1.272e+00   9.300 3.15e-16 ***
-qMat         4.667e+01  1.123e+01   4.154 5.74e-05 ***
+                Estimate   Std. Error t value             Pr(&gt;|t|)    
+(Intercept) -1615978.639   231771.709  -6.972 0.000000000123189025 ***
+qCap               1.788        1.995   0.896                0.372    
+qLab              11.831        1.272   9.300 0.000000000000000315 ***
+qMat              46.668       11.234   4.154 0.000057378294854380 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 1541000 on 136 degrees of freedom
 Multiple R-squared:  0.7868,    Adjusted R-squared:  0.7821 
-F-statistic: 167.3 on 3 and 136 DF,  p-value: &lt; 2.2e-16</code></pre>
+F-statistic: 167.3 on 3 and 136 DF,  p-value: &lt; 0.00000000000000022</code></pre>
 </div>
 </div>
 <p>The regression results show that the coefficients for labor and materials are positive and significant, but the coefficient for capital is not. Whether we should drop capital from our estimated model is a complex issue. If capital is an essential input in the true underlying relationship, then dropping it from the model would lead to biased and inconsistent estimates of other input coefficients. On the other hand, including an insignificant variable like capital would result in less efficient estimates (making other estimates less precise), but they would still remain unbiased and consistent (converges to the true coefficient if sample size increases).</p>
-<p>The residual, or error term, captures the difference between observed and predicted values. This error term arises due to measurement error, omitted variable bias, and other random shocks. A high R² value provides some evidence of a better fit. However, in the absence of comparable models, it remains unclear whether a linear production function is a good fit for our data. Nonetheless, we can perform some consistency checks on our estimated production technology based on the regression output.</p>
-<p><em>Essentiality:</em> Weak essentiality means that each input in the production function has some non-zero contribution to the output when other inputs are held constant. A <em>strict essentiality</em>, on the other hand, is a stronger condition, which requires that the production function collapses to zero output if any one of the inputs is not present. In other words, every input is strictly necessary for production to take place.</p>
-<p>Positive input coefficients for labour and materials are evidence of essentiality of these inputs. The negative and significant intercept term violates weak essentiality condition.</p>
-<p><em>Monotonicity:</em> The monotonicity condition refers to the requirement that the output should not decrease as the quantity of any input increases, holding all other inputs constant. The positive and significant coefficients of labour and materials satisfy the monotonicity condition.</p>
-<p><em>Quasi-concavity:</em> A production function is quasi-concave if its isoquants are convex, or equivalently, if the input requirement set is convex. In the case of a linear production function, the isoquants are straight lines, which means they are both concave and convex, and thus inherently convex. Consequently, the input requirement set is also convex. Therefore, quasi-concavity is trivially satisfied due to the linear nature of the production function.</p>
-<p><em>Non-negativity:</em> The production function should yield non-negative output values for any non-negative input choices. However, the negative intercept in our estimated production function violates this non-negativity assumption. Also, we are going to see below that there is one negative predicted output value for one firm, violating non-negativity condition.</p>
 </section>
-<section id="predicted-vs-observed" class="level3">
-<h3 class="anchored" data-anchor-id="predicted-vs-observed">Predicted vs observed</h3>
+<section id="is-it-a-good-fit" class="level3">
+<h3 class="anchored" data-anchor-id="is-it-a-good-fit">Is it a good fit?</h3>
+<p>In the absence of comparable models, it remains unclear whether a linear production function is a goof fit for our data. However, we can still infer the strength of our model based on some simple observation. For example, the residual/error term, captures the difference between observed and predicted values. This error term arises due to measurement error, omitted variable bias, and other random shocks. A high R² value provides some evidence of a better fit.</p>
 <p>A plot of predicted values against the observed ones helps visualize how well the predicted values align with the observed values. If the regression model is a good fit, the points should cluster around the 45-degree line (where predicted equals observed). Deviations from the 45-degree line can indicate systematic errors in the model. If the points form a curved pattern instead of clustering around the line, this could indicate that a linear model may not be appropriate. The plot can also help identify outliers—points that are far from the line—which may disproportionately affect the regression results. However, it should be used in conjunction with other tools, such as residual plots, to fully assess the model’s performance. Relying solely on this plot may not reveal all potential issues, such as heteroscedasticity or multicollinearity.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicted vs. observed plot</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miscTools)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>qOutLin <span class="ot">&lt;-</span> <span class="fu">fitted</span>( prodlinear )</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>qOutLin )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicted vs. observed plot</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miscTools)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>qOutLin <span class="ot">&lt;-</span> <span class="fu">fitted</span>( prodlinear )</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>qOutLin )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Due to some extreme values, most of the data points appear clustered toward the origin. One way to address this issue is by scaling the axes, for example, using a logarithmic scale. However, since the logarithm of negative values is undefined, we would need to exclude those negative values from the plot.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicted vs. observed (logarithmic scaling of axes)</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>( dat<span class="sc">$</span>qOutLin <span class="sc">&gt;=</span> <span class="dv">0</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicted vs. observed (logarithmic scaling of axes)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>( dat<span class="sc">$</span>qOutLin <span class="sc">&gt;=</span> <span class="dv">0</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 FALSE  TRUE 
     1   139 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>qOut[ dat<span class="sc">$</span>qOutLin <span class="sc">&gt;</span> <span class="dv">0</span> ], dat<span class="sc">$</span>qOutLin[ dat<span class="sc">$</span>qOutLin <span class="sc">&gt;</span> <span class="dv">0</span> ], <span class="at">log =</span> <span class="st">"xy"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>qOut[ dat<span class="sc">$</span>qOutLin <span class="sc">&gt;</span> <span class="dv">0</span> ], dat<span class="sc">$</span>qOutLin[ dat<span class="sc">$</span>qOutLin <span class="sc">&gt;</span> <span class="dv">0</span> ], <span class="at">log =</span> <span class="st">"xy"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The deviations from observed values looks random (okay) in both scatter plots.</p>
+<p>Next, we perform consistency checks on our estimated production technology to ensure alignment with theoretical predictions derived from microeconomic principles.</p>
 </section>
-<section id="elasticity" class="level3">
-<h3 class="anchored" data-anchor-id="elasticity">Elasticity</h3>
+<section id="theoretical-consistency" class="level3">
+<h3 class="anchored" data-anchor-id="theoretical-consistency">Theoretical consistency</h3>
+<p><em>Essentiality:</em> Weak essentiality means that each input in the production function has some non-zero contribution to the output when other inputs are held constant. A <em>strict essentiality</em>, on the other hand, is a stronger condition, which requires that the production function collapses to zero output if any one of the inputs is not present. In other words, every input is strictly necessary for production to take place.</p>
+<p>Positive input coefficients for labour and materials are evidence of essentiality of these inputs. The negative and significant intercept term violates weak essentiality condition.</p>
+<p><em>Monotonicity:</em> The monotonicity condition refers to the requirement that the output should not decrease as the quantity of any input increases, holding all other inputs constant. The positive and significant coefficients of labour and materials satisfy the monotonicity condition.</p>
+<p><em>Quasi-concavity:</em> A production function is quasi-concave if its isoquants are convex, or equivalently, if the input requirement set is convex. In the case of a linear production function, the isoquants are straight lines, which means they are both concave and convex, and thus inherently convex. Consequently, the input requirement set is also convex. Therefore, quasi-concavity is trivially satisfied due to the linear nature of the production function.</p>
+<p><em>Non-negativity:</em> The production function should yield non-negative output values for any non-negative input choices. However, the negative intercept in our estimated production function violates this non-negativity assumption. Also, we are going to see below that there is one negative predicted output value for one firm, violating non-negativity condition.</p>
+</section>
+<section id="studying-properties-of-the-production-function" class="level3">
+<h3 class="anchored" data-anchor-id="studying-properties-of-the-production-function">Studying properties of the production function</h3>
+</section>
+<section id="output-elasticity-1" class="level3">
+<h3 class="anchored" data-anchor-id="output-elasticity-1">Output elasticity</h3>
 <p>Note that the estimated linear production function implicitly assumes the marginal productivity of an input is the same across firms, and it is measured by the estimated coefficient. Any variation in marginal productivity across firms, even if it exists, cannot be addressed by these coefficients. To account for this variation, we can calculate the output elasticity by dividing each input coefficient by the corresponding average product and then examine how this elasticity measures may vary across firms.</p>
 <p>In contrast, when estimating a Cobb-Douglas production function, the elasticity of output with respect to each input is directly represented by the regression coefficients. Then, plots of marginal products derived from a Cobb-Douglas function will typically show variation across firms.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Caclulate output elasticity, compute mean and meadian, plot histograms</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eCap <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>] <span class="sc">/</span> dat<span class="sc">$</span>apCap</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eLab <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>] <span class="sc">/</span> dat<span class="sc">$</span>apLab</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eMat <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>] <span class="sc">/</span> dat<span class="sc">$</span>apMat</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eCap"</span>, <span class="st">"eLab"</span>, <span class="st">"eMat"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Caclulate output elasticity, compute mean and meadian, plot histograms</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eCap <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>] <span class="sc">/</span> dat<span class="sc">$</span>apCap</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eLab <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>] <span class="sc">/</span> dat<span class="sc">$</span>apLab</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eMat <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>] <span class="sc">/</span> dat<span class="sc">$</span>apMat</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eCap"</span>, <span class="st">"eLab"</span>, <span class="st">"eMat"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     eCap      eLab      eMat 
 0.1202721 2.0734793 0.8631936 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMedians</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eCap"</span>, <span class="st">"eLab"</span>, <span class="st">"eMat"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMedians</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eCap"</span>, <span class="st">"eLab"</span>, <span class="st">"eMat"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      eCap       eLab       eMat 
 0.08063406 1.28627208 0.58741460 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eCap , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eCap , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eLab , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eLab , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eMat , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eMat , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-12-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Recall that the elasticity measures percentage change in output due to a percentage change in input. The marginal effect of capital on the output is rather small for most firms (mostly between 0 to 0,2 percent), there are many firms with implausibly high output elasticities of labor (for most, it is between 0,5 to 3) and materials (for most, it is between 0,2 to 1,2).</p>
-<p>We can also perform the same exercise by considering the average productivity based on the fitted model.</p>
+</section>
+<section id="returns-to-scale-1" class="level3">
+<h3 class="anchored" data-anchor-id="returns-to-scale-1">Returns to scale</h3>
+<p>Recall that the elasticity of scale reflects the returns to scale of a production technology: <span class="math inline">\(\varepsilon&lt;1\)</span> implies DRS, <span class="math inline">\(\varepsilon=1\)</span> implies CRS, and <span class="math inline">\(\varepsilon&gt;1\)</span> implies IRS. Since firms will have different elasticities, we will see variation of <span class="math inline">\(\varepsilon\)</span> values across firms.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Caclulate output elasticity, compute mean and meadian, plot histograms, based on the predicted average productivity</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eCapFit <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>] <span class="sc">*</span> dat<span class="sc">$</span>qCap <span class="sc">/</span> dat<span class="sc">$</span>qOutLin</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eLabFit <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>] <span class="sc">*</span> dat<span class="sc">$</span>qLab <span class="sc">/</span> dat<span class="sc">$</span>qOutLin</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eMatFit <span class="ot">&lt;-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>] <span class="sc">*</span> dat<span class="sc">$</span>qMat <span class="sc">/</span> dat<span class="sc">$</span>qOutLin</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eCapFit"</span>, <span class="st">"eLabFit"</span>, <span class="st">"eMatFit"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate elasticity of scale, compute mean and median, plot histograms, both based on observed average productivity and predicted average productivity</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eScale <span class="ot">&lt;-</span> <span class="fu">with</span>( dat, eCap <span class="sc">+</span> eLab <span class="sc">+</span> eMat )</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eScale"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  eCapFit   eLabFit   eMatFit 
-0.1421941 2.2142092 0.9784056 </code></pre>
+<pre><code>  eScale 
+3.056945 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMedians</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eCapFit"</span>, <span class="st">"eLabFit"</span>, <span class="st">"eMatFit"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMedians</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eScale"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   eCapFit    eLabFit    eMatFit 
-0.07407719 1.21044421 0.58821500 </code></pre>
+<pre><code>  eScale 
+1.941536 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eCapFit , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eScale, <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eLabFit , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eMatFit , <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>The range of output elasticities calculated from the predicted output values is much larger (because of some extreme values). Besides, the output elasticity for one observation is negative.</p>
-</section>
-<section id="elasticity-of-scale" class="level3">
-<h3 class="anchored" data-anchor-id="elasticity-of-scale">Elasticity of scale</h3>
-<p>tba</p>
+<p>Based on the median values, we can conclude that most firms exhibit increasing returns to scale. The histogram shows that the majority have an elasticity of scale between 1 and 2, with a few showing extremely high returns to scale.</p>
+<p>Which firms exhibit high returns to scale? We plot elasticity of scale against size proxies, such as output and an input index.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate elasticity of scale, compute mean and median, plot histograms, both based on observed average productivity and predicted average productivity</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eScale <span class="ot">&lt;-</span> <span class="fu">with</span>( dat, eCap <span class="sc">+</span> eLab <span class="sc">+</span> eMat )</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>eScaleFit <span class="ot">&lt;-</span> <span class="fu">with</span>( dat, eCapFit <span class="sc">+</span> eLabFit <span class="sc">+</span> eMatFit )</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colMeans</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eScale"</span>, <span class="st">"eScaleFit"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   eScale eScaleFit 
- 3.056945  3.334809 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colMedians</span>( <span class="fu">subset</span>( dat, , <span class="fu">c</span>( <span class="st">"eScale"</span>, <span class="st">"eScaleFit"</span> ) ) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   eScale eScaleFit 
- 1.941536  1.864253 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eScale, <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot elasticity of scale against input index and output index</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>eScale, <span class="at">log =</span> <span class="st">"x"</span> )</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="dv">1</span>, <span class="dv">0</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>eScaleFit, <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>X, dat<span class="sc">$</span>eScale, <span class="at">log =</span> <span class="st">"x"</span> )</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="dv">1</span>, <span class="dv">0</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>tba</p>
+<p>The scatter plots typically show that firms employing smaller input levels exhibit increasing returns to scale, which is expected. A few firms display decreasing returns to scale, and this is observed among firms using both high and low input volumes.</p>
 </section>
-<section id="firm-size-and-elasticity-of-scale" class="level3">
-<h3 class="anchored" data-anchor-id="firm-size-and-elasticity-of-scale">Firm size and elasticity of scale</h3>
-<p>tba</p>
+<section id="input-substitutionmrts-and-rmrts" class="level3">
+<h3 class="anchored" data-anchor-id="input-substitutionmrts-and-rmrts">Input substitution–MRTS and RMRTS</h3>
+<p>In a linear production function, the Marginal Rate of Technical Substitution (MRTS) is constant and can be measured as the ratio of the coefficients of the inputs. The relative MRTS will however vary across firms, due to the variation in output elasticities.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot elasticity of scale against input index and output index</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>eScale, <span class="at">log =</span> <span class="st">"x"</span> )</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="dv">1</span>, <span class="dv">0</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MRTS</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>mrtsCapLab <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>]</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>mrtsLabCap <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>]</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>mrtsCapMat <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>]</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>mrtsMatCap <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>]</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>mrtsLabMat <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>]</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>mrtsMatLab <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>]</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate RMRTS</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsCapLab <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eLab <span class="sc">/</span> dat<span class="sc">$</span>eCap</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsLabCap <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eCap <span class="sc">/</span> dat<span class="sc">$</span>eLab</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsCapMat <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eMat <span class="sc">/</span> dat<span class="sc">$</span>eCap</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsMatCap <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eCap <span class="sc">/</span> dat<span class="sc">$</span>eMat</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsLabMat <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eMat <span class="sc">/</span> dat<span class="sc">$</span>eLab</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsMatLab <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eLab <span class="sc">/</span> dat<span class="sc">$</span>eMat</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw histogram of RMRTS</span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsCapLab, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>X, dat<span class="sc">$</span>eScale, <span class="at">log =</span> <span class="st">"x"</span> )</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="dv">1</span>, <span class="dv">0</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsLabCap, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>qOut, dat<span class="sc">$</span>eScaleFit, <span class="at">log =</span> <span class="st">"x"</span>, <span class="at">ylim =</span> <span class="fu">c</span>( <span class="dv">0</span>, <span class="dv">15</span> ) )</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="dv">1</span>, <span class="dv">0</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsCapMat, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-15-3.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( dat<span class="sc">$</span>X, dat<span class="sc">$</span>eScaleFit, <span class="at">log =</span> <span class="st">"x"</span>, <span class="at">ylim =</span> <span class="fu">c</span>( <span class="dv">0</span>, <span class="dv">15</span> ) )</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="dv">1</span>, <span class="dv">0</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsMatCap, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-15-4.png" class="img-fluid" width="672"></p>
 </div>
-</div>
-<p>tba</p>
-</section>
-<section id="mrts-and-rmrts" class="level3">
-<h3 class="anchored" data-anchor-id="mrts-and-rmrts">MRTS and RMRTS</h3>
-<p>tba</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MRTS</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>mrtsCapLab <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>]</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>mrtsLabCap <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>]</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>mrtsCapMat <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>]</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>mrtsMatCap <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>]</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>mrtsLabMat <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>]</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>mrtsMatLab <span class="ot">&lt;-</span> <span class="sc">-</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>] <span class="sc">/</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>]</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate RMRTS</span></span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsCapLab <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eLab <span class="sc">/</span> dat<span class="sc">$</span>eCap</span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsLabCap <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eCap <span class="sc">/</span> dat<span class="sc">$</span>eLab</span>
-<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsCapMat <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eMat <span class="sc">/</span> dat<span class="sc">$</span>eCap</span>
-<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsMatCap <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eCap <span class="sc">/</span> dat<span class="sc">$</span>eMat</span>
-<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsLabMat <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eMat <span class="sc">/</span> dat<span class="sc">$</span>eLab</span>
-<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rmrtsMatLab <span class="ot">&lt;-</span> <span class="sc">-</span> dat<span class="sc">$</span>eLab <span class="sc">/</span> dat<span class="sc">$</span>eMat</span>
-<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw histogram of RMRTS</span></span>
-<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsCapLab, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsLabMat, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+<p><img src="apa2_files/figure-html/unnamed-chunk-15-5.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsLabCap, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsMatLab, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsCapMat, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-16-3.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsMatCap, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-16-4.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsLabMat, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-16-5.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>rmrtsMatLab, <span class="dv">20</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-16-6.png" class="img-fluid" width="672"></p>
+<p><img src="apa2_files/figure-html/unnamed-chunk-15-6.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>tba</p>
+<p>In our data set, most firms require approximately twenty percentage more capital or around two percentage more materials to make up for a one percentage reduction in labor.</p>
 </section>
 <section id="profit-maximizing-behavior" class="level3">
 <h3 class="anchored" data-anchor-id="profit-maximizing-behavior">Profit-maximizing behavior</h3>
-<p>tba</p>
+<p>According to the profit-maximizing principle, the marginal value products—calculated as the output price multiplied by the marginal products—must equal the input prices at the optimal input choices. We plot marginal value products against the input prices across firms (we scale the axes for better viewing).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MVP, plot MVP against input prices</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mvpCap <span class="ot">&lt;-</span> dat<span class="sc">$</span>pOut <span class="sc">*</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>]</span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mvpLab <span class="ot">&lt;-</span> dat<span class="sc">$</span>pOut <span class="sc">*</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>]</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mvpMat <span class="ot">&lt;-</span> dat<span class="sc">$</span>pOut <span class="sc">*</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>]</span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pCap, dat<span class="sc">$</span>mvpCap )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate MVP, plot MVP against input prices</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mvpCap <span class="ot">&lt;-</span> dat<span class="sc">$</span>pOut <span class="sc">*</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qCap"</span>]</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mvpLab <span class="ot">&lt;-</span> dat<span class="sc">$</span>pOut <span class="sc">*</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qLab"</span>]</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>mvpMat <span class="ot">&lt;-</span> dat<span class="sc">$</span>pOut <span class="sc">*</span> <span class="fu">coef</span>(prodlinear)[<span class="st">"qMat"</span>]</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pCap, dat<span class="sc">$</span>mvpCap, <span class="at">log =</span> <span class="st">"xy"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="apa2_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pLab, dat<span class="sc">$</span>mvpLab, <span class="at">log =</span> <span class="st">"xy"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="apa2_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pMat, dat<span class="sc">$</span>mvpMat, <span class="at">log =</span> <span class="st">"xy"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="apa2_files/figure-html/unnamed-chunk-16-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The scatter plot All firms could increase their profits by using more labor and materials, and some could also benefit from using more capital. Since most firms operate under increasing returns to scale, it is not surprising that many would gain from increasing most—or even all—input quantities. Why do not they do so? It might be possible there is imperfections in the input markets so that input prices do not perfectly reflect the marginal contributions.</p>
+</section>
+<section id="cost-minimizing-behavior" class="level3">
+<h3 class="anchored" data-anchor-id="cost-minimizing-behavior">Cost-minimizing behavior</h3>
+<p>According to the cost-minimizing principle, the ratio of input prices must equal the absolute value of the MRTS between two inputs, which is constant in the case of a linear production function (the ratio of the coefficients). We create a histogram of input price ratios and compare it to the MRTS, represented by a solid vertical line.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw histogram of input price ratios</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pCap <span class="sc">/</span> dat<span class="sc">$</span>pLab )</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsLabCap, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pLab, dat<span class="sc">$</span>mvpLab )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pCap <span class="sc">/</span> dat<span class="sc">$</span>pMat )</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsMatCap, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pMat, dat<span class="sc">$</span>mvpMat )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pLab <span class="sc">/</span> dat<span class="sc">$</span>pMat )</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsMatLab, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-17-3.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pCap, dat<span class="sc">$</span>mvpCap, <span class="at">log =</span> <span class="st">"xy"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pLab <span class="sc">/</span> dat<span class="sc">$</span>pCap )</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsCapLab, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-17-4.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pLab, dat<span class="sc">$</span>mvpLab, <span class="at">log =</span> <span class="st">"xy"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pMat <span class="sc">/</span> dat<span class="sc">$</span>pCap )</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsCapMat, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-17-5.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compPlot</span>( dat<span class="sc">$</span>pMat, dat<span class="sc">$</span>mvpMat, <span class="at">log =</span> <span class="st">"xy"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pMat <span class="sc">/</span> dat<span class="sc">$</span>pLab )</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsLabMat, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="apa2_files/figure-html/unnamed-chunk-17-6.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>tba</p>
-</section>
-<section id="cost-minimizing-behavior" class="level3">
-<h3 class="anchored" data-anchor-id="cost-minimizing-behavior">Cost-minimizing behavior</h3>
-<p>tba</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw histogram of input price ratios</span></span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pCap <span class="sc">/</span> dat<span class="sc">$</span>pLab )</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsLabCap, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pCap <span class="sc">/</span> dat<span class="sc">$</span>pMat )</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsMatCap, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pLab <span class="sc">/</span> dat<span class="sc">$</span>pMat )</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsMatLab, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-18-3.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pLab <span class="sc">/</span> dat<span class="sc">$</span>pCap )</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsCapLab, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-18-4.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pMat <span class="sc">/</span> dat<span class="sc">$</span>pCap )</span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsCapMat, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-18-5.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>( dat<span class="sc">$</span>pMat <span class="sc">/</span> dat<span class="sc">$</span>pLab )</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>( <span class="at">v =</span> <span class="sc">-</span> mrtsLabMat, <span class="at">lwd =</span> <span class="dv">3</span>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="apa2_files/figure-html/unnamed-chunk-18-6.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>tba</p>
+<p>All plots provide evidence that most firms could benefit from substituting capital with labor, and capital with materials. When comparing labor and materials, most firms would benefit from substituting materials with labor. These observations align with our findings based on the profit-maximizing principle.</p>
 </section>
 </section>
 <section id="other-production-function" class="level2">
