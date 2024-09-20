@@ -3,3 +3,4 @@ Thumbs.db
 unused/
 .ipynb_checkpoints/
 __pycache__/
+finans/output/
