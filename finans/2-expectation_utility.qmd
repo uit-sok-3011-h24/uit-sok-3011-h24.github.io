@@ -121,8 +121,11 @@ plt.text(0.15, expected_utility, '$EU(X)$', verticalalignment='center', fontsize
 
 # Risk premium - distance between expected utility and utility of certain outcome
 risk_premium = u_func(x_certain) - expected_utility
-plt.annotate(r'$\pi$', xy=(1, expected_utility + risk_premium/2), xytext=(0.8, expected_utility + risk_premium/2),
-             arrowprops=dict(facecolor='black', arrowstyle='<->'), fontsize=12)
+certainty_equivalence = x_func(expected_utility)
+plt.annotate('', xy=(1, expected_utility), xytext=(certainty_equivalence, expected_utility),
+             arrowprops=dict(facecolor='black', arrowstyle='<->'))
+# Separate annotation for the label (π) without the arrow
+plt.annotate(r'$\pi$', xy=(0.9, expected_utility -0.1), fontsize=12)
 
 # Labels and title
 plt.title('Utility Function Demonstrating Risk Aversion')
