@@ -17,13 +17,13 @@ Støttelitteratur:
 | 37  | 13.09 | Production function - estimation and model comparison [HTML](https://uit-sok-3011-h24.github.io/tapaslectures/lecture3/apa3.html)  [PDF](https://uit-sok-3011-h24.github.io/tapaslectures/lecture3/apa3.pdf) | TK |
 | 39  | 23.09 | Cost minimization - theory and estimation| TK |
 | 39  | 24.09 | Profit maximization - theory and estimation| TK |
-| 40  | 24.09 | Introduksjon og presentasjon av case| ES|
+| 40  | 24.09 | [Introduksjon og presentasjon av case](finans/1-introduksjon.ipynb)| ES|
 | 39  | 26.09 | Presentasjoner       | TK |
 | 40  | 04.10 | Innlevering case I (CANVAS)  [PDF](https://uit-sok-3011-h24.github.io/tapaslectures/qs.pdf)   |         |
-| 41  | 09.10 | Forventning, nytte og risiko| ES|
-| 42  | 17.10 | Optimale porteføljer og matriseregning| ES|
-| 43  | 24.10 | Faktorer og prestasjonsmål| ES|
-| 44  | 31.10 | VAR (Value At Risk) og risikobudsjettering| ES|
+| 41  | 09.10 | [Forventning, nytte og risiko](finans/2-expectation_utility.pdf)| ES|
+| 42  | 17.10 | [Optimale porteføljer og matriseregning](finans/3-lecture_optport.pdf)| ES|
+| 43  | 24.10 | [Faktorer og prestasjonsmål]((finans/4-lecture_factor.pdf))| ES|
+| 44  | 31.10 | [VAR (Value At Risk) og risikobudsjettering](5-lecture_VaR.ipynb)| ES|
 | 45  | 06.11 | Presentasjoner       | ES|
 | 47  | 22.11 | Endelig innlevering case II (WISEFLOW)         |         |
 
