@@ -694,6 +694,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="forelesning-5-var" class="level1">
 <h1>Forelesning 5: VaR</h1>
+<div id="2378df4d" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span>  datetime</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> VaR <span class="im">as</span> var</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>SUBTRACT_MEAN <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat((pd.read_excel(<span class="st">"data/dateReturns.xlsx"</span>, header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>[<span class="st">'date'</span>]),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                pd.read_excel(<span class="st">"data/Returns.xlsx"</span>,header<span class="op">=</span><span class="va">None</span>, names<span class="op">=</span>[<span class="st">'return'</span>])), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>estimation_win_size <span class="op">=</span> <span class="dv">250</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>win_start <span class="op">=</span> <span class="bu">min</span>(df[df[<span class="st">'date'</span>]<span class="op">&gt;=</span><span class="st">'1995-1-1'</span>].index)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>win_start <span class="op">=</span> <span class="bu">min</span>(df[df[<span class="st">'date'</span>]<span class="op">&gt;=</span><span class="st">'1995-12-29'</span>].index)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_est(x,z,p,s):</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  sigma <span class="op">=</span> np.std(x, ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">-</span> z[<span class="dv">0</span>]<span class="op">*</span>sigma, <span class="op">-</span> z[<span class="dv">1</span>]<span class="op">*</span>sigma, sigma</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>normal95, normal99, sigma, dates, ret <span class="op">=</span> var.est_var(normal_est, SUBTRACT_MEAN, win_start, df, estimation_win_size)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>var.plot(plt, normal95, normal99, dates,</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>     <span class="st">'VaR Estimation Using the Normal Distribution Method'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="1-introduksjon_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 
 </main>
