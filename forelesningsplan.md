@@ -25,7 +25,7 @@ Støttelitteratur:
 | 43  | 24.10 | [Faktorer og prestasjonsmål](finans/4-lecture_factor.pdf)| ES|
 | 44  | 31.10 | [VAR (Value At Risk) og risikobudsjettering](5-lecture_VaR.html)| ES|
 | 45  | 06.11 | Presentasjoner       | ES|
-| 47  | 22.11 | Endelig innlevering case II (WISEFLOW)         |         |
+| 47  | 22.11 | Endelig innlevering case I og case II (WISEFLOW)         |         |
 
 
 
