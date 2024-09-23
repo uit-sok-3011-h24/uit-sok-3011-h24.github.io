@@ -1061,13 +1061,15 @@ The linear form is clearly rejected, while the Cobb-Douglas form is accepted at 
 
 # Section 3
 
-# Cost function
+# Dual approach
 
 So far we have followed the primal approach, which analyses producers' behaviors (profit-maximizing or cost-minimizing) given a technological constraint in the form of a production function. Next, we will follow the dual approach.
 
 Observe that a firm's optimizing behavior, for example, choosing inputs to minimize its expenditure keeping its level of production at a certain given output level, gives us a relationship between the firm's minimum expenditure and the input prices (and output volume). We refer to this relationship as the firm's cost function. The duality in optimization implies that if we begin with a production function and derive its cost function, we can take that cost function and use it to generate a production function. If the original production function is quasiconcave, the derived production function will be identical to it. If the original production function is not quasiconcave, the derived production function is a ‘concavication’ of it. Moreover, any function with all the properties of a cost function generates some production function for which it is the cost function.
 
 This last observation has important implications for applied work. Applied researchers need no longer begin their study of the firm with detailed knowledge of the technology and with access to relatively obscure engineering data. Instead, they can estimate the firm’s cost function by employing observable market input prices and levels of output. They can then ‘recover’ the underlying production function from the estimated cost function.
+
+# Cost function
 
 Recall that the cost function, defined for all input prices $\mathbf{w}$ and all output levels $y$ is the minimum-value function
 
@@ -1187,9 +1189,9 @@ We can test the homogeneity condition in two ways. First, we can perform a *line
 linearHypothesis( costCD, "log(pCap) + log(pLab) + log(pMat) = 1"  )
 ```
 
-The F-statistic in a linear hypothesis test is used to evaluate whether the null hypothesis (that the sum of the coefficients equals zero) is valid. It is derived from comparing the fit of two models: the restricted model (which imposes the null hypothesis) and the unrestricted model (without those restrictions). The difference between the sum of squared residuals from the restricted model and the unrestricted model reflects how well the models fit the data when the restrictions are applied. If the null hypothesis is true, the difference should be small, and Pr(\>F) will be large—this is what we find in this case.
+The F-statistic in a linear hypothesis test is used to evaluate whether the null hypothesis (that the sum of the coefficients equals one) is valid. It is derived from comparing the fit of two models: the restricted model (which imposes the null hypothesis) and the unrestricted model (without those restrictions). The difference between the sum of squared residuals from the restricted model and the unrestricted model reflects how well the models fit the data when the restrictions are applied. If the null hypothesis is true, the difference should be small, and Pr(\>F) will be large—this is what we find in this case.
 
-However, note that the sum of the coefficients is not exactly one, although it holds true in a statistical sense. We can fit a model with the homogeneity condition (degree one) directly imposed. There is an advantage to doing this, which I will discuss later. Below, we estimate a model where we select one input and assume its coefficient is one minus the sum of all other input coefficients. This modification, however, alters the regression specifications:
+However, note that the sum of the coefficients is not exactly one, although it holds true in a statistical sense. We can also fit a model with the homogeneity condition (degree one) directly imposed. There is an advantage to doing this, which I will discuss later. Below, we estimate a model where we select one input and assume its coefficient is one minus the sum of all other input coefficients. This modification, however, alters the regression specifications:
 
 $$
 \ln c=\alpha_0 + \sum_{i=1}^{N-1}{\alpha_i \ln w_i} + (1-\sum_{i=1}^{N-1} \alpha_i) \ln w_N + \alpha_y \ln y
