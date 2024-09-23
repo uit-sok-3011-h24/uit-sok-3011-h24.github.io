@@ -1009,7 +1009,7 @@ However, in our discussion, we are comparing two non-nested models—Linear and 
 
 We will make a series of observations to compare the pros and cons of these two models based on our data.
 
-Since the two models have different dependent variables, y and ln(y), we cannot directly compare their R-squared values. Instead, we compare the R-squared from the linear model with a hypothetical R-squared based on the estimated Cobb-Douglas model, which measures the correlation between the observed y values and the residuals. Alternatively, we can reverse the process by comparing the R-squared from the Cobb-Douglas model with a hypothetical R-squared based on the estimated linear model, measuring the correlation between the observed ln(y) values and the residuals.
+Since the two models have different dependent variables, y and ln(y), we cannot directly compare their R-squared values. Instead, we compare the R-squared from the linear model with a hypothetical R-squared (also called coefficient of determination) based on the estimated Cobb-Douglas model, which computes R-squared based on a model's fitted (predicted) values and the actual (observed) values. Alternatively, we can reverse the process by comparing the R-squared from the Cobb-Douglas model with the hypothetical R-squared based on the estimated linear model.
 
 ```{r}
 # Linear model: R-square of y
@@ -1384,6 +1384,14 @@ hist( ( - dat$pMat * dat$qMat / dat$profit )[ dat$profit > 0 ], 30 ) >abline(v=g
 ```
 
 These histograms clearly show that most firms are operating at a level below the optimal profit-maximizing level (recall the similar findings we derived when examining the elasticity of scale based on the estimated production functions). In terms of input usage, the findings are somewhat different and interesting: it appears that most firms could use more capital (and less materials) to increase profits. This observation is inconsistent with previous analysis, but there can be reasons for it. One possibility is that the choice of capital was constrained in the short run, meaning our functional specification of a long-run profit function may not have been appropriate. Additionally, we have not tested other forms of profit functions, which might better explain the data. See \[\@henningsen2024introduction\] for a more detailed discussion on the first point.
+
+------------------------------------------------------------------------
+
+***Reading materials:***
+
+-   Henningsen, chapter 3, 4
+
+-   Varian, Chapter 3, 5
 
 ------------------------------------------------------------------------
 

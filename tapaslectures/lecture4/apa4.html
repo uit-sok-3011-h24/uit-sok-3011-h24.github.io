@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-09-22">
+<meta name="dcterms.date" content="2024-09-23">
 
 <title>Linear Model in Economics</title>
 <style>
@@ -127,7 +127,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 22, 2024</p>
+      <p class="date">September 23, 2024</p>
     </div>
   </div>
   
@@ -1229,7 +1229,7 @@ MP_i=\frac{\partial y}{\partial x_i}= A\frac{\partial \prod_{i=1}^{N}{x_i}^{\alp
 <p>When one functional form is nested within another (for example, linear vs.&nbsp;quadratic production function, or Cobb-Douglas vs.&nbsp;Translog production function), standard statistical tests can be used to compare the two models; see the sections on estimating quadratic or Translog production functions in<span class="citation" data-cites="henningsen2024introduction">(<a href="#ref-henningsen2024introduction" role="doc-biblioref">Henningsen 2024</a>)</span>. In those cases, the tests rejected the linear production function in favor of the quadratic, while the evidence for rejecting the Cobb-Douglas in favor of the Translog production function was less conclusive.</p>
 <p>However, in our discussion, we are comparing two non-nested models—Linear and Cobb-Douglas. Comparing non-nested models is more complex.</p>
 <p>We will make a series of observations to compare the pros and cons of these two models based on our data.</p>
-<p>Since the two models have different dependent variables, y and ln(y), we cannot directly compare their R-squared values. Instead, we compare the R-squared from the linear model with a hypothetical R-squared based on the estimated Cobb-Douglas model, which measures the correlation between the observed y values and the residuals. Alternatively, we can reverse the process by comparing the R-squared from the Cobb-Douglas model with a hypothetical R-squared based on the estimated linear model, measuring the correlation between the observed ln(y) values and the residuals.</p>
+<p>Since the two models have different dependent variables, y and ln(y), we cannot directly compare their R-squared values. Instead, we compare the R-squared from the linear model with a hypothetical R-squared (also called coefficient of determination) based on the estimated Cobb-Douglas model, which computes R-squared based on a model’s fitted (predicted) values and the actual (observed) values. Alternatively, we can reverse the process by comparing the R-squared from the Cobb-Douglas model with the hypothetical R-squared based on the estimated linear model.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear model: R-square of y</span></span>
 <span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prodlinear)<span class="sc">$</span>r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1784,6 +1784,12 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <p>These histograms clearly show that most firms are operating at a level below the optimal profit-maximizing level (recall the similar findings we derived when examining the elasticity of scale based on the estimated production functions). In terms of input usage, the findings are somewhat different and interesting: it appears that most firms could use more capital (and less materials) to increase profits. This observation is inconsistent with previous analysis, but there can be reasons for it. One possibility is that the choice of capital was constrained in the short run, meaning our functional specification of a long-run profit function may not have been appropriate. Additionally, we have not tested other forms of profit functions, which might better explain the data. See [@henningsen2024introduction] for a more detailed discussion on the first point.</p>
+<hr>
+<p><strong><em>Reading materials:</em></strong></p>
+<ul>
+<li><p>Henningsen, chapter 3, 4</p></li>
+<li><p>Varian, Chapter 3, 5</p></li>
+</ul>
 <hr>
 <div style="page-break-after: always;"></div>
 </section>
