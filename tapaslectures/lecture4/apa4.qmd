@@ -1182,7 +1182,7 @@ The coefficients of the log-input prices are all non-negative, indicating that t
 
 ### Properties of cost function
 
-We can test the homogeneity condition in two ways. First, we can perform a *linear hypothesis test* to check whether the sum of the coefficients is equal to zero. This approach is commonly used in the context of OLS regression to test hypotheses about relationships between variables.
+We can test the homogeneity condition in two ways. First, we can perform a *linear hypothesis test* to check whether the sum of the coefficients is equal to one. This approach is commonly used in the context of OLS regression to test hypotheses about relationships between variables.
 
 ```{r}
 # Liner homogeneity condition check
