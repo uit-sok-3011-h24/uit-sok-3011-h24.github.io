@@ -15,7 +15,7 @@ def get_matrix(df, field, excess):
 
 	# Pivot the dataframe
 	pivot_df = df_unique.pivot(index='Date', columns='ISIN', values='rx')
-	df_monthly = pivot_df.resample('ME').sum()
+	df_monthly = pivot_df.resample('M').sum()
 	pivot_df = pivot_df.dropna(axis=1, thresh=int(0.9 * len(pivot_df)))
 	pivot_df = pivot_df.fillna(0)
 	  

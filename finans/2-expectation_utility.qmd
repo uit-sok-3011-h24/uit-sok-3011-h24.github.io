@@ -29,17 +29,96 @@ $$
 U(X) = \mathbb{E}[u(X)] = \sum_{i=1}^{N} P(x_i) u(x_i),
 $$
 
-where $P(x_i)$ is the probability that $X$ assumes the value $x_i$, and $u(x_i)$ represents the utility derived if that event occurs. For a continuous distribution, the expected utility is given by:
+where $P(x_i)$ is the probability that $X$ assumes the value $x_i$, and $u(x_i)$ represents the utility derived if that event occurs. 
+
+For example, say utilities 2,-4 and 6 occur with probabilities 0.5,0.2 and 0.3, then the expected utility is
+
+```{python}
+import numpy as np
+
+p = np.array([0.5, 0.2, 0.3])
+u = np.array([2, -4, 6])
+
+U = np.sum(p*u)
+```
+
+For a continuous distribution, the idea is the same. We multipliy each utility state $u(x_i)$ with the probability it occurs $f(x)dx$. The integral sign $\int_{-\infty}^{\infty} \dots \,$, is the equvalent of a sum for continous variables. The expected utility is therefore given by:
 
 $$
-U(X) = \mathbb{E}[u(X)] = \int_{-\infty}^{\infty} f(x) u(x) \, dx,
+U(X) = \mathbb{E}[u(X)] = \int_{-\infty}^{\infty} u(x) f(x)\, dx,
 $$
 
 where $f(x)$ is the density function of $X$, such as the normal distribution.
 
-A key outcome of this model is that with a concave utility function, an individual will always prefer a guaranteed cash flow over a speculative investment with the same expected return. This behavior is illustrated by the following example.
+## Expectation of the normal distribution
+To make this a bit more tangible, let us assume f(x) represents the normal distribution, and assume we collect the outcomes x into five different main outcomes. According to the normal distribution, each outcome will then have these probabilities
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# User defined dx
+dx = 1.25
+
+# Create the figure and axis
+fig, ax = plt.subplots()
+
+# Define the x range from -2.5 to 2.5
+x = np.arange(-2.5, 2.5 + dx, dx)
+
+# Calculate the corresponding normal distribution
+# values
+y = norm.pdf(x, 0, 1)
+
+# Plot the normal distribution curve in blue
+x_fine = np.linspace(-2.5, 2.5, 1000)
+y_fine = norm.pdf(x_fine, 0, 1)
+ax.plot(x_fine, y_fine, label="Normal Distribution", 
+    color='blue')
+
+# Plot the bars with blue color and dark blue border
+bars = ax.bar(x, y, width=dx, align='center', 
+    alpha=0.6, color='blue', edgecolor='darkblue',
+    label="Bars (f(x) with width dx)")
+
+# Label each bar with its "mass" (height * dx)
+for bar, height in zip(bars, y):
+    mass = height * dx
+    ax.text(bar.get_x() + bar.get_width() / 2, 
+        height, f'{mass:.3f}', ha='center', 
+        va='bottom')
+
+# Add labels and title
+ax.set_xlabel('x')
+ax.set_ylabel('f(x)')
+ax.set_title('Normal Distribution and '
+    'corresponding discrete probabilities '
+    ' (dx = {})'.format(dx))
+
+
+
+# Show the plot
+plt.show()
+
+```
+
+
+The probabilities do not sum exactly to one, as expected for a probability distribution. This discrepancy arises due to the coarse nature of the discrete categories.
+
+*Coding Challenges:*
+
+- **Challenge 1**: Reduce the interval size $dx$ and sum the probabilities to observe if the total approaches 1.
+
+- **Challenge 2**: Now, assume the utility function is $f(x) = \ln(x)$ (the natural logarithm). What is the expected utility for different values of $dx$?
+
+As demonstrated above, decreasing the interval size $dx$ brings the discrete distribution closer to the continuous one. The continuous distribution serves as an approximation when outcomes are real numbers, which is often the case in investment scenarios.
+
+The primary advantage of continuous variables over discrete ones is that we can apply powerful mathematical tools, such as derivatives and integrals, from calculus.
+
 
 ## An Example
+A key outcome of this model is that with a concave utility function, an individual will always prefer a guaranteed cash flow over a speculative investment with the same expected return. This behavior is illustrated by the following example.
 
 Consider an individual with a logarithmic utility function:
 
@@ -65,7 +144,11 @@ probabilities = np.array([0.5, 0.5])
 
 # Expected utility
 expected_utility = np.sum(probabilities * np.log(x_values))
-expected_utility
+expected_value = np.sum(probabilities * x_values)
+utility_of_expected_value = np.log(expected_value)
+
+print(f"Expected utility: {expected_utility}")
+print(f"Utility of expected value: {utility_of_expected_value}")
 ```
 
 By comparing the utility of the expected return of 1 with the expected utility, we observe:
@@ -135,7 +218,11 @@ plt.legend()
 plt.grid(True)
 ```
 
-It is important to note that the expected utility of a gamble, represented by the value midway between 0.5 and 1.5, is lower than the gamble's expected value. Consequently, a risk-averse investor will invariably prefer a certain payment of 1 over the gamble.
+As we can see, the utility at wealth 1 is 0, while the mean utility is lower. If you draw a line between the utility of 0.5 and 1.5, you will see that the indicated expected utility, is where that line intersects 1.
+
+Hence, with a concave uitlity funciton, a person will allways prefere a sure amount rather than a bet with the same expected payoff. In this case, the risk-averse investor will invariably prefer the certain payment of 1 over the gamble.
+
+The difference indicated by $\pi$ in the figure, is the certainty equivalence. It is the amount that you would need to compensate the investor, in order to take the gamble. In a real market, this is the premium that investors demand to hold risky assets to safe bills. It is usually about 2-4% on average for the whole market.
 
 ## Investor Types
 
