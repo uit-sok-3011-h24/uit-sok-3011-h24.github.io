@@ -320,7 +320,38 @@ $$
 \mu-\frac{1}{2}\rho \sigma^2
 $${#eq-mean-variance}
 
-Hence, if 
+Hence, if returns are normally distributed, then investors would want to maximize the difference between the meand and the variance. This is true for any utility function, but it is not in general true if returns are distributed differently. 
+
+*Coding Challenges:*
+
+- **Challenge 1**: Calculate the approximate expected utility with some other parameters and a non standard normal distribution ($\sigma<>1$ and $\mu<>1$, and see if the approxmate is still a good approximation.
+
+# Optimal Portfolio with One Asset
+
+With the knowledge from @eq-mean-variance, we can actually calculate the optimal level of investment. We will later see that the method for doing that, is very similar to how we calcualte optmal portfolios with many different assets. For now, we will assume we only consider one asset, for example the market index. Say you buy shares for $w$ NOK. Then, we can use the method in the previoius section to find that the expected utility depends on
+
+$$
+w\mu-\frac{w^2}{2}\rho \sigma^2
+$${#eq-mean-variance2}
+
+Taking the derivative of @eq-mean-variance2, which we assume is a concave and increasing function, we get
+
+$$
+\frac{d(w\mu-\frac{w^2}{2}\rho \sigma^2)}{dw} = \mu-w\rho \sigma^2
+$${#eq-mean-variance-diff}
+
+Setting @eq-mean-variance-diff equal to zero and solving for $w$ gives 
+
+$$
+ w=\frac{\mu}{\rho \sigma^2}
+$${#eq-mean-variance-diff}
+
+From this, we conclude:
+1. Higher risk aversion leads to lesser investment.
+2. Greater expected returns encourage more investment.
+3. Increased risk ($\sigma^2$) discourages investment.
+
+In the next lecture, we will extend these principles to portfolios with multiple assets using matrix algebra.
 
 ## Investor Types
 
@@ -350,42 +381,23 @@ A direct approach might be to use the second derivative of the utility function,
 A more nuanced measure of risk aversion is defined through the Absolute Risk Aversion (ARA) index, given by:
 
 $$
-\pi_{ARA}(x) = -\frac{u''(x)}{u'(x)} \label{riskaversion}
+\rho_{ARA}(x) = -\frac{u''(x)}{u'(x)}
 $$
 
 This metric, also known as the Arrow-Pratt measure of risk aversion, remains robust against the non-linear scaling of wealth. As wealth increases, both the second derivative $u''(x)$ and the first derivative $u'(x)$ typically decrease, but their ratio, representing the ARA, adjusts proportionally. Thus, the measure of risk aversion does not necessarily approach zero as wealth grows, providing a more reliable indicator across different wealth levels.
 
 This measure is intrinsically linked to the concept of the risk premium.
 
-### The Risk Premium
-
-The risk premium is essentially the extra amount that a person requires to be compensated for taking on a risky bet instead of receiving a certain payment.
-
-Consider the earlier example, illustrated in @fig-graphical-risk-prem, where the decision involves a choice between a certain payment and a gamble with a 50% probability each for outcomes 0.5 and 1.5:
-
-The risk premium $ \rho $ is the difference between the certain amount of 1 and the amount that equates to this utility level:
-
-$$
-\ln(1-\rho) = \ln(\sqrt{0.75}),
-$$
-
-resulting in:
-
-$$
-\rho = 1 - \sqrt{0.75} \approx 0.14.
-$$
-
-This quantification of $ \rho $ as a risk premium measure underscores its relevance and frequent use in financial analyses.
 
 ### Constant Absolute Risk Aversion (CARA)
 
-If ARA is constant, we refer to it as Constant Absolute Risk Aversion (CARA). The utility function aligning with CARA can be derived by solving the differential equation $ \pi_{CARA} = -u''/u' $, which provides:
+If ARA is constant, we refer to it as Constant Absolute Risk Aversion (CARA). The utility function aligning with CARA can be derived by solving the differential equation $ \rho_{CARA} = -u''/u' $, which gives:
 
 $$
-u(x) = -e^{-x \cdot \pi_{CARA}} \label{CARAUtility}
+u(x) = -e^{-x \cdot \rho_{CARA}} 
 $$
 
-Although the CARA utility function is negative, it should not be interpreted as the individual deriving negative utility from wealth. Instead, it serves as a ranking mechanism among different wealth levels, ensuring $ u(x) > u(y) $ whenever $ x > y $.
+This is the exact same utility function as in the previoius examples. Although the CARA utility function is negative, it should not be interpreted as the individual deriving negative utility from wealth. Instead, it serves as a ranking mechanism among different wealth levels, ensuring $ u(x) > u(y) $ whenever $ x > y $, and $ u(x) > u(y) $ whenever $ var(x) > var(y)$ and $x=y$
 
 This utility specification simplifies calculations and is extensively used due to its mathematical tractability. It also implies that for a CARA utility function, the risk premium can be calculated exactly as $\frac{1}{2} \pi_{ARA} \sigma^2$.
 
@@ -399,45 +411,35 @@ $$
 
 The choice between using Absolute Risk Aversion (ARA) and RRA depends on the nature of the risk involved. RRA is preferred when analyzing bets that are proportional to wealth, while ARA is more suitable for fixed-level bets.
 
-For consistency in utility functions that maintain a constant RRA, a Cobb-Douglas-type function is typically used:
+The constant RRA utility, is a Cobb-Douglas-type function:
 
 $$
 u_{CRRA}(x) = x^{1-\pi_{CARA}}
 $$
 
-# Definitions of Risk Attitude
-
-Risk attitudes can be quantified and described in several ways, each reflecting a different aspect of how individuals evaluate risk and uncertainty.
-
-
-## Concavity
-
-A continuous utility function indicates risk aversion if it is concave, meaning that $u''(x) < 0$. This shows a decreasing marginal utility with increasing wealth. However, the magnitude of the second derivative is not always an accurate indicator of the degree of risk aversion due to its dependence on wealth levels.
-
-## Risk Coefficient
-
-The risk coefficient, whether ARA or RRA, quantifies risk attitudes numerically. A positive risk coefficient denotes risk aversion, with higher values indicating stronger aversion to risk.
-
-## Risk Premium
-
-The risk premium is the additional amount a risk-averse individual requires to accept a risky proposition over a certain outcome. A higher risk premium signals greater risk aversion. This metric is crucial for financial decision-making, reflecting how much extra return an investor demands to compensate for the risk involved.
 
 
 
 # The Normal Distribution and risk
 
-Discussing risk in financial markets often involves examining the underlying probability distributions. For example, under the assumption that returns on the Oslo Stock Exchange follow a normal distribution, statistically extreme changes exceeding 10% would be exceedingly rare—estimated to occur once every 17,000 years. Yet, during the 2008 financial crisis, such anomalies were observed twice.
+As mentioned, if the distribution of the returns is normal, the investor should allways maximize the difference between mean and variance. However, if the returns are distributed differently, that is not the case. 
 
-Critics like Nassim Taleb argue that the normal distribution poorly represents financial market risks because it underestimates the probability of extreme events. However, this perspective may overlook the adaptability of financial models which can incorporate changing risk profiles over time.
+It is well known that returns in financial markets are not normally distributed.For example, under the assumption that returns on the Oslo Stock Exchange follow a normal distribution, statistically extreme changes exceeding 10% would be exceedingly rare—estimated to occur once every 17,000 years. Yet, during the 2008 financial crisis, such anomalies were observed twice.
+
+This is called "fat tails". It means that extreme events are much more likely in actual financial markets, than in the normal distribution world. 
+
+However, in most cases, we can represent the empirical distribution with a "mixed normal distribution". A mixed normal distribution, is a linear combination of normal distirbutino with different mean and varinaces. 
 
 ```{python}
+#| label: fig-mixed-normal
+#| fig-cap: "A mixed normal distribution with 'fat tails' compared to the normal distribution"
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 # Plot mixed normal distribution with fat tails
 x_vals = np.linspace(-4, 4, 1000)
-fat_tails = 0.8 * norm.pdf(x_vals, loc=0, scale=1) + 0.2 * norm.pdf(x_vals, loc=0, scale=2)
+fat_tails = 0.8 * norm.pdf(x_vals, loc=0, scale=0.7) + 0.2 * norm.pdf(x_vals, loc=0, scale=5)
 
 # Plotting normal distribution vs mixed normal
 plt.figure(figsize=(8, 5))
@@ -451,79 +453,10 @@ plt.legend()
 plt.show()
 ```
 
-The inadequacy of the normal distribution to account for "fat tails" is demonstrated in the figure, where the frequency of daily price changes for the U.S. Dow Jones Index is contrasted against a normal distribution fit. The normal distribution assigns low probabilities to significant price changes (more than about 1%), which are more frequent in reality.
 
-By integrating multiple normal distributions with varying parameters, we can create a model that more accurately reflects observed data. The blue line in the figure represents a distribution that accommodates shifts between different risk regimes, thereby effectively addressing the problem of fat tails. This approach aligns with the understanding that while theoretical returns should be normally distributed as averages of repeated trials (daily, hourly, or by the minute), real-world returns often deviate due to unstable parameters.
 
-## Calculating the Mixed Normal
 
-To model this, consider a market shifting between states of high and low uncertainty, characterized by standard deviations $\sigma_1$ and $\sigma_2$, and probabilities $p$ and $1-p$, respectively. Analyzing periods under each condition separately would suggest normal distributions. However, aggregating all observations, the resulting density function $g(x)$ combines these distributions:
+*Coding Challenges:*
 
-$$
-g(x) = p \cdot f(x, \mu_1, \sigma_1) + (1-p) \cdot f(x, \mu_2, \sigma_2),
-$$
-
-where $f(x, \mu, \sigma)$ is the density function for a normal distribution with mean $\mu$. This composite function $g(x)$ exhibits fatter tails than any individual $f(x, \mu, \sigma)$, reflecting a more accurate representation of market behavior.
-
-# Optimal Portfolio with One Asset
-
-Although it may seem unusual, we begin by considering a portfolio comprising a single asset, setting the stage for more complex scenarios involving multiple assets and matrix algebra.
-
-Assume the return on an asset next year, $x$, follows a normal distribution $N(mu, \sigma^2)$, and let $r$ represent the risk-free interest rate. If investors must finance their entire investment through borrowing, the initial investment $a$ will accrue to $x$ next year, offset by interest expenses $ar$. The net value or wealth in the next period, $W_1$, is then given by:
-
-$$
-W_1 = a(x - r) \label{WealthInv1}
-$$
-
-Considering an investor with a Constant Absolute Risk Aversion (CARA) utility function, the utility of $W_1$ is:
-
-$$
-u(W_1) = -e^{-\rho W_1}
-$$
-
-where $\rho$ is the CARA coefficient. Given that $W_1$ is a linear transformation of a normally distributed variable, it too follows a normal distribution. Consequently, $u(W_1)$ is log-normally distributed. This leads to the expected utility $U$ as:
-
-$$
-U = \mathbb{E}[u(W_1)] = -e^{-\rho \mathbb{E}[W_1] - \frac{\rho}{2} \text{var}(W_1)}  \label{forvNytte}
-$$
-
-Key conclusions include:
-1. Increased uncertainty regarding future wealth ($\text{var}(W_1)$) diminishes utility.
-2. Higher risk aversion ($\rho$) amplifies the adverse impact of uncertainty.
-
-Calculating the expected wealth and its variance yields:
-
-$$
-\mathbb{E}[W_1] = a \cdot (mu - r)
-$$
-
-$$
-\text{var}(W_1) = a^2 \sigma^2
-$$
-
-To maximize expected utility, the investor solves:
-
-$$
-U = -e^{-\rho (a \cdot (mu - r) - \frac{\rho}{2} a^2 \sigma^2)}
-$$
-
-w.r.t. $a$. Simplifying the utility function, we find that maximizing $U$ involves maximizing:
-
-$$
-\max_{a} Z = a \cdot (mu - r) - \frac{\rho}{2} a^2 \sigma^2
-$$
-
-Taking the derivative with respect to $a$, setting it to zero, and solving the first-order condition gives the optimal investment amount:
-
-$$
-a = \frac{(mu - r)}{\rho \sigma^2}  \label{optPort1}
-$$
-
-*Problem: Show that the second-order condition for a maximum is satisfied.*
-
-From this, we conclude:
-1. Higher risk aversion leads to lesser investment.
-2. Greater expected returns encourage more investment.
-3. Increased risk ($\sigma^2$) discourages investment.
-
-In the next lecture, we will extend these principles to portfolios with multiple assets using matrix algebra.
+- **Challenge 1**: Use data from [https://titlon.uit.no](https://titlon.uit.no) to create a historgram, and overlay the normal distribution to see if the empirical distribution has fat tails. 
+- **Challenge 2**: Try to fit a mixed normal distribution to the emepirical distribution. 
