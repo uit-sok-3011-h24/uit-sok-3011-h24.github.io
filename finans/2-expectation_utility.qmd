@@ -21,15 +21,35 @@ format:
 
 # Expected Utility
 
-In finance, the utility function is typically defined as the utility derived from a certain amount $x$. It is generally assumed that greater wealth yields higher utility, hence the utility function should be increasing, meaning $U'(x) > 0$. In situations involving risk, such as holding shares with uncertain future values, it becomes useful to measure the utility of such assets considering their risk and expected return. This is commonly referred to as *expected utility*. The expected utility for a portfolio is defined as follows:
+In finance, the utility function is typically defined as the utility derived from a certain amount $x$. It is generally assumed that greater wealth yields higher utility, hence the utility function should be increasing, meaning $U'(x) > 0$. In situations involving risk, such as holding shares with uncertain future values, it becomes useful calculate the *expected utility* of a set of possible outcomes $x_i$ with probabilities $P(x_i)$ and utilities $u(x_i)$
 
-For a discrete random variable:
+This builds on the general notion of expectations in statistics. For a set of outcomes $x_i$ and probabilities $P(x_i)$ for example, the expected value is $X=\{ x_0, x_1,\dots,x_n \}$ is
 
 $$
-U(X) = \mathbb{E}[u(X)] = \sum_{i=1}^{N} P(x_i) u(x_i),
-$$
+\mathbb{E}[X] = \sum_{i=0}^{N} P(x_i) x_i
+$${#eq-descrete_exp}
 
-where $P(x_i)$ is the probability that $X$ assumes the value $x_i$, and $u(x_i)$ represents the utility derived if that event occurs. 
+For example
+```{python}
+import numpy as np
+
+p = np.array([0.5, 0.2, 0.3])
+x = np.array([3,10, 20])
+
+np.sum(p*x)
+```
+
+
+
+In the same way, the descrete expected utility for a set of outcomes $x_i$ with probabilities $P(x_i)$ is defined as follows:
+
+$$
+U(X) = \mathbb{E}[u(X)] = \sum_{i=0}^{N} P(x_i) u(x_i)
+$${#eq-descrete_exp}
+
+
+
+where $P(x_i)$ is the probability that $X$ assumes the value $x_i$, and $u(x_i)$ represents the utility derived if that event occurs.
 
 For example, say utilities 2,-4 and 6 occur with probabilities 0.5,0.2 and 0.3, then the expected utility is
 
@@ -40,50 +60,54 @@ p = np.array([0.5, 0.2, 0.3])
 u = np.array([2, -4, 6])
 
 U = np.sum(p*u)
+U
 ```
 
 For a continuous distribution, the idea is the same. We multipliy each utility state $u(x_i)$ with the probability it occurs $f(x)dx$. The integral sign $\int_{-\infty}^{\infty} \dots \,$, is the equvalent of a sum for continous variables. The expected utility is therefore given by:
 
 $$
-U(X) = \mathbb{E}[u(X)] = \int_{-\infty}^{\infty} u(x) f(x)\, dx,
+U(X) = \mathbb{E}[u(X)] = \int_{-\infty}^{\infty} u(x) f(x)\ dx,
 $$
 
 where $f(x)$ is the density function of $X$, such as the normal distribution.
 
 ## Expectation of the normal distribution
-To make this a bit more tangible, let us assume f(x) represents the normal distribution, and assume we collect the outcomes x into five different main outcomes. According to the normal distribution, each outcome will then have these probabilities
+To make this a bit more tangible, let us assume f(x) represents the standard normal distribution (variance=1 and mean=0), and assume we collect the outcomes x into five intervals. According to the normal distribution, each outcome will then have these probabilities
 
+*Figure 1*:
 ```{python}
+#| label: fig-discrete-normal
+#| fig-cap: "Descrete version of the normal distribution"
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 # User defined dx
-dx = 1.25
+dx = 2
 
 # Create the figure and axis
 fig, ax = plt.subplots()
 
 # Define the x range from -2.5 to 2.5
-x = np.arange(-2.5, 2.5 + dx, dx)
+x = np.arange(-4, 4 + dx, dx)
 
 # Calculate the corresponding normal distribution
 # values
-y = norm.pdf(x, 0, 1)
+p = norm.pdf(x, 0, 1)
 
 # Plot the normal distribution curve in blue
-x_fine = np.linspace(-2.5, 2.5, 1000)
-y_fine = norm.pdf(x_fine, 0, 1)
-ax.plot(x_fine, y_fine, label="Normal Distribution", 
+x_fine = np.linspace(-3.5, 3.5, 1000)
+p_fine = norm.pdf(x_fine, 0, 1)
+ax.plot(x_fine, p_fine, label="Normal Distribution", 
     color='blue')
 
 # Plot the bars with blue color and dark blue border
-bars = ax.bar(x, y, width=dx, align='center', 
+bars = ax.bar(x, p, width=dx, align='center', 
     alpha=0.6, color='blue', edgecolor='darkblue',
     label="Bars (f(x) with width dx)")
 
 # Label each bar with its "mass" (height * dx)
-for bar, height in zip(bars, y):
+for bar, height in zip(bars, p):
     mass = height * dx
     ax.text(bar.get_x() + bar.get_width() / 2, 
         height, f'{mass:.3f}', ha='center', 
@@ -91,7 +115,6 @@ for bar, height in zip(bars, y):
 
 # Add labels and title
 ax.set_xlabel('x')
-ax.set_ylabel('f(x)')
 ax.set_title('Normal Distribution and '
     'corresponding discrete probabilities '
     ' (dx = {})'.format(dx))
@@ -100,7 +123,6 @@ ax.set_title('Normal Distribution and '
 
 # Show the plot
 plt.show()
-
 ```
 
 
@@ -110,27 +132,27 @@ The probabilities do not sum exactly to one, as expected for a probability distr
 
 - **Challenge 1**: Reduce the interval size $dx$ and sum the probabilities to observe if the total approaches 1.
 
-- **Challenge 2**: Now, assume the utility function is $f(x) = \ln(x)$ (the natural logarithm). What is the expected utility for different values of $dx$?
+- **Challenge 2**: Now, assume the utility function is $f(x) = -\exp(-\rho x)$ (the natural logarithm). What is the expected utility for different values of $dx$?
 
 As demonstrated above, decreasing the interval size $dx$ brings the discrete distribution closer to the continuous one. The continuous distribution serves as an approximation when outcomes are real numbers, which is often the case in investment scenarios.
 
 The primary advantage of continuous variables over discrete ones is that we can apply powerful mathematical tools, such as derivatives and integrals, from calculus.
 
 
-## An Example
+## A descrete example
 A key outcome of this model is that with a concave utility function, an individual will always prefer a guaranteed cash flow over a speculative investment with the same expected return. This behavior is illustrated by the following example.
 
 Consider an individual with a logarithmic utility function:
 
 $$
-u(x) = \ln(x),
+u(x) = -\exp(-\rho x),
 $$
 
-which is concave, as shown by its first and second derivatives:
+which is increasing and concave, as shown by its first and second derivatives:
 
 $$
-u'(x) = \frac{1}{x}, \\
-u''(x) = -\frac{1}{x^2} < 0.
+u'(x) = \rho u(x)>0 \\
+u''(x) = -\rho^2 u(x)>0 < 0.
 $$
 
 Suppose there is a 50% chance of $x=0.5$ and a 50% chance of $x=1.5$. This setup implies that $X = \{0.5, 1.5\}$ with probability distribution $P(X) = \{0.5, 0.5\}$, leading to an expected value of $\mathbb{E}X=1$. The expected utility is thus calculated as:
@@ -139,16 +161,22 @@ Suppose there is a 50% chance of $x=0.5$ and a 50% chance of $x=1.5$. This setup
 import numpy as np
 
 # Values and probabilities
-x_values = np.array([0.5, 1.5])
+x_values = np.array([-0.5, 0.5])
 probabilities = np.array([0.5, 0.5])
 
+#utility function
+def u_func(x,rho):
+    return -np.exp(-rho*x)
+
+
 # Expected utility
-expected_utility = np.sum(probabilities * np.log(x_values))
+expected_utility = np.sum(probabilities * u_func(x_values, 0.5))
 expected_value = np.sum(probabilities * x_values)
-utility_of_expected_value = np.log(expected_value)
+utility_of_expected_value = u_func(expected_value, 0.5)
 
 print(f"Expected utility: {expected_utility}")
 print(f"Utility of expected value: {utility_of_expected_value}")
+
 ```
 
 By comparing the utility of the expected return of 1 with the expected utility, we observe:
@@ -159,76 +187,146 @@ $$
 
 indicating that the utility of a certain outcome ($\ln(1)$) is preferred over the expected utility of a gamble ($\ln(\sqrt{0.75})$). This preference underscores risk aversion, as illustrated in the following plot:
 
+
 ```{python}
+#| label: fig-graphical-risk-prem
+#| fig-cap: "Graphical illustration of the risk premium"
 import numpy as np
 import matplotlib.pyplot as plt
+RHO = 1.5
 
-# Logarithmic utility function
+# Exponential utility function
 def u_func(x):
-    return np.log(x)
+    return -np.exp(-RHO*x)
 
-def x_func(u):
-    return np.exp(u)
+def x_func(u): # the inverse of the utility function
+    return -np.log(-u)/RHO
 
 # Values for wealth and utility
-x_vals = np.linspace(0.1, 2, 100)
+x_vals = np.linspace(-1.1, 1.1, 100)
 u_x = u_func(x_vals)
 
 # Gamble outcomes
-x_gamble = [0.5, 1.5]  # Outcomes of the gamble
+x_gamble = [-1, 1]  # Outcomes of the gamble
 p_gamble = [0.5, 0.5]  # Probabilities
 
 # Certain outcome
 x_certain = 1
 
 # Expected utility of the gamble
-expected_utility = np.sum(np.array(p_gamble) * u_func(np.array(x_gamble)))
+expected_utility = np.sum(np.array(p_gamble) * 
+                            u_func(np.array(x_gamble)))
 
-# Plotting the utility function
-plt.figure(figsize=(10, 6))
-plt.plot(x_vals, u_x, label=r'Utility Function: $u(x) = \ln(x)$', color='black')
+# Plotting the utility function using fig, ax objects
+fig, ax = plt.subplots(figsize=(10, 6))
 
-# Plotting the certain outcome
-plt.axvline(x=x_certain, color='black', linestyle='--')
-plt.text(x_certain, u_func(x_certain) + 0.1, "$1$", horizontalalignment='center', fontsize=12)
+# Plot the utility function
+ax.plot(x_vals, u_x, label=r'Utility Function: $u(x) = - \exp(-\rho x)$', 
+        color='black')
 
-# Plotting the gamble outcomes
-plt.axvline(x=x_gamble[0], color='black', linestyle='--')
-plt.axvline(x=x_gamble[1], color='black', linestyle='--')
-plt.text(x_gamble[0], u_func(x_gamble[0]) - 0.3, "$0.5$", horizontalalignment='center', fontsize=12)
-plt.text(x_gamble[1], u_func(x_gamble[1]) - 0.3, "$1.5$", horizontalalignment='center', fontsize=12)
+# Plot the certain outcome
+ax.axvline(x=x_certain, color='black', linestyle='--')
+ax.text(x_certain, u_func(x_certain) + 0.1, "$1$", 
+            horizontalalignment='center', fontsize=12)
 
-# Plotting the expected utility
-plt.axhline(y=expected_utility, color='gray', linestyle='--', label='Expected Utility of Gamble $EU(X)$')
-plt.text(0.15, expected_utility, '$EU(X)$', verticalalignment='center', fontsize=12)
+# Plot the gamble outcomes
+ax.axvline(x=x_gamble[0], color='black', linestyle='--')
+ax.axvline(x=x_gamble[1], color='black', linestyle='--')
+ax.text(x_gamble[0], u_func(x_gamble[0]) - 0.3, "$0.5$", 
+        horizontalalignment='center', fontsize=12)
+ax.text(x_gamble[1], u_func(x_gamble[1]) - 0.3, "$1.5$", 
+        horizontalalignment='center', fontsize=12)
+
+# Plot a line connecting the points where the utility function crosses 0.5 and 1.5
+ax.plot([x_gamble[0], x_gamble[1]], 
+        [u_func(x_gamble[0]), u_func(x_gamble[1])], 
+        color='blue', linestyle='-', marker='o', 
+        label='Any expected utility must lie on this line')
+
+# Plot the expected utility
+ax.axhline(y=expected_utility, color='gray', linestyle='--', label='Expected Utility of Gamble $EU(X)$')
+ax.text(-2, expected_utility, '$EU(X)$', verticalalignment='top', fontsize=12)
 
 # Risk premium - distance between expected utility and utility of certain outcome
 risk_premium = u_func(x_certain) - expected_utility
 certainty_equivalence = x_func(expected_utility)
-plt.annotate('', xy=(1, expected_utility), xytext=(certainty_equivalence, expected_utility),
-             arrowprops=dict(facecolor='black', arrowstyle='<->'))
+ax.annotate('', xy=(0, expected_utility), 
+            xytext=(certainty_equivalence, expected_utility), 
+            arrowprops=dict(facecolor='black', arrowstyle='<->'))
 # Separate annotation for the label (π) without the arrow
-plt.annotate(r'$\pi$', xy=(0.9, expected_utility -0.1), fontsize=12)
+ax.annotate(r'$\rho$', xy=(-0.3, expected_utility - 0.2), fontsize=12)
 
 # Labels and title
-plt.title('Utility Function Demonstrating Risk Aversion')
-plt.xlabel('Wealth (W)')
-plt.ylabel('Utility (U)')
-plt.legend()
-plt.grid(True)
+ax.set_title('Utility Function Demonstrating Risk Aversion')
+ax.set_xlabel('Wealth (W)')
+ax.set_ylabel('Utility (U)')
+ax.legend()
+ax.grid(True)
+
+# Display the plot
+plt.show()
+
 ```
 
 As we can see, the utility at wealth 1 is 0, while the mean utility is lower. If you draw a line between the utility of 0.5 and 1.5, you will see that the indicated expected utility, is where that line intersects 1.
 
-Hence, with a concave uitlity funciton, a person will allways prefere a sure amount rather than a bet with the same expected payoff. In this case, the risk-averse investor will invariably prefer the certain payment of 1 over the gamble.
+Hence, with a concave uitlity function, a person will allways prefere a sure amount rather than a bet with the same expected payoff. In this case, the risk-averse investor will invariably prefer the certain payment of 1 over the gamble.
 
-The difference indicated by $\pi$ in the figure, is the certainty equivalence. It is the amount that you would need to compensate the investor, in order to take the gamble. In a real market, this is the premium that investors demand to hold risky assets to safe bills. It is usually about 2-4% on average for the whole market.
+The difference indicated by $\rho$ in the figure, is the certainty equivalence. It is the amount that you would need to compensate the investor, in order to take the gamble. In a real market, this is the premium that investors demand to hold risky assets to safe bills. It is usually about 2-4% on average for the whole market.
+
+## A continous example
+Let us now calculate the expecte utility with more than two outcomes. We remember from the calculation of @fig-discrete-normal and calculation of descrete expectations in  @eq-descrete_exp that a descrete version of the continous normal distribution can be calculated as 
+```{python}
+from scipy.stats import norm
+dx = 2
+x = np.arange(-4, 4 + dx, dx)
+p = norm.pdf(x, 0, 1)
+print(f'Outcomes:{x}')
+print(f'Probabilities:{np.round(p*dx,3)}')
+```
+
+Expected utility for a utility function $u(x_i)=\ln(x_i)$ is then
+
+```{python}
+
+expected_utility = np.sum(p*dx*u_func(x))
+
+print(f'Approximate expected utility:{expected_utility}')
+```
+
+Now, the normal distribution is defined as
+
+$$
+ \frac{1}{\sigma \sqrt{2 \rho}}e^{-\frac{(x-\mu)^2}{2 \sigma}}
+$$
+
+if we calculate the expected utility by taking the integral, it turns out that
+
+$$
+\mathbb{E}[u(X)] = \int_{-\infty}^{\infty} u(x) f(x)\ dx = e^{-\rho(\mu-\frac{1}{2}\rho \sigma^2)}
+$${#eq-exp_utility}
+
+Now, let us try to calculate this with our numbers. We have a standard  standard normal distribution, so $\sigma=1$ and $\mu=0$. The risk aversion coefficient is  $\rho=1.5$. The exact and approximate expected utility is then
+
+```{python}
+
+print(f'Exact expected utility:{-np.exp(0.5*RHO**2)}')
+print(f'Approximate expected utility:{expected_utility}')
+```
+
+The most important lesson here, is what is inside the brackets in @eq-exp_utility. This expression determines in effect the utility. The expression is
+
+$$
+\mu-\frac{1}{2}\rho \sigma^2
+$${#eq-mean-variance}
+
+Hence, if 
 
 ## Investor Types
 
 The shape of a utility function critically influences how individuals respond to risk. This subsection discusses three primary types of investors based on their risk preferences and the corresponding shapes of their utility functions.
 
-- **Risk-Averse Investors:** These individuals have concave utility functions, indicating a preference for certain outcomes over uncertain ones with the same expected value. Commonly modeled in financial theory, risk-averse investors prioritize minimizing risk over maximizing returns. They tend to diversify their portfolios across various asset classes to reduce volatility. Even with the option of unlimited borrowing, they typically opt to limit their investment exposure.
+- **Risk-Averse Investors:** These individuals have concave utility functions, as in the example above, indicating a preference for certain outcomes over uncertain ones with the same expected value. Commonly modeled in financial theory, risk-averse investors prioritize minimizing risk over maximizing returns. They tend to diversify their portfolios across various asset classes to reduce volatility. Even with the option of unlimited borrowing, they typically opt to limit their investment exposure.
 
 - **Risk-Neutral Investors:** For risk-neutral individuals, volatility is inconsequential. Their utility functions are linear, reflecting indifference to the level of risk associated with any investment. They focus solely on maximizing expected returns and are likely to invest in the asset with the highest expected payoff, irrespective of the associated risks. This type of investor is willing to allocate as much capital as possible to maximize potential gains.
 
@@ -252,7 +350,7 @@ A direct approach might be to use the second derivative of the utility function,
 A more nuanced measure of risk aversion is defined through the Absolute Risk Aversion (ARA) index, given by:
 
 $$
-\pi_{ARA}(x) = -\frac{u''(x)}{u'(x)} \label{Risikoaversjon}
+\pi_{ARA}(x) = -\frac{u''(x)}{u'(x)} \label{riskaversion}
 $$
 
 This metric, also known as the Arrow-Pratt measure of risk aversion, remains robust against the non-linear scaling of wealth. As wealth increases, both the second derivative $u''(x)$ and the first derivative $u'(x)$ typically decrease, but their ratio, representing the ARA, adjusts proportionally. Thus, the measure of risk aversion does not necessarily approach zero as wealth grows, providing a more reliable indicator across different wealth levels.
@@ -263,45 +361,21 @@ This measure is intrinsically linked to the concept of the risk premium.
 
 The risk premium is essentially the extra amount that a person requires to be compensated for taking on a risky bet instead of receiving a certain payment.
 
-Consider the earlier example, where the decision involves a choice between a certain payment and a gamble with a 50% probability each for outcomes 0.5 and 1.5:
+Consider the earlier example, illustrated in @fig-graphical-risk-prem, where the decision involves a choice between a certain payment and a gamble with a 50% probability each for outcomes 0.5 and 1.5:
 
-```{python}
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Calculating risk premium
-risk_premium = 1 - np.sqrt(0.75)
-risk_premium
-
-# Plot utility-risk-premium
-x_vals = np.linspace(0.1, 2, 100)
-utility_vals = np.log(x_vals)
-
-plt.figure(figsize=(8, 5))
-plt.plot(x_vals, utility_vals, label='Utility Function')
-plt.axhline(y=np.log(np.sqrt(0.75)), color='r', linestyle='--', label='Expected Utility of Gamble')
-plt.axhline(y=0, color='g', linestyle='--', label='Utility of $1$')
-plt.xlabel('Wealth (x)')
-plt.ylabel('Utility (u(x))')
-plt.title('Graphical illustration of the risk premium determination')
-plt.legend()
-plt.grid(True)
-plt.show()
-```
-
-The risk premium $ \pi $ is the difference between the certain amount of 1 and the amount that equates to this utility level:
+The risk premium $ \rho $ is the difference between the certain amount of 1 and the amount that equates to this utility level:
 
 $$
-\ln(1-\pi) = \ln(\sqrt{0.75}),
+\ln(1-\rho) = \ln(\sqrt{0.75}),
 $$
 
 resulting in:
 
 $$
-\pi = 1 - \sqrt{0.75} \approx 0.14.
+\rho = 1 - \sqrt{0.75} \approx 0.14.
 $$
 
-This quantification of $ \pi $ as a risk premium measure underscores its relevance and frequent use in financial analyses.
+This quantification of $ \rho $ as a risk premium measure underscores its relevance and frequent use in financial analyses.
 
 ### Constant Absolute Risk Aversion (CARA)
 
@@ -348,23 +422,9 @@ The risk coefficient, whether ARA or RRA, quantifies risk attitudes numerically.
 
 The risk premium is the additional amount a risk-averse individual requires to accept a risky proposition over a certain outcome. A higher risk premium signals greater risk aversion. This metric is crucial for financial decision-making, reflecting how much extra return an investor demands to compensate for the risk involved.
 
-## Expectation
 
-The principle of risk aversion can be quantified by comparing the utility of the expectation of a random amount with the expectation of the utility itself. If the utility of the expected value of a random amount exceeds the expected utility of the amounts, the individual is characterized as risk averse. The greater the difference, the more pronounced the risk aversion:
 
-$$
-u(\mathbb{E}x) > \mathbb{E}u(x) \label{Ineq}
-$$
-
-Using a Taylor expansion around the mean for both terms and taking their difference, we derive:
-
-$$
-u(\mathbb{E}x) - \mathbb{E}u(x) = -\frac{1}{2} \mathrm{var}(x) u''(x)
-$$
-
-This result directly links to the concavity of the utility function, as highlighted by Jensen's inequality. This mathematical principle asserts that the expectation of a concave function is always less than the function of the expectation, reinforcing the inequality (\ref{Ineq}) as long as $u(x)$ remains concave.
-
-# The Normal Distribution
+# The Normal Distribution and risk
 
 Discussing risk in financial markets often involves examining the underlying probability distributions. For example, under the assumption that returns on the Oslo Stock Exchange follow a normal distribution, statistically extreme changes exceeding 10% would be exceedingly rare—estimated to occur once every 17,000 years. Yet, during the 2008 financial crisis, such anomalies were observed twice.
 
@@ -405,3 +465,65 @@ $$
 
 where $f(x, \mu, \sigma)$ is the density function for a normal distribution with mean $\mu$. This composite function $g(x)$ exhibits fatter tails than any individual $f(x, \mu, \sigma)$, reflecting a more accurate representation of market behavior.
 
+# Optimal Portfolio with One Asset
+
+Although it may seem unusual, we begin by considering a portfolio comprising a single asset, setting the stage for more complex scenarios involving multiple assets and matrix algebra.
+
+Assume the return on an asset next year, $x$, follows a normal distribution $N(mu, \sigma^2)$, and let $r$ represent the risk-free interest rate. If investors must finance their entire investment through borrowing, the initial investment $a$ will accrue to $x$ next year, offset by interest expenses $ar$. The net value or wealth in the next period, $W_1$, is then given by:
+
+$$
+W_1 = a(x - r) \label{WealthInv1}
+$$
+
+Considering an investor with a Constant Absolute Risk Aversion (CARA) utility function, the utility of $W_1$ is:
+
+$$
+u(W_1) = -e^{-\rho W_1}
+$$
+
+where $\rho$ is the CARA coefficient. Given that $W_1$ is a linear transformation of a normally distributed variable, it too follows a normal distribution. Consequently, $u(W_1)$ is log-normally distributed. This leads to the expected utility $U$ as:
+
+$$
+U = \mathbb{E}[u(W_1)] = -e^{-\rho \mathbb{E}[W_1] - \frac{\rho}{2} \text{var}(W_1)}  \label{forvNytte}
+$$
+
+Key conclusions include:
+1. Increased uncertainty regarding future wealth ($\text{var}(W_1)$) diminishes utility.
+2. Higher risk aversion ($\rho$) amplifies the adverse impact of uncertainty.
+
+Calculating the expected wealth and its variance yields:
+
+$$
+\mathbb{E}[W_1] = a \cdot (mu - r)
+$$
+
+$$
+\text{var}(W_1) = a^2 \sigma^2
+$$
+
+To maximize expected utility, the investor solves:
+
+$$
+U = -e^{-\rho (a \cdot (mu - r) - \frac{\rho}{2} a^2 \sigma^2)}
+$$
+
+w.r.t. $a$. Simplifying the utility function, we find that maximizing $U$ involves maximizing:
+
+$$
+\max_{a} Z = a \cdot (mu - r) - \frac{\rho}{2} a^2 \sigma^2
+$$
+
+Taking the derivative with respect to $a$, setting it to zero, and solving the first-order condition gives the optimal investment amount:
+
+$$
+a = \frac{(mu - r)}{\rho \sigma^2}  \label{optPort1}
+$$
+
+*Problem: Show that the second-order condition for a maximum is satisfied.*
+
+From this, we conclude:
+1. Higher risk aversion leads to lesser investment.
+2. Greater expected returns encourage more investment.
+3. Increased risk ($\sigma^2$) discourages investment.
+
+In the next lecture, we will extend these principles to portfolios with multiple assets using matrix algebra.

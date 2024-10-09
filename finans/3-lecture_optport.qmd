@@ -21,68 +21,7 @@ format:
 
 This lecture explores the strategic behavior of an investor in the stock market, particularly under the assumption of risk aversion, as discussed in the previous note on utility theory. Risk lovers generally prefer the most risky assets, while risk-neutral investors opt for assets with the highest returns. In contrast, a risk-averse investor seeks to maximize returns without disproportionately increasing volatility, typically measured as variance.
 
-# Optimal Portfolio with One Asset
 
-Although it may seem unusual, we begin by considering a portfolio comprising a single asset, setting the stage for more complex scenarios involving multiple assets and matrix algebra.
-
-Assume the return on an asset next year, $x$, follows a normal distribution $N(mu, \sigma^2)$, and let $r$ represent the risk-free interest rate. If investors must finance their entire investment through borrowing, the initial investment $a$ will accrue to $x$ next year, offset by interest expenses $ar$. The net value or wealth in the next period, $W_1$, is then given by:
-
-$$
-W_1 = a(x - r) \label{WealthInv1}
-$$
-
-Considering an investor with a Constant Absolute Risk Aversion (CARA) utility function, the utility of $W_1$ is:
-
-$$
-u(W_1) = -e^{-\pi W_1}
-$$
-
-where $\pi$ is the CARA coefficient. Given that $W_1$ is a linear transformation of a normally distributed variable, it too follows a normal distribution. Consequently, $u(W_1)$ is log-normally distributed. This leads to the expected utility $U$ as:
-
-$$
-U = \mathbb{E}[u(W_1)] = -e^{-\pi \mathbb{E}[W_1] - \frac{\pi}{2} \text{var}(W_1)}  \label{forvNytte}
-$$
-
-Key conclusions include:
-1. Increased uncertainty regarding future wealth ($\text{var}(W_1)$) diminishes utility.
-2. Higher risk aversion ($\pi$) amplifies the adverse impact of uncertainty.
-
-Calculating the expected wealth and its variance yields:
-
-$$
-\mathbb{E}[W_1] = a \cdot (mu - r)
-$$
-
-$$
-\text{var}(W_1) = a^2 \sigma^2
-$$
-
-To maximize expected utility, the investor solves:
-
-$$
-U = -e^{-\pi (a \cdot (mu - r) - \frac{\pi}{2} a^2 \sigma^2)}
-$$
-
-w.r.t. $a$. Simplifying the utility function, we find that maximizing $U$ involves maximizing:
-
-$$
-\max_{a} Z = a \cdot (mu - r) - \frac{\pi}{2} a^2 \sigma^2
-$$
-
-Taking the derivative with respect to $a$, setting it to zero, and solving the first-order condition gives the optimal investment amount:
-
-$$
-a = \frac{(mu - r)}{\pi \sigma^2}  \label{optPort1}
-$$
-
-*Problem: Show that the second-order condition for a maximum is satisfied.*
-
-From this, we conclude:
-1. Higher risk aversion leads to lesser investment.
-2. Greater expected returns encourage more investment.
-3. Increased risk ($\sigma^2$) discourages investment.
-
-In the next lecture, we will extend these principles to portfolios with multiple assets using matrix algebra.
 
 # Matrices
 
