@@ -458,5 +458,5 @@ plt.show()
 
 *Coding Challenges:*
 
-- **Challenge 1**: Use data from [https://titlon.uit.no](https://titlon.uit.no) to create a historgram, and overlay the normal distribution to see if the empirical distribution has fat tails. 
-- **Challenge 2**: Try to fit a mixed normal distribution to the emepirical distribution. 
+- **Challenge 1**: Use data from [https://titlon.uit.no](https://titlon.uit.no) to create a histogram, and overlay the normal distribution to see if the empirical distribution has fat tails. 
+- **Challenge 2**: Try to fit a mixed normal distribution to the empirical distribution. 
