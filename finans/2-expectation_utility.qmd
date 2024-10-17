@@ -431,32 +431,136 @@ This is called "fat tails". It means that extreme events are much more likely in
 However, in most cases, we can represent the empirical distribution with a "mixed normal distribution". A mixed normal distribution, is a linear combination of normal distirbutino with different mean and varinaces. 
 
 ```{python}
-#| label: fig-mixed-normal
-#| fig-cap: "A mixed normal distribution with 'fat tails' compared to the normal distribution"
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
-# Plot mixed normal distribution with fat tails
-x_vals = np.linspace(-4, 4, 1000)
-fat_tails = 0.8 * norm.pdf(x_vals, loc=0, scale=0.7) + 0.2 * norm.pdf(x_vals, loc=0, scale=5)
+#Set range
+MAX_MIN = 0.1
+x_vals = np.linspace(-MAX_MIN, MAX_MIN, 1000)
 
-# Plotting normal distribution vs mixed normal
-plt.figure(figsize=(8, 5))
-plt.plot(x_vals, norm.pdf(x_vals, loc=0, scale=1), label="Normal Distribution", color='blue')
-plt.plot(x_vals, fat_tails, label="Mixed Normal (Fat Tails)", color='red')
-plt.title('Mixed Normal Distribution Illustrating Fat Tails')
-plt.xlabel('X')
-plt.ylabel('Density')
-plt.grid(True)
-plt.legend()
-plt.show()
+# Create the plot using fig and ax
+fig, ax = plt.subplots(figsize=(8, 5))
+
+#Calculate mean and std:
+rmean = 0
+rstd = 0.01
+
+# Normal distribution and mixed normal distribution:
+norm_dist    =     norm.pdf(x_vals, loc=rmean, scale=rstd)
+fat_tails = (0.8 * norm.pdf(x_vals, loc=rmean, scale=rstd*0.5) 
+           + 0.2 * norm.pdf(x_vals, loc=rmean, scale=rstd*2))
+
+# Plotting
+ax.plot(x_vals, norm_dist, label="Normal Distribution", color='blue')
+ax.plot(x_vals, fat_tails, label="Mixed Normal (Fat Tails)", color='red')
+
+# Set title, labels, and grid and legend
+ax.set_title('Mixed Normal Distribution Illustrating Fat Tails')
+ax.set_xlabel('X')
+ax.set_ylabel('Probability Density')
+ax.legend()
+
+
 ```
-
-
 
 
 *Coding Challenges:*
 
 - **Challenge 1**: Use data from [https://titlon.uit.no](https://titlon.uit.no) to create a histogram, and overlay the normal distribution to see if the empirical distribution has fat tails. 
 - **Challenge 2**: Try to fit a mixed normal distribution to the empirical distribution. 
+
+*Solution:*
+
+We start by fetching data for the OSEBX index from [titlon.uit.no](https://titlon.uit.no)
+```{python}
+import pandas as pd
+#Query script for MySQL client
+import pymysql
+con = pymysql.connect(host='titlon.uit.no', 
+                    user="esi000@uit.no", 
+                    password  = "39oQ!Fjzpuh$OZ2FpewRp",
+                    database='OSE')  
+crsr=con.cursor()
+crsr.execute("""
+	SELECT 
+	`Date`, `OSEBXLinked`, `OBXLinked`, `OSEFX`, `ID` 
+	FROM `OSE`.`equityindex_linked` 
+	WHERE year(`Date`) >= 1980
+	
+""")
+r=crsr.fetchall()
+df=pd.DataFrame(list(r), 
+        columns=[i[0] for i in crsr.description])
+df
+#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN, 
+#OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK
+
+pd.to_pickle(df,'output/index.df')
+df = None #in order to avoid memory problems
+```
+
+We can then calculate the return series and creating a histogram. Then period mean and standard deviation is also calculated. 
+```{python}
+# loading the data
+df = pd.read_pickle('output/index.df')
+
+# Creating the plot using fig and ax
+fig, ax = plt.subplots(figsize=(8, 5))
+
+#fixing Date, setting index and calculate returns
+df['Date'] = pd.to_datetime(df['Date'])
+df.set_index('Date', inplace=True)
+df['Returns'] = df['OSEBXLinked'].pct_change()
+
+#Calculate mean and std:
+rmean = np.mean(df['Returns'])
+rstd = np.std(df['Returns'])
+
+# Define the histogram intervals (dx = 0.01)
+dx = 0.002
+bins = int((0.2 - (-0.2)) / dx)
+
+# Create the plot
+ax.hist(df['Returns'].dropna(), bins=bins, 
+        range=(-0.2, 0.2), density=True, 
+        edgecolor='k', alpha=0.7)
+df = None
+
+# Set x-axis limits
+ax.set_xlim(-MAX_MIN, MAX_MIN)
+```
+
+
+We can now recalculate the normal distribution and the mixed normal, but based on the estimated mean and standard deviation, and add that to the existing chart. 
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+#Defining the range of x-values:
+MAX_MIN = 0.1
+x_vals = np.linspace(-MAX_MIN, MAX_MIN, 1000)
+
+# Calculate normal dist and the mixed normal dist:
+norm_dist    =     norm.pdf(x_vals, loc=rmean, scale=rstd)
+fat_tails = (0.8 * norm.pdf(x_vals, loc=rmean, scale=rstd*0.4) + 
+             0.2 * norm.pdf(x_vals, loc=rmean, scale=rstd*2))
+
+# Plotting normal dist and mixed normal dist
+ax.plot(x_vals, norm_dist, 
+            label="Normal Distribution", color='blue')
+ax.plot(x_vals, fat_tails, 
+            label="Mixed Normal (Fat Tails)", color='red')
+
+# Set title, labels and legend
+ax.set_title('Mixed Normal Distribution' 
+                'Illustrating Fat Tails')
+ax.set_xlabel('X')
+ax.set_ylabel('Probability Density')
+ax.legend()
+fig
+```
+
+
+
