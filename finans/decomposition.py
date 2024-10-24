@@ -26,6 +26,11 @@ def calculate_eigen(cov_matrix, threshold):
 def normalize_eigenvectors(P):
 	# Normalize the eigenvector matrix so that each row sums to 1 (creating pseudo-portfolio weights)
 	R = P / np.sum(P, axis=0, keepdims=True)
+	v = np.var(R,0)
+	keep = v<np.sort(v)[int(0.5*len(v))]
+	R = R[:,keep]
+	keep = (np.var(R,0)-np.min(R,0))<2
+	R = R[:,keep]
 	return R
 
 def get_independent_portfolios(cov_matrix, threshold):

@@ -1,8 +1,7 @@
 ---
-title: "3 - Optimal Portfolios and Matrices"
+title: 3 - Optimal Portfolios and Matrices"
 author: "Espen Sirnes"
 date: "2024-9-18"
-pdf-engine: pdflatex
 format:
   pdf:
     number-sections: true
@@ -18,8 +17,6 @@ format:
     titlepage-text-color: "000000"
     titlepage-rule-color: "000000"
     titlepage-rule-height: 2
-header-includes:
-  - \usepackage{bm} 
 ---
 
 This lecture explores the strategic behavior of an investor in the stock market, particularly under the assumption of risk aversion, as discussed in the previous note on utility theory. Risk lovers generally prefer the most risky assets, while risk-neutral investors opt for assets with the highest returns. In contrast, a risk-averse investor seeks to maximize returns without disproportionately increasing volatility, typically measured as variance.
@@ -228,34 +225,34 @@ $$
 \frac{d\left( a^{2} \sigma^{2} \right)}{da} = 2a \sigma^{2}
 $$
 
-applies to scalar variables, and for a matrix $\Sigma$ and a column vector $\mathbf{a}$, we have:
+applies to scalar variables, and for a matrix $\mathbf{\Sigma}$ and a column vector $\mathbf{a}$, we have:
 
 $$
-\frac{d\left(\mathbf{a}^{\prime}{\Sigma}\mathbf{a}\right)}{d\mathbf{a}^{\prime}} =2{\Sigma}\mathbf{a}
+\frac{d\left(\mathbf{a}^{\prime} \mathbf{\Sigma} \mathbf{a} \right)}{d \mathbf{a}^{\prime}} = 2 \mathbf{\Sigma}\mathbf{a}
 $$
 
-assuming ${\Sigma}$ is symmetric. In practical terms, the derivative with respect to `a` here, given some values for `a`, is
+assuming $\mathbf{\Sigma}$ is symmetric. In practical terms, the derivative with respect to `a` here, given some values for `a`, is
 
 ```{python}
 # Derivation with matrix and vector
 a = np.random.randint(0,100,(2,1))
 Sigma = np.random.randint(0,100,(2,2))
 
-# Derivative of a' Sigma a with respect to a
+# Derivative of a' Σ a with respect to a
 derivative = 2 * np.dot(Sigma, a)
 derivative
 ```
 
-We can rewrite the matrix formulation in scalar form, to check that the rule is correct. The scalar form of $\mathbf{a}^{\prime} {\Sigma}\mathbf{a}$ is
+We can rewrite the matrix formulation in scalar form, to check that the rule is correct. The scalar form of $\mathbf{a}^{\prime} \mathbf{\Sigma}\mathbf{a}$ is
 
 $$
-\mathbf{a}^{\prime} {\Sigma} \mathbf{a} = \sum_{j=0}^{N} a_j \left( \sum_{i=0}^{N} a_i \sigma_{ij} \right)
+\mathbf{a}^{\prime} \mathbf{\Sigma} \mathbf{a} = \sum_{j=0}^{N} a_j \left( \sum_{i=0}^{N} a_i \sigma_{ij} \right)
 $$
 
 You can verify that 
 
 $$
-\frac{d(\mathbf{a}^{\prime} {\Sigma} \mathbf{a}) }{d\mathbf{a}}= 2 [\sum_{i=0}^{N} a_i \sigma_{i0}, ..., \sum_{i=0}^{N} a_i \sigma_{iN}]
+\frac{d(\mathbf{a}^{\prime} \mathbf{\Sigma} \mathbf{a}) }{d\mathbf{a}}= 2 [\sum_{i=0}^{N} a_i \sigma_{i0}, ..., \sum_{i=0}^{N} a_i \sigma_{iN}]
 $$
 
 
@@ -266,7 +263,7 @@ $$
 We remember from above the previous chapter that with one asset, the optimal portfolio was 
 
 $$
-a_{opt}=\frac{(\mu -r)}{\lambda \sigma^2}
+a=\frac{(mu -r)}{\lambda \sigma^2}
 $$
 
 From this we concluded that:
@@ -279,7 +276,7 @@ Now, let us consider the optimal investments if we have more than one asset.
 
 ## Optimal Portfolios with Any Number of Assets
 
-Let us now assume that the investor in the previous section has a portfolio of $N$ assets, not just one. Their wealth next period, assuming the entire amount is borrowed, is then expressed in matrix notation as:
+Let us now assume that the investor in the previous section has a portfolio of $K$ assets, not just one. Their wealth next period, assuming the entire amount is borrowed, is then expressed in matrix notation as:
 
 $$
 W_1 = \mathbf{a}'\mathbf{x} - \mathbf{1}r
@@ -288,284 +285,180 @@ $$
 where $\mathbf{a}$ represents the portfolio weights, $\mathbf{x}$ represents the returns, and $\mathbf{1}$ is a column vector of ones, such that $\mathbf{1}r$ is a column vector of the risk-free interest rate $r$. Recall from earlier that the investor aims to maximize the difference between expected return and variance:
 
 $$
-\max_{\mathbf{a}} Z = \mathbb{E}W_1 - \lambda \frac{1}{2} \operatorname{var}(W_1)  
+\max_{\mathbf{a}} Z = \mathbb{E}W_1 - \pi \frac{1}{2} \operatorname{var}(W_1)  
 $$
 
 $\mathbf{x}$ now is a column vector of many normally distributed variables with different variances and expectations. We denote the expected returns by $\mu_i$ for asset $i$, and the associated vector of these returns by $\mathbf{\mu}$. Given a portfolio $\mathbf{a}$, the expected return on the portfolio then becomes:
 
 $$
-\mathbb{E}W_1 = \mathbf{a}^{\prime}(\mathbb{E}\mathbf{x}-\mathbf{1}r) = \mathbf{a}^{\prime}({\mu} - \mathbf{1}r)
+\mathbb{E}W_1 = \mathbf{a}'(\mathbb{E}\mathbf{x}-\mathbf{1}r) = \mathbf{a}\mathbf{\mu} - \mathbf{1}r
 $$
 
 
 For the variance, the risk free return $r$ is not relevant, since means are subtracted anyway. We define the covariance matrix, all the combinations of variance and covariance between the stocks as
 
 $$
-\operatorname{var}W_1 =  \mathbf{a}^{\prime}{\Sigma} \mathbf{a} = 
-\mathbf{a}^{\prime}
+\operatorname{var}W_1 = \mathbf{\Sigma} = 
 \begin{bmatrix}
-\sigma_00 & \sigma_12 & \cdots & \sigma_1N \\
-\sigma_12 & \sigma_22 & \cdots & \vdots \\
+\sigma_0 & \sigma_1 & \cdots & \sigma_N \\
+\sigma_1 & \sigma_2 & \cdots & \vdots \\
 \vdots & \vdots & \ddots & \vdots \\
-\sigma_1N & \cdots & \cdots & \sigma_{NN}
+\sigma_N & \cdots & \cdots & \sigma_{NN}
 \end{bmatrix}
-\mathbf{a}
 $$
 
 
-Where $\sigma_{ij}$ is the covariance between $i$ and $j$, and $\sigma_i^2$ is the variance of asset $i$. This is the covariance matrix, denoted by the capital sigma, ${\Sigma}$.
+Where $\sigma_{ij}$ is the covariance between $i$ and $j$, and $\sigma_i^2$ is the variance of asset $i$. This is the covariance matrix, denoted by the capital sigma, $\mathbf{\Sigma}$.
 
-When a vector is normally distributed we write it as $\mathbf{x} \sim N({\mu}, {\Sigma})$.
+When a vector is normally distributed we write it as $\mathbf{x} \sim N(\mathbf{\mu}, \mathbf{\Sigma})$.
 
 We have now derived expressions for $\mathbb{E}(W_1)$ and $\operatorname{var}(W_1)$ using matrix notation. Building on the concepts from the previous lecture, we can now formulate our portfolio optimization problem as:
 
 $$
-\max_{\mathbf{a}} Z = \mathbf{a}^{\prime}({\mu} - \mathbf{1}r) - \lambda \frac{1}{2} \mathbf{a}^{\prime}{\Sigma}\mathbf{a}
+\max_{\mathbf{a}} Z = \mathbf{a}(\mathbf{\mu} - \mathbf{1}r) - \lambda \frac{1}{2} \mathbf{a}'\mathbf{\Sigma a}
 $$
 
-Taking the derivative with respect to $\mathbf{a}^{\prime}$ yields the $N$ first order conditions:
+Taking the derivative with respect to $\mathbf{a}'$ yields the $K$ first order conditions:
 
 $$
-\frac{dZ}{d\mathbf{a}} = ({\mu} - \mathbf{1}r) - \lambda {\Sigma a} = 0
+\frac{dZ}{d\mathbf{a}} = (\mathbf{\mu} - \mathbf{1}r) - \lambda \mathbf{\Sigma a} = 0
 $$
 
 Hence, in optimum:
 
 $$
-{\Sigma} \mathbf{a}= \frac{1}{\lambda}({\mu} - \mathbf{1}r)
+\mathbf{\Sigma a} = \frac{1}{\lambda}(\mathbf{\mu} - \mathbf{1}r)
 $$
 
-By premultiplying with the inverse of ${\Sigma}$, we obtain the optimal portfolio:
+By premultiplying with the inverse of $\mathbf{\Sigma}$, we obtain the optimal portfolio:
 
 $$
-\mathbf{a_{opt}} = \frac{1}{\lambda} {\Sigma}^{-1}({\mu} - \mathbf{1}r)
+\mathbf{a} = \frac{1}{\lambda} \mathbf{\Sigma}^{-1}\mathbf{\mu} - \mathbf{1}r)
 $$
 
 
 Note that this formula looks very similar to the formula for an optimal portfolio with only one asset:
 
 $$
-a_{opt} = \frac{\mu - r}{\lambda \sigma^2}
+a = \frac{(mu - r)}{\pi \sigma^2}
 $$
 
 In general, we may draw the same conclusions as in the case of one asset:
 
-1. The more risk-averse the person is (large $\lambda$), the less they should invest.
+1. The more risk-averse the person is (large $\pi$), the less they should invest.
 2. The larger the expected return the asset has, the more should be invested.
 3. The more risk is associated with the asset, the less should be invested.
 
-# Empirical example - optimal porfolio and the portfolio front
+# Empirical example
 
-We will create an optimal portfolio and draw the "portfolio front" -  which are the smallest possible volatility of a set of assets, for all return leves. We use the script feature of Titlon to fetch the data
+Vi bruker scriptmuligheten i Titlon for å hente data
 
 ```{python}
-#| eval: false
+#| tags: []
+
+
 import pandas as pd
-#Query script for MySQL client
-import pymysql
-con = pymysql.connect(host='titlon.uit.no', 
-                    user="user@name.com", 
-                    password="passwordfromtitlon", 
+#Query script for Microsoft SQL Server (MSSQL) client
+import pymssql
+con = pymssql.connect(host='titlon.uit.no', 
+                    user="esi000@uit.no", 
+                    password  = "39oQ!Fjzpuh$OZ2FpewRp",
                     database='OSE')  
 crsr=con.cursor()
-crsr.execute("SET SESSION MAX_EXECUTION_TIME=60000;")
 crsr.execute("""
-	SELECT  * FROM `OSE`.`equity` 
-	WHERE year(`Date`) >= 2016
-	ORDER BY `Name`,`Date`
+	SELECT  * FROM [OSE].[dbo].[equity] 
+	WHERE year([Date]) >= 2016
+	ORDER BY [Name],[Date]
 """)
 r=crsr.fetchall()
-df=pd.DataFrame(list(r), 
-      columns=[i[0] for i in crsr.description])
-df
-
-
-
-#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN, OR 
-# BE AT THE INSTITUTION, FOR THIS CODE TO WORK
-
+df=pd.DataFrame(list(r), columns=[i[0] for i in crsr.description])
 pd.to_pickle(df,'output/stocks.df')
-display(df.iloc[:,:5])
+print(df)
+df = None
+
+
+#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN, OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK
 ```
 
+## The portfolio front
 
-## The historic mean and covariance matrix
-The first thing we do, is to calculate the historic means and covariance matrix. For this, there we use a custom made function `calc_moments()` in athe module `functions` in this repository. The historical data was just saved in 'output/stocks.df':
+When the numnber of stocks becomes large, the chances that a few of them ar essentially identical risk-wise increases. Therefore, in this example, the dimension is reduced by the function `get_independent_portfolios`, in a way that we will come back to. In a very simplified way, a matrix R is computed, that is multiplied with both the mean vector and the covariance matrix. 
+
+When that is done, we can calulate the optimal portfolio (C) and the portfolio front. The portfolio front is the minum variance given any level of return.
 
 ```{python}
 import functions
+import pandas
+import decomposition
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+
+MAX_AXIS = 0.8
 
 df = pd.read_pickle('output/stocks.df')
-# Defining risk free rate. 
+# Defining risk free, cov matrix and mean vector
 rf = df['NOWA_DayLnrate'].mean()*220
 
-#The historic mean and covariance matrix:
-(cov_matrix_lrg, 
-  means_lrg, 
-  df_month) = functions.calc_moments(df)
 
+cov_matrix, means, df_month = functions.calc_moments(df)
+df = None
 
-df = None #Need to clear the memory in qmd-files
+# There are so many stocks, that many will be highly correlated 
+# This creates a singular matrix (too few genuine equations)
+# It is therefore neccessary to do a little trick to reduce the 
+# Number of dimensions. Multiplying the matrix and means with 
+# R, reduces the dimension
+R = decomposition.get_independent_portfolios(cov_matrix, 0.0001)
+cov_matrix = R.T @ cov_matrix @ R
+means = R.T @ means
 
-```
+# Create a vector of ones with the same length as the number of columns in the covariance matrix
+ones = np.ones(cov_matrix.shape[0])
 
-## Decomposition and reducing dimensions
-There is a large number of stocks, many of them highly correlated. This often creates a singular matrix (too few genuine equations). It is therefore neccessary to do a little trick to reduce the number of dimensions. What we do is to create a matrix $\mathbf{R}$ which has the reduced number of rows, b
+# Defining the sum of the covariance elements:
+A = np.dot(ones.T, np.dot(np.linalg.inv(cov_matrix), ones))
 
+# Defining the sum of the optimal portfolio, in order to 
+# normalize the portfolio size to one
+B = np.dot(ones.T, np.dot(np.linalg.inv(cov_matrix), means-rf))[0]
+print((A, B, C))
+# Calculating the un-normalized optimal portfolio:
+C = np.dot(means.T-rf, np.dot(np.linalg.inv(cov_matrix), means-rf))[0][0]
 
-```{python}
-import decomposition
-
-R = decomposition.get_independent_portfolios(
-      cov_matrix_lrg, 0.0001)
-cov_matrix = R.T @ cov_matrix_lrg @ R
-means = R.T @ means_lrg
-
-print(f"Reduced the number of dimensions from"
-      f"{cov_matrix_lrg.shape[0]} "
-      f"to {cov_matrix.shape[0]}")
-```
-
-
-## Plotting the portfolio front
-We now turn to portfolio front. The portfolio front represents the volatility of the portfolio with the least variance, for a given portfolio return. Hence, we want a function of portfolio return that represent the minimum variance portfolios.  
-
-It turns out that by defining a few simple scalars, there is a reasonably simple expression for the set of minimum variance portfolios. The scalars are:
-
-$$
-A = \mathbf{1}^{\prime}{\Sigma}^{-1}\mathbf{1}
-$$
-$$
-B = \mathbf{1}^{\prime}{\Sigma}^{-1}{\mu}
-$$
-$$
-C = {mu}^{\prime}{\Sigma}^{-1}{\mu}
-$$
-
-With these definition, the portfolio front, representing all minimum variance portfolios for a given expected return and a total investment of 1, is
-
-$$
-{sigma}_{opt} =\frac{1}{A}+\frac{ \left(\mu_{opt}-\frac{B}{A}\right)^2}{C-\frac{B^2}{A}} 
-$$
-where $\mu_{opt}={\mu}^{\prime}\mathbf{a}$ 
-
-This formula automatically ensures that the sum of all the portfolio weights are 1. Now, let us define these variables, and the function. A, B and C in python:
-```{python}
-ones = np.ones((len(means),1))
-
-A = np.dot(ones.T, 
-    np.dot(np.linalg.inv(cov_matrix), ones))[0][0]
-
-B = np.dot(ones.T, 
-    np.dot(np.linalg.inv(cov_matrix), (means-rf)))[0][0]
-
-C = np.dot((means.T-rf), 
-    np.dot(np.linalg.inv(cov_matrix), (means-rf)))[0][0]
-```
-
-The portfolio front function, that returns the volatility associated with the minimum variance portfolio for a given `expected_excess_return` can then be defined as:
-
-```{python}
-def portfolio_front(expected_excess_return):
-  r = expected_excess_return
-  minimum_variance = (1/A 
-          + ((r - abs(B)/A)**2) / (C - B**2/A))
-  minimum_volatility = minimum_variance**0.5
-  return minimum_volatility
-```
-Let us plot this
-```{python}
-from matplotlib import pyplot as plt
 #Creating plot
 fig, ax = plt.subplots(figsize=(10, 6))
 
-MAX_AXIS = 0.25
-#applying the function
+# Setting the range of rp values and sigma values
 rp_values = np.linspace(0, MAX_AXIS, 100)
-sigma_values = portfolio_front(rp_values)
 
-#plotting
-ax.plot(sigma_values, rp_values+rf, 
-            label='Efficient Frontier')
 
-#plot settings:
-ax.set_xlim([0, np.max(sigma_values)])
-ax.set_ylim([0, np.max(rp_values)])
+# Calculate and plot sigma values for each rp
+sigma_values = 1/A + ((rp_values - abs(B)/A)**2) / (C - B**2/A)
+ax.plot(sigma_values**0.5, rp_values+rf, label='Efficient Frontier')
+
+# Calculate the tangency point of the normalized optimal 
+# portfolio and plotting it
+tangency_rp = C/abs(B)
+tangency_sigma =  1/A + ((tangency_rp - abs(B)/A)**2) / (C - B**2/A)
+
+ax.plot(tangency_sigma**0.5, tangency_rp + rf, 'ro')
+
+# Plotting the portfolio front
+sigma_range = np.linspace(0, np.max(sigma_values**0.5), 100)
+ax.plot(sigma_range, rf + 
+	sigma_range*tangency_rp
+	/tangency_sigma**0.5, color='r', linestyle='--', label='Tangency Point')
+
+# Setting the axis ranges, lables, title and legend:
+ax.set_xlim([0, 0.8])
+ax.set_ylim([0, 0.5])
 ax.set_xlabel('Sigma (Risk)')
 ax.set_ylabel('Rp (Return)')
 ax.set_title('Efficient Frontier')
 ax.legend()
 ```
 
-Let us now add the point for the optimal portfolio. The optimal portfolio is 
-
-$$
-\mathbf{a_{opt}} = \frac{1}{\lambda}{\Sigma}^{-1}({\mu} - \mathbf{1}r)
-$$
-
-The total cost of this portfolio is
-
-$$
-\mathbf{1}^{\prime}\mathbf{a_{opt}} = \frac{1}{\lambda} \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)
-$$
-
-So the normalized portfolio is
-
-$$
-\mathbf{a_{norm}}  = \frac{{\Sigma}^{-1}({\mu} - \mathbf{1}r)}{ \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)} 
-$$
-
-The expected return of the optimal portfolio on the frontier, is then 
-
-$$
-\mu_{port}=({\mu} - \mathbf{1}r)^{\prime}\mathbf{a_{norm}}  = \frac{({\mu} - \mathbf{1}r)^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)}{ \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)} 
-$$
-
-Which is simply, according to the previous definitions of B and C:
-$$
-\mu_{port}=\frac{C}{B}
-$$
-
-Let us add that to the plot
 ```{python}
-# Calculate the tangency point of the normalized 
-# optimal portfolio
-tangency_sigma =  portfolio_front(C/B)
-
-#And plotting it
-ax.plot(tangency_sigma, C/B + rf, 'ro',label='Tangency Point')
-ax.legend()
-fig
-
+np.max(sigma_values**0.5)
 ```
-
-Let us now draw a tangency line from the risk free interest rate `rf` to the optimal portfolio point. The slope will be the Sharp-ratio
-
-$$
-S=\frac{C/B}{f(C/B)}
-$$
-
-where $f(C/B)$ is the portfolio front function `portfolio_front(C/B) at `C/B`
-```{python}
-# Plotting the portfolio front
-sigma_range = np.linspace(0, np.max(sigma_values), 100)
-ax.plot(sigma_range, rf 
-        + sigma_range*(C/B)/tangency_sigma, 
-        color='r', linestyle='--', 
-        label='Capital Market Line')
-
-ax.legend()
-fig
-```
-
-*Coding Challenges:*
-
-- **Challenge 1**: Obtain a three or four return series for portfolios, for example your portfolio, the market portfolio and the factors at titlon and calculate the variance-covariance matrix and the means
-
-- **Challenge 2**: Use your calculated covariance matrix and means, and the code provided above, to draw a portfolio front. 
-
-- **Challenge 3**: Use the same information to plot the points of each portfolio in the same chart.
-
-- **Challenge 4**: Calculate the optimal portfolio and place it in the chart, together with the capital market line  
