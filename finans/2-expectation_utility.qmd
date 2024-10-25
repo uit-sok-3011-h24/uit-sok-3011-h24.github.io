@@ -474,12 +474,13 @@ ax.legend()
 
 We start by fetching data for the OSEBX index from [titlon.uit.no](https://titlon.uit.no)
 ```{python}
+#| eval: false
 import pandas as pd
 #Query script for MySQL client
 import pymysql
 con = pymysql.connect(host='titlon.uit.no', 
-                    user="esi000@uit.no", 
-                    password  = "39oQ!Fjzpuh$OZ2FpewRp",
+                    user="user@name.com", 
+                    password="passwordfromtitlon", 
                     database='OSE')  
 crsr=con.cursor()
 crsr.execute("""
@@ -502,6 +503,7 @@ df = None #in order to avoid memory problems
 
 We can then calculate the return series and creating a histogram. Then period mean and standard deviation is also calculated. 
 ```{python}
+import pandas as pd
 # loading the data
 df = pd.read_pickle('output/index.df')
 
