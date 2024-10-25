@@ -533,7 +533,8 @@ $$
 So the normalized portfolio is
 
 $$
-\mathbf{a_{norm}}  = \frac{{\Sigma}^{-1}({\mu} - \mathbf{1}r)}{ \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)} 
+\mathbf{a_{norm}}  = \frac{{\Delta}^{-1}({\mu} - \mathbf{1}r)}
+{ \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)} 
 $$
 
 The expected return of the optimal portfolio on the frontier, is then 
