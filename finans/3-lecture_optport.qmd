@@ -356,7 +356,7 @@ In general, we may draw the same conclusions as in the case of one asset:
 
 # Empirical example - optimal porfolio and the portfolio front
 
-We will create an optimal portfolio and draw the "portfolio front" -  which are the smallest possible volatility of a set of assets, for all return leves. We use the script feature of Titlon to fetch the data
+We will create an optimal portfolio and draw the "portfolio front" -  which are the smallest possible volatility of a set of assets, for all return leves. We use the script feature of Titlon to fetch the data, and storing it in `'output/stocks.df'`
 
 ```{python}
 #| eval: false
@@ -385,47 +385,66 @@ df
 # BE AT THE INSTITUTION, FOR THIS CODE TO WORK
 
 pd.to_pickle(df,'output/stocks.df')
-display(df.iloc[:,:5])
 ```
 
+We now reload the data, and pick the four stocks   
+1. that are most traded (sorted on sum of `Turnover`)
+2. has been traded at the last day of the sample
 
-## The historic mean and covariance matrix
-The first thing we do, is to calculate the historic means and covariance matrix. For this, there we use a custom made function `calc_moments()` in athe module `functions` in this repository. The historical data was just saved in 'output/stocks.df':
+We can obtain that with this code:
 
 ```{python}
-import functions
 import numpy as np
 import pandas as pd
 
 df = pd.read_pickle('output/stocks.df')
-# Defining risk free rate. 
+# Defining annual risk free rate. 
 rf = df['NOWA_DayLnrate'].mean()*220
 
-#The historic mean and covariance matrix:
-(cov_matrix_lrg, 
-  means_lrg, 
-  df_month) = functions.calc_moments(df)
-
-
-df = None #Need to clear the memory in qmd-files
-
+# keeping only the most traded shares
+res = (
+    df[df['Date'] == df['Date'].max()]
+    .groupby(['ISIN', 'Name'], as_index=False)
+    .agg({'Turnover': 'sum'})
+    .sort_values(by='Turnover', ascending=False)
+    .reset_index(drop=True)
+)
+df = df.merge(res.head(4), on=['ISIN', 'Name'], how='inner')
+res.head(4)
 ```
 
-## Decomposition and reducing dimensions
-There is a large number of stocks, many of them highly correlated. This often creates a singular matrix (too few genuine equations). It is therefore neccessary to do a little trick to reduce the number of dimensions. What we do is to create a matrix $\mathbf{R}$ which has the reduced number of rows, b
-
-
+## The historic mean and covariance matrix
+We will now calculate the covariance matrix and the mean vector. To begin, we’ll create a function that reformats the data from its long format (where stock prices are listed sequentially in a single column) to a wide format. In this wide format, unique dates will be in the first column, with subsequent columns containing prices for each stock.
 ```{python}
-import decomposition
 
-R = decomposition.get_independent_portfolios(
-      cov_matrix_lrg, 0.0001)
-cov_matrix = R.T @ cov_matrix_lrg @ R
-means = R.T @ means_lrg
+def get_matrix(df, field):
+	"""Converts the df to a matrix df that can 
+	be used to calculate the covariance matrix"""
+	
+	df['Date'] = pd.to_datetime(df['Date'])
+	df_unique = df.drop_duplicates(subset=['Date', 'ISIN'])
+	pivot_df = df_unique.pivot(index='Date', columns='ISIN', values=field)
+	pivot_df = pivot_df.dropna()
+	df_weekly = pivot_df.resample('W').sum()*52 #annualized
 
-print(f"Reduced the number of dimensions from"
-      f"{cov_matrix_lrg.shape[0]} "
-      f"to {cov_matrix.shape[0]}")
+	return df_weekly
+
+#X is a matrxi with e
+X = get_matrix(df, 'lnDeltaP') 
+X
+```
+
+Wit this data, it is relatively easy to calculate covariance and the means vector
+```{python}
+# Converting X to a numpy array:
+X = np.array(X)
+
+# Calculating the covariance
+cov_matrix = np.cov(X, rowvar=False)
+
+# Calculating the means vector, and reshaping it to a column vector. 
+
+means = np.mean(X, axis=0).reshape((X.shape[1],1))
 ```
 
 
@@ -481,7 +500,7 @@ from matplotlib import pyplot as plt
 #Creating plot
 fig, ax = plt.subplots(figsize=(10, 6))
 
-MAX_AXIS = 0.25
+MAX_AXIS = 0.5
 #applying the function
 rp_values = np.linspace(0, MAX_AXIS, 100)
 sigma_values = portfolio_front(rp_values)
