@@ -18,8 +18,9 @@ format:
     titlepage-text-color: "000000"
     titlepage-rule-color: "000000"
     titlepage-rule-height: 2
-header-includes:
-  - \usepackage{bm} 
+    equation-numbering: true
+html:
+    equation-numbering: true
 ---
 
 This lecture explores the strategic behavior of an investor in the stock market, particularly under the assumption of risk aversion, as discussed in the previous note on utility theory. Risk lovers generally prefer the most risky assets, while risk-neutral investors opt for assets with the highest returns. In contrast, a risk-averse investor seeks to maximize returns without disproportionately increasing volatility, typically measured as variance.
@@ -118,6 +119,7 @@ where $\mathbf{I}$ is the identity matrix. Multiplying any matrix by $\mathbf{I}
 In practice, while the concept is straightforward, the actual calculation of a matrix inverse can become complex for larger matrices and is typically handled by computers. We will not go through the method of obtaining the inverse in this course, we will in stead just utilize the numpy funciton for calculating the inverse. Specifically, we use `np.linalg.inv(X)`. We can check that it actually complies with the definition like this:
 
 ```{python}
+#| eval: false
 X = np.random.randint(0,10,(3,3))
 # Calculating inverse of X
 X_inv = np.linalg.inv(X)
@@ -381,15 +383,16 @@ df
 
 
 
-#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN, OR 
-# BE AT THE INSTITUTION, FOR THIS CODE TO WORK
+#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN,
+# OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK
 
 pd.to_pickle(df,'output/stocks.df')
 ```
 
 We now reload the data, and pick the four stocks   
-1. that are most traded (sorted on sum of `Turnover`)
-2. has been traded at the last day of the sample
+1. has been traded at the first and last day of the sample
+2. that are most traded (sorted on sum of `Turnover`)
+
 
 We can obtain that with this code:
 
@@ -399,17 +402,23 @@ import pandas as pd
 
 df = pd.read_pickle('output/stocks.df')
 # Defining annual risk free rate. 
-rf = df['NOWA_DayLnrate'].mean()*220
+rf = df['NOWA_DayLnrate'].mean()*7
+
+isin_with_first_date = df[df['Date'] == df['Date'].min()]['ISIN'].unique()
+isin_with_last_date = df[df['Date'] == df['Date'].max()]['ISIN'].unique()
+valid_isins = set(isin_with_first_date).intersection(isin_with_last_date)
+df[df['ISIN'].isin(valid_isins)]
+
+df['Name (ISIN)'] =df['Name'].str.upper() + '(' + df['ISIN'] + ')'
 
 # keeping only the most traded shares
 res = (
-    df[df['Date'] == df['Date'].max()]
-    .groupby(['ISIN', 'Name'], as_index=False)
+    df.groupby(['Name (ISIN)'])
     .agg({'Turnover': 'sum'})
     .sort_values(by='Turnover', ascending=False)
-    .reset_index(drop=True)
 )
-df = df.merge(res.head(4), on=['ISIN', 'Name'], how='inner')
+df = df.merge(res.head(4), on=['Name (ISIN)'], 
+                how='inner')
 res.head(4)
 ```
 
@@ -422,16 +431,22 @@ def get_matrix(df, field):
 	be used to calculate the covariance matrix"""
 	
 	df['Date'] = pd.to_datetime(df['Date'])
-	df_unique = df.drop_duplicates(subset=['Date', 'ISIN'])
-	pivot_df = df_unique.pivot(index='Date', columns='ISIN', values=field)
+	df_unique = df.drop_duplicates(
+                  subset=['Date', 'ISIN'])
+	pivot_df = df_unique.pivot(index='Date', 
+                  columns='ISIN', 
+                  values=field)
+
 	pivot_df = pivot_df.dropna()
-	df_weekly = pivot_df.resample('W').sum()*52 #annualized
+
+  # Annualized weekly returns
+	df_weekly = pivot_df.resample('W').sum()
 
 	return df_weekly
 
 #X is a matrxi with e
 X = get_matrix(df, 'lnDeltaP') 
-X
+X.sort_index()
 ```
 
 Wit this data, it is relatively easy to calculate covariance and the means vector
@@ -442,7 +457,8 @@ X = np.array(X)
 # Calculating the covariance
 cov_matrix = np.cov(X, rowvar=False)
 
-# Calculating the means vector, and reshaping it to a column vector. 
+# Calculating the means vector, and reshaping it to a 
+# column vector. 
 
 means = np.mean(X, axis=0).reshape((X.shape[1],1))
 ```
@@ -457,10 +473,10 @@ $$
 A = \mathbf{1}^{\prime}{\Sigma}^{-1}\mathbf{1}
 $$
 $$
-B = \mathbf{1}^{\prime}{\Sigma}^{-1}{\mu}
+B = \mathbf{1}^{\prime}{\Sigma}^{-1}{\mu-\mathbf{1}r}
 $$
 $$
-C = {mu}^{\prime}{\Sigma}^{-1}{\mu}
+C = {\mu-\mathbf{1}r}^{\prime}{\Sigma}^{-1}{\mu-\mathbf{1}r}
 $$
 
 With these definition, the portfolio front, representing all minimum variance portfolios for a given expected return and a total investment of 1, is
@@ -478,10 +494,12 @@ A = np.dot(ones.T,
     np.dot(np.linalg.inv(cov_matrix), ones))[0][0]
 
 B = np.dot(ones.T, 
-    np.dot(np.linalg.inv(cov_matrix), (means-rf)))[0][0]
+      np.dot(np.linalg.inv(cov_matrix), 
+      (means-rf)))[0][0]
 
 C = np.dot((means.T-rf), 
-    np.dot(np.linalg.inv(cov_matrix), (means-rf)))[0][0]
+      np.dot(np.linalg.inv(cov_matrix), 
+      (means-rf)))[0][0]
 ```
 
 The portfolio front function, that returns the volatility associated with the minimum variance portfolio for a given `expected_excess_return` can then be defined as:
@@ -495,45 +513,50 @@ def portfolio_front(expected_excess_return):
   return minimum_volatility
 ```
 Let us plot this
+
+With a defined portfolio frontier function, we can now plot the portfolio frontier. To make the weekly returns comparable on an annual scale, we multiply them by a scaling factor, `plot_scale`, set to 52. We can simply multiply the returns, because returns in Titlon are conveniently defined as log returns, calculated as $\log(x_{t}) - \log(x_{t-1})$, rather than the typical relative return $\frac{x_{t} - x_{t-1}}{x_{t-1}}$.
+
 ```{python}
 from matplotlib import pyplot as plt
 #Creating plot
 fig, ax = plt.subplots(figsize=(10, 6))
-
-MAX_AXIS = 0.5
+plot_scale = 52
+MAX_AXIS = 0.005
 #applying the function
-rp_values = np.linspace(0, MAX_AXIS, 100)
+rp_values = np.linspace(0, MAX_AXIS-rf, 100)
 sigma_values = portfolio_front(rp_values)
 
-#plotting
-ax.plot(sigma_values, rp_values+rf, 
+#plotting, after annualizing the weekly data
+ax.plot(plot_scale**0.5*(sigma_values), plot_scale*(rp_values+rf), 
             label='Efficient Frontier')
 
 #plot settings:
-ax.set_xlim([0, np.max(sigma_values)])
-ax.set_ylim([0, np.max(rp_values)])
+ax.set_xlim([0, np.max(sigma_values*plot_scale**0.5)])
+ax.set_ylim([0, (np.max(rp_values)+rf)*plot_scale])
 ax.set_xlabel('Sigma (Risk)')
 ax.set_ylabel('Rp (Return)')
 ax.set_title('Efficient Frontier')
 ax.legend()
 ```
 
+A key advantage of using log returns is that they account for symmetry in gains and losses. For example, with relative returns, a 10% gain followed by a 10% loss results in a net loss of 1%. However, with log returns, a 10% gain and a 10% loss precisely offset each other, leaving you with no net change from the starting point.
+
 Let us now add the point for the optimal portfolio. The optimal portfolio is 
 
 $$
-\mathbf{a_{opt}} = \frac{1}{\lambda}{\Sigma}^{-1}({\mu} - \mathbf{1}r)
+\mathbf{a}_{opt} = \frac{1}{\lambda}{\Sigma}^{-1}({\mu} - \mathbf{1}r)
 $$
 
 The total cost of this portfolio is
 
 $$
-\mathbf{1}^{\prime}\mathbf{a_{opt}} = \frac{1}{\lambda} \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)
+\mathbf{1}^{\prime}\mathbf{a}_{opt} = \frac{1}{\lambda} \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)
 $$
 
 So the normalized portfolio is
 
 $$
-\mathbf{a_{norm}}  = \frac{ {\Sigma}^{-1}({\mu} - \mathbf{1}r) }
+\mathbf{a}_{norm}  = \frac{ {\Sigma}^{-1}({\mu} - \mathbf{1}r) }
 { \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)} 
 $$
 
@@ -550,12 +573,14 @@ $$
 
 Let us add that to the plot
 ```{python}
-# Calculate the tangency point of the normalized 
+# Calculating the tangency point of the normalized 
 # optimal portfolio
 tangency_sigma =  portfolio_front(C/B)
 
-#And plotting it
-ax.plot(tangency_sigma, C/B + rf, 'ro',label='Tangency Point')
+#plotting it, after annualizing the weekly data
+ax.plot(plot_scale**0.5*tangency_sigma, 
+          plot_scale*(C/B + rf), 
+          'ro',label='Tangency Point')
 ax.legend()
 fig
 
@@ -569,10 +594,12 @@ $$
 
 where $f(C/B)$ is the portfolio front function `portfolio_front(C/B) at `C/B`
 ```{python}
-# Plotting the portfolio front
 sigma_range = np.linspace(0, np.max(sigma_values), 100)
-ax.plot(sigma_range, rf 
-        + sigma_range*(C/B)/tangency_sigma, 
+
+# Plotting the portfolio front, after annualizing the 
+# weekly data
+ax.plot(plot_scale**0.5*sigma_range, plot_scale*(rf 
+        + sigma_range*(C/B)/tangency_sigma), 
         color='r', linestyle='--', 
         label='Capital Market Line')
 
@@ -610,7 +637,14 @@ In Titlon, there are four  factors: **SMB**, **HML**, **LIQ**, and **MOM**, alon
 The main purpose of factors is to be used in regression analysis, like the following:
 
 $$
-x - r_f = \alpha + \beta_M (r_M - r_f) + \beta_{SMB} \cdot SMB + \beta_{HML} \cdot HML + \beta_{LIQ} \cdot LIQ + \beta_{MOM} \cdot MOM + \epsilon \tag{18}
+\begin{array}{rl}
+x - r_f = \alpha + \beta_M (r_M - r_f)  \\
++\beta_{SMB} \cdot SMB \\
++\beta_{HML} \cdot HML 
++\beta_{LIQ} \cdot LIQ \\
++\beta_{MOM} \cdot MOM
+ + \epsilon
+\end{array}
 $$
 
 This is a multifactor model. If we only include the market factor, the model reduces to the well-known **CAPM** (Capital Asset Pricing Model). Adding the additional factors results in a more comprehensive **factor model**.
