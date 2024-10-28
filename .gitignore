@@ -4,3 +4,4 @@ unused/
 .ipynb_checkpoints/
 __pycache__/
 finans/output/
+test.py

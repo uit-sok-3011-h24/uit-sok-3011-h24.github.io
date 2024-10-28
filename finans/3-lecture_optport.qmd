@@ -472,9 +472,13 @@ It turns out that by defining a few simple scalars, there is a reasonably simple
 $$
 A = \mathbf{1}^{\prime}{\Sigma}^{-1}\mathbf{1}
 $$
+
+
 $$
 B = \mathbf{1}^{\prime}{\Sigma}^{-1}{\mu-\mathbf{1}r}
 $$
+
+
 $$
 C = {\mu-\mathbf{1}r}^{\prime}{\Sigma}^{-1}{\mu-\mathbf{1}r}
 $$
@@ -592,8 +596,10 @@ $$
 S=\frac{C/B}{f(C/B)}
 $$
 
-where $f(C/B)$ is the portfolio front function `portfolio_front(C/B) at `C/B`
+where $f(C/B)$ is the portfolio front function `portfolio_front(C/B)` at `C/B`
 ```{python}
+import pickle #For saving the plot
+
 sigma_range = np.linspace(0, np.max(sigma_values), 100)
 
 # Plotting the portfolio front, after annualizing the 
@@ -604,6 +610,7 @@ ax.plot(plot_scale**0.5*sigma_range, plot_scale*(rf
         label='Capital Market Line')
 
 ax.legend()
+
 fig
 ```
 
@@ -665,7 +672,7 @@ For investors seeking higher returns by taking on more market risk, simply buyin
 
 Similarly, the introduction of factor models showed that some managers were merely betting on small-cap stocks or undervalued companies to generate excess returns. When accounting for these factors, much of the supposed excess return often disappears.
 
-***Coding Challenges:***
+### Coding Challenges:
 
 - **Challenge 1**: 
     - Download stock data from Titlon for a single stock.
@@ -684,4 +691,69 @@ Similarly, the introduction of factor models showed that some managers were mere
     ```
     - Plot the performance and visually assess how each factor performs relative to the optimal portfolio.
 
+### Attemted answer to Challenge 2:
 
+We first download the factor data from titlon
+```{python}
+#| eval: false
+import pandas as pd
+#Query script for MySQL client
+import pymysql
+con = pymysql.connect(host='titlon.uit.no', 
+                user      = "esi000@uit.no",
+                password  = "%VccvGWz5UjtT9sAuU7og",
+                database='OSE')  
+crsr=con.cursor()
+crsr.execute("SET SESSION MAX_EXECUTION_TIME=60000;")
+crsr.execute("""
+	SELECT  *
+	FROM `OSE`.`factors` 
+	WHERE year(`Date`) >= 2016
+	ORDER BY `Date`
+""")
+r=crsr.fetchall()
+df=pd.DataFrame(list(r), 
+      columns=[i[0] for i in crsr.description])
+df
+
+
+#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN,
+# OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK
+
+pd.to_pickle(df,'output/factors.df')
+```
+
+
+We then calculated the means and standard errors, after reducing the frequency from daily to weekly. 
+```{python}
+import pandas as pd
+
+df = pd.read_pickle('output/factors.df')
+df['Date'] = pd.to_datetime(df['Date'])
+df = df.set_index('Date')
+df_weekly = df.resample('W').sum()
+df_weekly = df_weekly[['SMB', 'HML', 'LIQ', 'MOM']].dropna()
+df = df[['SMB', 'HML', 'LIQ', 'MOM']].dropna()
+means = df_weekly.mean()*52
+std = df_weekly.std()*52**0.5
+print(std)
+print(means)
+df_weekly
+
+```
+
+
+We can then plot the factors in the existing porfolio frontier
+```{python}
+#| eval: false
+#load the previoiusly created portfolio front
+
+for series in means.index:
+    ax.scatter(std[series], means[series], label=series)
+
+ax.legend()
+
+fig
+```
+
+Can you construct the optimal portfolio of the stocks and the factors?
