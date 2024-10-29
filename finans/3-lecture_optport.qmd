@@ -691,7 +691,7 @@ Similarly, the introduction of factor models showed that some managers were mere
     ```
     - Plot the performance and visually assess how each factor performs relative to the optimal portfolio.
 
-### Attemted answer to Challenge 2:
+### Tentative answer to Challenge 2:
 
 We first download the factor data from titlon
 ```{python}
@@ -700,7 +700,7 @@ import pandas as pd
 #Query script for MySQL client
 import pymysql
 con = pymysql.connect(host='titlon.uit.no', 
-                user      = "esi000@uit.no",
+                user      = "user@account.com",
                 password  = "%VccvGWz5UjtT9sAuU7og",
                 database='OSE')  
 crsr=con.cursor()
