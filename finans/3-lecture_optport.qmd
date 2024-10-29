@@ -745,8 +745,6 @@ df_weekly
 
 We can then plot the factors in the existing porfolio frontier
 ```{python}
-#| eval: false
-#load the previoiusly created portfolio front
 
 for series in means.index:
     ax.scatter(std[series], means[series], label=series)
