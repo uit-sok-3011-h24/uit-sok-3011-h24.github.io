@@ -1,5 +1,5 @@
 ---
-title: "3 - Matrices, Optimal Portfolios and Factors"
+title: "3 - Matrices, Optimal Portfolios"
 author: "Espen Sirnes"
 date: "2024-9-18"
 pdf-engine: pdflatex
@@ -19,7 +19,7 @@ format:
     titlepage-rule-color: "000000"
     titlepage-rule-height: 2
     equation-numbering: true
-html:
+  html:
     equation-numbering: true
 ---
 
@@ -366,9 +366,9 @@ import pandas as pd
 #Query script for MySQL client
 import pymysql
 con = pymysql.connect(host='titlon.uit.no', 
-                    user="user@name.com", 
-                    password="passwordfromtitlon", 
-                    database='OSE')  
+										user="user@name.com", 
+										password="passwordfromtitlon", 
+										database='OSE')  
 crsr=con.cursor()
 crsr.execute("SET SESSION MAX_EXECUTION_TIME=60000;")
 crsr.execute("""
@@ -378,7 +378,7 @@ crsr.execute("""
 """)
 r=crsr.fetchall()
 df=pd.DataFrame(list(r), 
-      columns=[i[0] for i in crsr.description])
+			columns=[i[0] for i in crsr.description])
 df
 
 
@@ -413,12 +413,12 @@ df['Name (ISIN)'] =df['Name'].str.upper() + '(' + df['ISIN'] + ')'
 
 # keeping only the most traded shares
 res = (
-    df.groupby(['Name (ISIN)'])
-    .agg({'Turnover': 'sum'})
-    .sort_values(by='Turnover', ascending=False)
+		df.groupby(['Name (ISIN)'])
+		.agg({'Turnover': 'sum'})
+		.sort_values(by='Turnover', ascending=False)
 )
 df = df.merge(res.head(4), on=['Name (ISIN)'], 
-                how='inner')
+								how='inner')
 res.head(4)
 ```
 
@@ -426,20 +426,22 @@ res.head(4)
 We will now calculate the covariance matrix and the mean vector. To begin, we’ll create a function that reformats the data from its long format (where stock prices are listed sequentially in a single column) to a wide format. In this wide format, unique dates will be in the first column, with subsequent columns containing prices for each stock.
 ```{python}
 
+
 def get_matrix(df, field):
 	"""Converts the df to a matrix df that can 
 	be used to calculate the covariance matrix"""
 	
+	import pandas as pd
 	df['Date'] = pd.to_datetime(df['Date'])
 	df_unique = df.drop_duplicates(
-                  subset=['Date', 'ISIN'])
+									subset=['Date', 'ISIN'])
 	pivot_df = df_unique.pivot(index='Date', 
-                  columns='ISIN', 
-                  values=field)
+									columns='ISIN', 
+									values=field)
 
 	pivot_df = pivot_df.dropna()
 
-  # Annualized weekly returns
+	# Annualized weekly returns
 	df_weekly = pivot_df.resample('W').sum()
 
 	return df_weekly
@@ -495,26 +497,26 @@ This formula automatically ensures that the sum of all the portfolio weights are
 ones = np.ones((len(means),1))
 
 A = np.dot(ones.T, 
-    np.dot(np.linalg.inv(cov_matrix), ones))[0][0]
+		np.dot(np.linalg.inv(cov_matrix), ones))[0][0]
 
 B = np.dot(ones.T, 
-      np.dot(np.linalg.inv(cov_matrix), 
-      (means-rf)))[0][0]
+			np.dot(np.linalg.inv(cov_matrix), 
+			(means-rf)))[0][0]
 
 C = np.dot((means.T-rf), 
-      np.dot(np.linalg.inv(cov_matrix), 
-      (means-rf)))[0][0]
+			np.dot(np.linalg.inv(cov_matrix), 
+			(means-rf)))[0][0]
 ```
 
 The portfolio front function, that returns the volatility associated with the minimum variance portfolio for a given `expected_excess_return` can then be defined as:
 
 ```{python}
-def portfolio_front(expected_excess_return):
-  r = expected_excess_return
-  minimum_variance = (1/A 
-          + ((r - abs(B)/A)**2) / (C - B**2/A))
-  minimum_volatility = minimum_variance**0.5
-  return minimum_volatility
+def portfolio_front(expected_excess_return, a, b, c):
+	r = expected_excess_return
+	minimum_variance = (1/a 
+					+ ((r - abs(b)/a)**2) / (c - b**2/a))
+	minimum_volatility = minimum_variance**0.5
+	return minimum_volatility
 ```
 Let us plot this
 
@@ -528,11 +530,11 @@ plot_scale = 52
 MAX_AXIS = 0.005
 #applying the function
 rp_values = np.linspace(0, MAX_AXIS-rf, 100)
-sigma_values = portfolio_front(rp_values)
+sigma_values = portfolio_front(rp_values, A, B, C)
 
 #plotting, after annualizing the weekly data
 ax.plot(plot_scale**0.5*(sigma_values), plot_scale*(rp_values+rf), 
-            label='Efficient Frontier')
+						label='Efficient Frontier')
 
 #plot settings:
 ax.set_xlim([0, np.max(sigma_values*plot_scale**0.5)])
@@ -579,12 +581,12 @@ Let us add that to the plot
 ```{python}
 # Calculating the tangency point of the normalized 
 # optimal portfolio
-tangency_sigma =  portfolio_front(C/B)
+tangency_sigma =  portfolio_front(C/B, A, B, C)
 
 #plotting it, after annualizing the weekly data
 ax.plot(plot_scale**0.5*tangency_sigma, 
-          plot_scale*(C/B + rf), 
-          'ro',label='Tangency Point')
+					plot_scale*(C/B + rf), 
+					'ro',label='Tangency Point')
 ax.legend()
 fig
 
@@ -596,23 +598,22 @@ $$
 S=\frac{C/B}{f(C/B)}
 $$
 
-where $f(C/B)$ is the portfolio front function `portfolio_front(C/B)` at `C/B`
+where $f(C/B)$ is the portfolio front function `portfolio_front(C/B, A, B, C)` at `C/B`
 ```{python}
-import pickle #For saving the plot
-
 sigma_range = np.linspace(0, np.max(sigma_values), 100)
 
 # Plotting the portfolio front, after annualizing the 
 # weekly data
 ax.plot(plot_scale**0.5*sigma_range, plot_scale*(rf 
-        + sigma_range*(C/B)/tangency_sigma), 
-        color='r', linestyle='--', 
-        label='Capital Market Line')
+				+ sigma_range*(C/B)/tangency_sigma), 
+				color='r', linestyle='--', 
+				label='Capital Market Line')
 
 ax.legend()
 
 fig
 ```
+
 
 ***Coding Challenges:***
 
@@ -624,134 +625,3 @@ fig
 
 - **Challenge 4**: Calculate the optimal portfolio and place it in the chart, together with the capital market line  
 
-# Factors
-
-Factors are portfolios constructed based on specific characteristics of assets. For example, Fama and French proposed factors based on company valuation (over- or under-valuation) and company size.
-
-## Construction of Factors
-A standard, simplified method for constructing a factor portfolio involves creating a long position in the third of assets with the strongest characteristic (e.g., the most undervalued) and a short position in the third with the weakest. For instance, the **HML** (High Minus Low) factor by Fama and French takes a long position in the top third of companies with the highest market-to-book value and shorts the bottom third with the lowest.
-
-This results in a portfolio with zero net cost because the long and short positions offset each other. Hence, there's no need to subtract the risk-free rate when calculating returns for factor portfolios.
-
-In Titlon, there are four  factors: **SMB**, **HML**, **LIQ**, and **MOM**, alongside the market factor (the market index).
-
-- **SMB (Small Minus Big):** The return of small companies minus the return of large companies.
-- **HML (High Minus Low):** The return of companies with high market-to-book ratios compared to those with low ratios.
-- **LIQ (Liquidity):** The return of the most liquid companies minus that of the least liquid.
-- **MOM (Momentum):** The return of companies with high momentum minus those with high reversal tendencies.
-
-## Factor Model
-The main purpose of factors is to be used in regression analysis, like the following:
-
-$$
-\begin{array}{rl}
-x - r_f = \alpha + \beta_M (r_M - r_f)  \\
-+\beta_{SMB} \cdot SMB \\
-+\beta_{HML} \cdot HML 
-+\beta_{LIQ} \cdot LIQ \\
-+\beta_{MOM} \cdot MOM
- + \epsilon
-\end{array}
-$$
-
-This is a multifactor model. If we only include the market factor, the model reduces to the well-known **CAPM** (Capital Asset Pricing Model). Adding the additional factors results in a more comprehensive **factor model**.
-
-## Factors in Portfolio Evaluation
-Numerous factors have been proposed in the literature. However, many are believed to be the result of data mining, so it's common practice to use only the most established ones, like those mentioned above, when evaluating portfolio performance.
-
-The estimated $\alpha$ from the factor model is the most widely recognized measure of risk-adjusted return. A positive $\alpha$ indicates that a portion of the excess return of $x - r_f$ cannot be explained by exposure to any of the factors, including the market factor. This implies that the portfolio has delivered some form of risk-free excess return.
-
-As in any regression, you can compute the standard error and p-value of the estimated $\alpha$. This is crucial because, if the $\alpha$ is not statistically significant, we cannot confidently conclude that it is different from zero. Therefore, to claim that an asset or portfolio has truly outperformed the market, its multifactor $\alpha$ should be both positive and statistically significant.
-
-## Historical Context
-This framework is the standard method for determining whether a portfolio manager has genuinely been skilled or simply benefited from luck or factor exposures.
-
-The field of finance has, in many ways, been driven by the need to explain portfolio managers' overperformance. In the early 20th century, some managers appeared to consistently outperform the market. The development of **CAPM** revealed that this was often due to selecting stocks with high market risk rather than genuine skill. Most of these managers did not generate CAPM alpha.
-
-For investors seeking higher returns by taking on more market risk, simply buying more shares (increasing exposure to the market) is typically more cost-effective than picking the riskiest stocks. The development of CAPM helped investors make more informed choices.
-
-Similarly, the introduction of factor models showed that some managers were merely betting on small-cap stocks or undervalued companies to generate excess returns. When accounting for these factors, much of the supposed excess return often disappears.
-
-### Coding Challenges:
-
-- **Challenge 1**: 
-    - Download stock data from Titlon for a single stock.
-    - Perform a multifactor regression model using the downloaded data.
-    - Analyze the significance of the alpha: check whether it is statistically significant, and interpret its direction (positive or negative). 
-    - Provide commentary on what the result implies in terms of the stock's performance relative to the factors.
-
-- **Challenge 2**: 
-    - Download factor data from Titlon and plot the performance of these factors alongside the optimal portfolio from the previous chapter.
-    - Add each factor as a data point on the chart, allowing comparison between the factors and the optimal portfolio as well as the portfolio frontier.
-    - Use the following SQL query in the Titlon script to retrieve the factor data:
-    ```sql
-    SELECT [SMB],[HML],[LIQ],[MOM]
-      FROM [OSE].[dbo].[factors]
-      WHERE YEAR([Date]) >= 2016
-    ```
-    - Plot the performance and visually assess how each factor performs relative to the optimal portfolio.
-
-### Tentative answer to Challenge 2:
-
-We first download the factor data from titlon
-```{python}
-#| eval: false
-import pandas as pd
-#Query script for MySQL client
-import pymysql
-con = pymysql.connect(host='titlon.uit.no', 
-                user      = "user@account.com",
-                password  = "%VccvGWz5UjtT9sAuU7og",
-                database='OSE')  
-crsr=con.cursor()
-crsr.execute("SET SESSION MAX_EXECUTION_TIME=60000;")
-crsr.execute("""
-	SELECT  *
-	FROM `OSE`.`factors` 
-	WHERE year(`Date`) >= 2016
-	ORDER BY `Date`
-""")
-r=crsr.fetchall()
-df=pd.DataFrame(list(r), 
-      columns=[i[0] for i in crsr.description])
-df
-
-
-#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN,
-# OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK
-
-pd.to_pickle(df,'output/factors.df')
-```
-
-
-We then calculated the means and standard errors, after reducing the frequency from daily to weekly. 
-```{python}
-import pandas as pd
-
-df = pd.read_pickle('output/factors.df')
-df['Date'] = pd.to_datetime(df['Date'])
-df = df.set_index('Date')
-df_weekly = df.resample('W').sum()
-df_weekly = df_weekly[['SMB', 'HML', 'LIQ', 'MOM']].dropna()
-df = df[['SMB', 'HML', 'LIQ', 'MOM']].dropna()
-means = df_weekly.mean()*52
-std = df_weekly.std()*52**0.5
-print(std)
-print(means)
-df_weekly
-
-```
-
-
-We can then plot the factors in the existing porfolio frontier
-```{python}
-
-for series in means.index:
-    ax.scatter(std[series], means[series], label=series)
-
-ax.legend()
-
-fig
-```
-
-Can you construct the optimal portfolio of the stocks and the factors?
