@@ -23,7 +23,7 @@ Støttelitteratur:
 | 41  | 09.10 | [Forventning, nytte og risiko](finans/2-expectation_utility.html), [pdf](finans/2-expectation_utility.pdf)| ES|
 | 42  | 17.10 | [Optimale porteføljer og matriseregning](finans/3-lecture_optport.html), [pdf](finans/3-lecture_optport.pdf)| ES|
 | 43  | 24.10 | [Faktorer og prestasjonsmål](finans/3-lecture_optport.html), [pdf](finans/3-lecture_optport.pdf)| ES|
-| 44  | 31.10 | [VAR (Value At Risk) og risikobudsjettering](5-lecture_VaR.html)| ES|
+| 44  | 31.10 | [VAR (Value At Risk) og risikobudsjettering](finans/5-lecture_VaR.html), [pdf](finans/5-lecture_VaR.pdf)| ES|
 | 45  | 06.11 | Presentasjoner       | ES|
 | 47  | 22.11 | Endelig innlevering case I og case II (WISEFLOW)         |         |
 
