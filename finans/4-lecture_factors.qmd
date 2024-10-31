@@ -159,7 +159,7 @@ We can then plot the factors in the existing porfolio frontier
 
 for series in means.index:
 		ax.scatter(std[series], means[series], label=series)
-
+		ax.text(std[series], means[series], series, fontsize=8, ha='right', va='bottom')
 ax.legend()
 
 fig
