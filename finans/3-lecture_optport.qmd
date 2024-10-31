@@ -365,6 +365,7 @@ We will create an optimal portfolio and draw the "portfolio front" -  which are 
 ```{python}
 #| eval: false
 import pandas as pd
+import os
 #Query script for MySQL client
 import pymysql
 con = pymysql.connect(host='titlon.uit.no', 
@@ -388,6 +389,7 @@ df
 #YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN,
 # OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK
 
+os.makedirs('output', exist_ok=True)
 pd.to_pickle(df,'output/stocks.df')
 ```
 
