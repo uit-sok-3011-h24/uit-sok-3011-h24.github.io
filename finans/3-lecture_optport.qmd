@@ -424,7 +424,6 @@ res = (
 df = df.merge(res.head(4), on=['Name (ISIN)'], 
                                 how='inner')
 res.head(4)
-
 ```
 
 ## The historic mean and covariance matrix
@@ -512,7 +511,7 @@ B = (ones.T @ np.linalg.inv(cov_matrix)
 
 C = ((means.T-rf) @ np.linalg.inv(cov_matrix) 
 								@ (means-rf))[0][0]
-
+rf
 ```
 
 The portfolio front function, that returns the volatility associated with the minimum variance portfolio for a given `expected_excess_return` can then be defined as:

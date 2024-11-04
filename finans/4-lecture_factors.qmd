@@ -89,14 +89,80 @@ Similarly, the introduction of factor models showed that some managers were mere
 		```
 		- Plot the performance and visually assess how each factor performs relative to the optimal portfolio.
 
+## Tentative answer to Challenge 1:
+In the Titlon database, the `eqjty` table under the OSE tab all ready contains what we need to solve this. Let us therefore just load the data from lecture 3, and reduce it to weekly data for the variables we need:
+```{python}
+import pandas as pd
+# reads the data
+df_stocks = pd.read_pickle('output/stocks.df')
+
+
+
+# reducding the sample by foccusing on a few stocks of interest
+df_stocks = df_stocks[df_stocks['Symbol'].isin(['EQNR','NHY','TEL','YAR'])]
+
+# we capture the ISIN-ticker combinations for later use, to associate stocks with tickers
+# We need to use the ISIN in what's follows, because ticker is not a reliable identifier
+df_isin_symbol =  df_stocks[['ISIN','Symbol']].drop_duplicates()
+
+# choosing relevant columns
+df_stocks = df_stocks[['ISIN', 'Date', 'lnDeltaP', 
+				'lnDeltaOSEBX',  'SMB', 'HML', 
+				'LIQ', 'MOM', 'NOWA_DayLnrate']]
+
+# defines the indicies
+df_stocks['Date'] = pd.to_datetime(df_stocks['Date'])
+df_stocks = df_stocks.set_index(['ISIN', 'Date'])
+
+# making sure the index is unique
+df_stocks = df_stocks[~df_stocks.index.duplicated(keep='first')]
+
+# Define excess return of stocks and market index
+df_stocks['lnDeltaP_rf'] = (df_stocks['lnDeltaP'] 
+								- df_stocks['NOWA_DayLnrate'])
+df_stocks['lnDeltaOSEBX_rf'] = (df_stocks['lnDeltaOSEBX'] 
+								- df_stocks['NOWA_DayLnrate'])
+
+df_stocks.loc['NO0010096985']
+```
+
+
+```{python}
+df_weekly = (
+    df_stocks
+    .groupby('ISIN', group_keys=False)  # Group by ISIN but do not reset the index
+    .resample('W', level='Date')  # Resample the Date level to weekly frequency
+    .sum()  # Sum within each week for each ISIN
+)
+df_weekly
+```
+
+
+
+
 ## Tentative answer to Challenge 2:
 
-We first download the factor data from titlon
+First, let us just rerun the last few cells of the previous chapter, in order to have the previous graph in the memory. That can is done with a custom function `calc_notebook` in the module `functions,py`in this directory. `d` contains the variable from those calculations.
+
+
+```{python}
+import functions
+d = functions.calc_notebook("3-lecture_optport.ipynb", 
+			  ["read_pickle","get_matrix", "cov_matrix", "A =", 
+	  		   "portfolio_front", "ax.plot"])
+locals().update(d)
+```
+
+Also, we need data on the factors. We could use the data from the `equity` table, loaded in lecture 3. However, we want one factor observation each date, not one for each stock. Downloading the `factors`model from Titlon is therefore more convenient. We get this by pasting the script from Titlon below, or you can just paste the username and password if you want. 
+
+If you have all ready run this, you do not need to rerun it, since the data is stored.
+
 ```{python}
 #| eval: false
 import pandas as pd
 #Query script for MySQL client
 import pymysql
+import os
 con = pymysql.connect(host='titlon.uit.no', 
 								user      = "user@account.com",
 								password  = "%VccvGWz5UjtT9sAuU7og",
@@ -118,22 +184,11 @@ df
 #YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN,
 # OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK
 
+os.makedirs('output', exist_ok=True)
 pd.to_pickle(df,'output/factors.df')
 ```
 
-
-First, let us just rerun the last few cells of the previous chapter, in order to have the previous graph in the memory. That can is done with a custom function `calc_notebook` in the module `functions,py`in this directory. `d` contains the variable from those calculations.
-
-
-```{python}
-import functions
-d = functions.calc_notebook("3-lecture_optport.ipynb", 
-			  ["read_pickle","get_matrix", "cov_matrix", "A =", 
-	  		   "portfolio_front", "ax.plot"])
-locals().update(d)
-```
-
-We then calculated the means and standard errors, after reducing the frequency from daily to weekly. 
+We then loade the saved file and calculate the means and standard errors, after reducing the frequency from daily to weekly.
 
 ```{python}
 import pandas as pd
