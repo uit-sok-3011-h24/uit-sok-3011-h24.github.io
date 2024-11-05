@@ -90,7 +90,7 @@ Similarly, the introduction of factor models showed that some managers were mere
 		- Plot the performance and visually assess how each factor performs relative to the optimal portfolio.
 
 ## Tentative answer to Challenge 1:
-In the Titlon database, the `eqjty` table under the OSE tab all ready contains what we need to solve this. Let us therefore just load the data from lecture 3, and reduce it to weekly data for the variables we need:
+In the Titlon database, the `equity` table under the OSE tab all ready contains what we need to solve this. Let us therefore just load the data from lecture 3, and reduce it to weekly data for the variables we need:
 ```{python}
 import pandas as pd
 # reads the data
@@ -106,16 +106,17 @@ df_stocks = df_stocks[df_stocks['Symbol'].isin(['EQNR','NHY','TEL','YAR'])]
 df_isin_symbol =  df_stocks[['ISIN','Symbol']].drop_duplicates()
 
 # choosing relevant columns
-df_stocks = df_stocks[['ISIN', 'Date', 'lnDeltaP', 
+df_stocks = df_stocks[['Symbol', 'Date', 'lnDeltaP', 
 				'lnDeltaOSEBX',  'SMB', 'HML', 
 				'LIQ', 'MOM', 'NOWA_DayLnrate']]
 
 # defines the indicies
 df_stocks['Date'] = pd.to_datetime(df_stocks['Date'])
-df_stocks = df_stocks.set_index(['ISIN', 'Date'])
+df_stocks = df_stocks.set_index(['Symbol', 'Date'])
 
-# making sure the index is unique
+# making sure the index is unique and remove nans
 df_stocks = df_stocks[~df_stocks.index.duplicated(keep='first')]
+df_stocks = df_stocks.dropna(subset=['SMB'])
 
 # Define excess return of stocks and market index
 df_stocks['lnDeltaP_rf'] = (df_stocks['lnDeltaP'] 
@@ -123,21 +124,34 @@ df_stocks['lnDeltaP_rf'] = (df_stocks['lnDeltaP']
 df_stocks['lnDeltaOSEBX_rf'] = (df_stocks['lnDeltaOSEBX'] 
 								- df_stocks['NOWA_DayLnrate'])
 
-df_stocks.loc['NO0010096985']
+# Creating weekly observations
+df_stocks_w = df_stocks.groupby('Symbol').resample('W', level='Date').sum()
+df_stocks_w
 ```
 
-
+Running the regression for Equinor
 ```{python}
-df_weekly = (
-    df_stocks
-    .groupby('ISIN', group_keys=False)  # Group by ISIN but do not reset the index
-    .resample('W', level='Date')  # Resample the Date level to weekly frequency
-    .sum()  # Sum within each week for each ISIN
-)
-df_weekly
+import statsmodels.api as sm
+
+# Filter the DataFrame for Symbol = 'EQNR'
+df_reg = df_stocks_w.loc['EQNR']
+
+# Define the independent variables (features) and dependent variable (target)
+X = df_reg[['lnDeltaOSEBX_rf', 'SMB', 'HML', 'LIQ', 'MOM']]
+y = df_reg['lnDeltaP_rf']
+
+# Add a constant to the independent variables for the intercept
+X = sm.add_constant(X)
+
+# Perform the regression
+model = sm.OLS(y, X).fit()
+
+# Display the summary of the regression
+print(model.summary())
+
 ```
 
-
+Conclusion, there has been no significant excess return since 2016 for Equinor. 
 
 
 ## Tentative answer to Challenge 2:
