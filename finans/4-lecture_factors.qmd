@@ -1,8 +1,9 @@
 ---
-title: "4 - Factors"
+title: "4 - Potfolio evaluation, CAPM and factors"
 author: "Espen Sirnes"
 date: "2024-10-30"
 pdf-engine: pdflatex
+bibliography: references.bib
 format:
   pdf:
     number-sections: true
@@ -21,12 +22,41 @@ format:
     equation-numbering: true
   html:
     equation-numbering: true
+  ipynb: default
 ---
 
+In order to understand what factors are, we need to start with the Capital Asset Pricing Model (CAPM) [@Sharpe1964, @Lintner1965, @Mossin1966]. This is the original "factor model", where the only factor is the market index (the collection of all stocks weighted by market capitalization).
 
-Factors are portfolios constructed based on specific characteristics of assets. For example, Fama and French proposed factors based on company valuation (over- or under-valuation) and company size.
+# The capital asset pricing model
+CAPM is defined by the following univariat regression model
+
+$$
+\begin{array}{rl}
+x - r_f = \alpha + \beta_M (r_M - r_f) + \epsilon
+\end{array}
+$${#eq-CAPM}
+
+A good way to evaluate the model, is by looking at the estimated $\hat{\beta}_M$, and compare it with the returns. This is a bit to complicated to put in a document like this, so it has been programmed in the local module `sec_mkt_line` included in this repository. This will plot the returns and betas for the stocks at Euronext Oslo Stock Exchane since 2016, for various filtrations of stocks. The stocks are filtered on average market share in the period.
+
+```{python}
+#| fig-cap: "Returns and betas for stocks at Euronext Oslo Stock Exchange since 2019. The stocks are filtered on average market share in the period"
+#| label: fig-CAPM
+
+import sec_mkt_line
+
+fig, ax = sec_mkt_line.plot_sec_mkt_lines()
+
+```
+
+The stocks should lie on the line from the risk free interest rate $r_f$ to the beta and return of the market portfolio (OSEBX), which allways should have $\beta_M=1$, since it is itself the market. 
+
+As we can see, the CAPM
+
+
 
 # Construction of Factors
+Factors are portfolios constructed based on specific characteristics of assets. For example, Fama and French proposed factors based on company valuation (over- or under-valuation) and company size.
+
 A standard, simplified method for constructing a factor portfolio involves creating a long position in the third of assets with the strongest characteristic (e.g., the most undervalued) and a short position in the third with the weakest. For instance, the **HML** (High Minus Low) factor by Fama and French takes a long position in the top third of companies with the highest market-to-book value and shorts the bottom third with the lowest.
 
 This results in a portfolio with zero net cost because the long and short positions offset each other. Hence, there's no need to subtract the risk-free rate when calculating returns for factor portfolios.
@@ -50,7 +80,7 @@ x - r_f = \alpha + \beta_M (r_M - r_f)  \\
 +\beta_{MOM} \cdot MOM
  + \epsilon
 \end{array}
-$$
+$${#eq-factor_model}
 
 This is a multifactor model. If we only include the market factor, the model reduces to the well-known **CAPM** (Capital Asset Pricing Model). Adding the additional factors results in a more comprehensive **factor model**.
 
@@ -98,12 +128,19 @@ df_stocks = pd.read_pickle('output/stocks.df')
 
 
 
-# reducding the sample by foccusing on a few stocks of interest
-df_stocks = df_stocks[df_stocks['Symbol'].isin(['EQNR','NHY','TEL','YAR'])]
+# reducding the sample by foccusing on a few stocks of 
+# interest
+df_stocks = (df_stocks[df_stocks['Symbol']
+		.isin(['EQNR','NHY','TEL','YAR'])])
 
-# we capture the ISIN-ticker combinations for later use, to associate stocks with tickers
-# We need to use the ISIN in what's follows, because ticker is not a reliable identifier
-df_isin_symbol =  df_stocks[['ISIN','Symbol']].drop_duplicates()
+# we capture the ISIN-ticker combinations for later 
+# use, to associate stocks with tickers
+# We need to use the ISIN in what's follows, 
+# because ticker is not a reliable identifier
+
+df_isin_symbol = (
+	df_stocks[['ISIN','Symbol']].drop_duplicates()
+	)
 
 # choosing relevant columns
 df_stocks = df_stocks[['Symbol', 'Date', 'lnDeltaP', 
@@ -125,7 +162,11 @@ df_stocks['lnDeltaOSEBX_rf'] = (df_stocks['lnDeltaOSEBX']
 								- df_stocks['NOWA_DayLnrate'])
 
 # Creating weekly observations
-df_stocks_w = df_stocks.groupby('Symbol').resample('W', level='Date').sum()
+df_stocks_w = (
+	df_stocks.groupby('Symbol')
+	.resample('W', level='Date').sum()
+	)
+
 df_stocks_w
 ```
 
@@ -136,11 +177,14 @@ import statsmodels.api as sm
 # Filter the DataFrame for Symbol = 'EQNR'
 df_reg = df_stocks_w.loc['EQNR']
 
-# Define the independent variables (features) and dependent variable (target)
-X = df_reg[['lnDeltaOSEBX_rf', 'SMB', 'HML', 'LIQ', 'MOM']]
+# Define the independent variables (features) and 
+# dependent variable (target)
+X = df_reg[['lnDeltaOSEBX_rf', 
+				'SMB', 'HML', 'LIQ', 'MOM']]
 y = df_reg['lnDeltaP_rf']
 
-# Add a constant to the independent variables for the intercept
+# Add a constant to the independent variables 
+# for the intercept
 X = sm.add_constant(X)
 
 # Perform the regression
@@ -162,8 +206,9 @@ First, let us just rerun the last few cells of the previous chapter, in order to
 ```{python}
 import functions
 d = functions.calc_notebook("3-lecture_optport.ipynb", 
-			  ["read_pickle","get_matrix", "cov_matrix", "A =", 
-	  		   "portfolio_front", "ax.plot"])
+			  ["read_pickle","get_matrix", 
+			  		"cov_matrix", "A =", 
+				 	"portfolio_front", "ax.plot"])
 locals().update(d)
 ```
 
@@ -178,9 +223,9 @@ import pandas as pd
 import pymysql
 import os
 con = pymysql.connect(host='titlon.uit.no', 
-								user      = "user@account.com",
-								password  = "%VccvGWz5UjtT9sAuU7og",
-								database='OSE')  
+			user      = "user@account.com",
+			password  = "%VccvGWz5UjtT9sAuU7og",
+			database='OSE')  
 crsr=con.cursor()
 crsr.execute("SET SESSION MAX_EXECUTION_TIME=60000;")
 crsr.execute("""
@@ -211,7 +256,8 @@ df = pd.read_pickle('output/factors.df')
 df['Date'] = pd.to_datetime(df['Date'])
 df = df.set_index('Date')
 df_weekly = df.resample('W').sum()
-df_weekly = df_weekly[['SMB', 'HML', 'LIQ', 'MOM']].dropna()
+df_weekly = df_weekly[['SMB', 'HML', 
+							'LIQ', 'MOM']].dropna()
 df = df[['SMB', 'HML', 'LIQ', 'MOM']].dropna()
 means = df_weekly.mean()*52
 std = df_weekly.std()*52**0.5
@@ -227,11 +273,16 @@ We can then plot the factors in the existing porfolio frontier
 ```{python}
 
 for series in means.index:
-		ax.scatter(std[series], means[series], label=series)
-		ax.text(std[series], means[series], series, fontsize=8, ha='right', va='bottom')
+		ax.scatter(std[series], means[series], 
+										label=series)
+		ax.text(std[series], means[series], series, 
+					fontsize=8, ha='right', va='bottom')
 ax.legend()
 
 fig
 ```
 
 Can you construct the optimal portfolio of the stocks and the factors?
+
+# Literature
+::: {#refs}

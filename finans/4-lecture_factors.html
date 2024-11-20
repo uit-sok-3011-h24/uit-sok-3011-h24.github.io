@@ -9,7 +9,7 @@
 <meta name="author" content="Espen Sirnes">
 <meta name="dcterms.date" content="2024-10-30">
 
-<title>4 - Factors</title>
+<title>4 - Potfolio evaluation, CAPM and factors</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,7 +56,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="4-lecture_factors_files/libs/clipboard/clipboard.min.js"></script>
@@ -109,12 +129,12 @@ window.Quarto = {
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="4-lecture_factors.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="4-lecture_factors.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="4-lecture_factors.ipynb" download="4-lecture_factors.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">4 - Factors</h1>
+<h1 class="title">4 - Potfolio evaluation, CAPM and factors</h1>
 </div>
 
 
@@ -143,9 +163,39 @@ window.Quarto = {
 </header>
 
 
-<p>Factors are portfolios constructed based on specific characteristics of assets. For example, Fama and French proposed factors based on company valuation (over- or under-valuation) and company size.</p>
+<p>In order to understand what factors are, we need to start with the Capital Asset Pricing Model (CAPM) <span class="citation" data-cites="Sharpe1964">Mossin (<a href="#ref-Mossin1966" role="doc-biblioref">1966</a>)</span>. This is the original “factor model”, where the only factor is the market index (the collection of all stocks weighted by market capitalization).</p>
+<section id="the-capital-asset-pricing-model" class="level1">
+<h1>The capital asset pricing model</h1>
+<p>CAPM is defined by the following univariat regression model</p>
+<p><span id="eq-CAPM"><span class="math display">\[
+\begin{array}{rl}
+x - r_f = \alpha + \beta_M (r_M - r_f) + \epsilon
+\end{array}
+\tag{1}\]</span></span></p>
+<p>A good way to evaluate the model, is by looking at the estimated <span class="math inline">\(\hat{\beta}_M\)</span>, and compare it with the returns. This is a bit to complicated to put in a document like this, so it has been programmed in the local module <code>sec_mkt_line</code> included in this repository. This will plot the returns and betas for the stocks at Euronext Oslo Stock Exchane since 2016, for various filtrations of stocks. The stocks are filtered on average market share in the period.</p>
+<div id="cell-fig-CAPM" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sec_mkt_line</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> sec_mkt_line.plot_sec_mkt_lines()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-capm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-capm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="4-lecture_factors_files/figure-html/fig-capm-output-1.png" width="632" height="480" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-capm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Returns and betas for stocks at Euronext Oslo Stock Exchange since 2019. The stocks are filtered on average market share in the period
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The stocks should lie on the line from the risk free interest rate <span class="math inline">\(r_f\)</span> to the beta and return of the market portfolio (OSEBX), which allways should have <span class="math inline">\(\beta_M=1\)</span>, since it is itself the market.</p>
+<p>As we can see, the CAPM</p>
+</section>
 <section id="construction-of-factors" class="level1">
 <h1>Construction of Factors</h1>
+<p>Factors are portfolios constructed based on specific characteristics of assets. For example, Fama and French proposed factors based on company valuation (over- or under-valuation) and company size.</p>
 <p>A standard, simplified method for constructing a factor portfolio involves creating a long position in the third of assets with the strongest characteristic (e.g., the most undervalued) and a short position in the third with the weakest. For instance, the <strong>HML</strong> (High Minus Low) factor by Fama and French takes a long position in the top third of companies with the highest market-to-book value and shorts the bottom third with the lowest.</p>
 <p>This results in a portfolio with zero net cost because the long and short positions offset each other. Hence, there’s no need to subtract the risk-free rate when calculating returns for factor portfolios.</p>
 <p>In Titlon, there are four factors: <strong>SMB</strong>, <strong>HML</strong>, <strong>LIQ</strong>, and <strong>MOM</strong>, alongside the market factor (the market index).</p>
@@ -158,7 +208,7 @@ window.Quarto = {
 <section id="factor-model" class="level2">
 <h2 class="anchored" data-anchor-id="factor-model">Factor Model</h2>
 <p>The main purpose of factors is to be used in regression analysis, like the following:</p>
-<p><span class="math display">\[
+<p><span id="eq-factor_model"><span class="math display">\[
 \begin{array}{rl}
 x - r_f = \alpha + \beta_M (r_M - r_f)  \\
 +\beta_{SMB} \cdot SMB \\
@@ -167,7 +217,7 @@ x - r_f = \alpha + \beta_M (r_M - r_f)  \\
 +\beta_{MOM} \cdot MOM
 + \epsilon
 \end{array}
-\]</span></p>
+\tag{2}\]</span></span></p>
 <p>This is a multifactor model. If we only include the market factor, the model reduces to the well-known <strong>CAPM</strong> (Capital Asset Pricing Model). Adding the additional factors results in a more comprehensive <strong>factor model</strong>.</p>
 </section>
 </section>
@@ -193,43 +243,54 @@ x - r_f = \alpha + \beta_M (r_M - r_f)  \\
 <section id="tentative-answer-to-challenge-1" class="level2">
 <h2 class="anchored" data-anchor-id="tentative-answer-to-challenge-1">Tentative answer to Challenge 1:</h2>
 <p>In the Titlon database, the <code>equity</code> table under the OSE tab all ready contains what we need to solve this. Let us therefore just load the data from lecture 3, and reduce it to weekly data for the variables we need:</p>
-<div id="56b9a2f9" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># reads the data</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> pd.read_pickle(<span class="st">'output/stocks.df'</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># reducding the sample by foccusing on a few stocks of interest</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks[df_stocks[<span class="st">'Symbol'</span>].isin([<span class="st">'EQNR'</span>,<span class="st">'NHY'</span>,<span class="st">'TEL'</span>,<span class="st">'YAR'</span>])]</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># we capture the ISIN-ticker combinations for later use, to associate stocks with tickers</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to use the ISIN in what's follows, because ticker is not a reliable identifier</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df_isin_symbol <span class="op">=</span>  df_stocks[[<span class="st">'ISIN'</span>,<span class="st">'Symbol'</span>]].drop_duplicates()</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># choosing relevant columns</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks[[<span class="st">'Symbol'</span>, <span class="st">'Date'</span>, <span class="st">'lnDeltaP'</span>, </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">'lnDeltaOSEBX'</span>,  <span class="st">'SMB'</span>, <span class="st">'HML'</span>, </span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">'LIQ'</span>, <span class="st">'MOM'</span>, <span class="st">'NOWA_DayLnrate'</span>]]</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># defines the indicies</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>df_stocks[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(df_stocks[<span class="st">'Date'</span>])</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks.set_index([<span class="st">'Symbol'</span>, <span class="st">'Date'</span>])</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># making sure the index is unique and remove nans</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks[<span class="op">~</span>df_stocks.index.duplicated(keep<span class="op">=</span><span class="st">'first'</span>)]</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks.dropna(subset<span class="op">=</span>[<span class="st">'SMB'</span>])</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Define excess return of stocks and market index</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>df_stocks[<span class="st">'lnDeltaP_rf'</span>] <span class="op">=</span> (df_stocks[<span class="st">'lnDeltaP'</span>] </span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                                <span class="op">-</span> df_stocks[<span class="st">'NOWA_DayLnrate'</span>])</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>df_stocks[<span class="st">'lnDeltaOSEBX_rf'</span>] <span class="op">=</span> (df_stocks[<span class="st">'lnDeltaOSEBX'</span>] </span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                                <span class="op">-</span> df_stocks[<span class="st">'NOWA_DayLnrate'</span>])</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating weekly observations</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>df_stocks_w <span class="op">=</span> df_stocks.groupby(<span class="st">'Symbol'</span>).resample(<span class="st">'W'</span>, level<span class="op">=</span><span class="st">'Date'</span>).<span class="bu">sum</span>()</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>df_stocks_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div id="998e3a3e" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># reads the data</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> pd.read_pickle(<span class="st">'output/stocks.df'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># reducding the sample by foccusing on a few stocks of </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># interest</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> (df_stocks[df_stocks[<span class="st">'Symbol'</span>]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        .isin([<span class="st">'EQNR'</span>,<span class="st">'NHY'</span>,<span class="st">'TEL'</span>,<span class="st">'YAR'</span>])])</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># we capture the ISIN-ticker combinations for later </span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># use, to associate stocks with tickers</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to use the ISIN in what's follows, </span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># because ticker is not a reliable identifier</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>df_isin_symbol <span class="op">=</span> (</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    df_stocks[[<span class="st">'ISIN'</span>,<span class="st">'Symbol'</span>]].drop_duplicates()</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># choosing relevant columns</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks[[<span class="st">'Symbol'</span>, <span class="st">'Date'</span>, <span class="st">'lnDeltaP'</span>, </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                <span class="st">'lnDeltaOSEBX'</span>,  <span class="st">'SMB'</span>, <span class="st">'HML'</span>, </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">'LIQ'</span>, <span class="st">'MOM'</span>, <span class="st">'NOWA_DayLnrate'</span>]]</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># defines the indicies</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>df_stocks[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(df_stocks[<span class="st">'Date'</span>])</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks.set_index([<span class="st">'Symbol'</span>, <span class="st">'Date'</span>])</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># making sure the index is unique and remove nans</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks[<span class="op">~</span>df_stocks.index.duplicated(keep<span class="op">=</span><span class="st">'first'</span>)]</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>df_stocks <span class="op">=</span> df_stocks.dropna(subset<span class="op">=</span>[<span class="st">'SMB'</span>])</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Define excess return of stocks and market index</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>df_stocks[<span class="st">'lnDeltaP_rf'</span>] <span class="op">=</span> (df_stocks[<span class="st">'lnDeltaP'</span>] </span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>                                <span class="op">-</span> df_stocks[<span class="st">'NOWA_DayLnrate'</span>])</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>df_stocks[<span class="st">'lnDeltaOSEBX_rf'</span>] <span class="op">=</span> (df_stocks[<span class="st">'lnDeltaOSEBX'</span>] </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>                                <span class="op">-</span> df_stocks[<span class="st">'NOWA_DayLnrate'</span>])</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating weekly observations</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>df_stocks_w <span class="op">=</span> (</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    df_stocks.groupby(<span class="st">'Symbol'</span>)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    .resample(<span class="st">'W'</span>, level<span class="op">=</span><span class="st">'Date'</span>).<span class="bu">sum</span>()</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>df_stocks_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -406,32 +467,35 @@ x - r_f = \alpha + \beta_M (r_M - r_f)  \\
 </div>
 </div>
 <p>Running the regression for Equinor</p>
-<div id="5a1f261c" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the DataFrame for Symbol = 'EQNR'</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df_reg <span class="op">=</span> df_stocks_w.loc[<span class="st">'EQNR'</span>]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the independent variables (features) and dependent variable (target)</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_reg[[<span class="st">'lnDeltaOSEBX_rf'</span>, <span class="st">'SMB'</span>, <span class="st">'HML'</span>, <span class="st">'LIQ'</span>, <span class="st">'MOM'</span>]]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_reg[<span class="st">'lnDeltaP_rf'</span>]</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables for the intercept</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(X)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform the regression</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.OLS(y, X).fit()</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the summary of the regression</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="70b8e2f6" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the DataFrame for Symbol = 'EQNR'</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df_reg <span class="op">=</span> df_stocks_w.loc[<span class="st">'EQNR'</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the independent variables (features) and </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># dependent variable (target)</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df_reg[[<span class="st">'lnDeltaOSEBX_rf'</span>, </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">'SMB'</span>, <span class="st">'HML'</span>, <span class="st">'LIQ'</span>, <span class="st">'MOM'</span>]]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_reg[<span class="st">'lnDeltaP_rf'</span>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a constant to the independent variables </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># for the intercept</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(X)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform the regression</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the summary of the regression</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                            OLS Regression Results                            
 ==============================================================================
 Dep. Variable:            lnDeltaP_rf   R-squared:                       0.609
 Model:                            OLS   Adj. R-squared:                  0.604
 Method:                 Least Squares   F-statistic:                     131.7
-Date:                Tue, 05 Nov 2024   Prob (F-statistic):           6.56e-84
-Time:                        14:56:13   Log-Likelihood:                 981.74
+Date:                Wed, 20 Nov 2024   Prob (F-statistic):           6.56e-84
+Time:                        14:40:33   Log-Likelihood:                 981.74
 No. Observations:                 429   AIC:                            -1951.
 Df Residuals:                     423   BIC:                            -1927.
 Df Model:                           5                                         
@@ -461,59 +525,61 @@ Notes:
 <section id="tentative-answer-to-challenge-2" class="level2">
 <h2 class="anchored" data-anchor-id="tentative-answer-to-challenge-2">Tentative answer to Challenge 2:</h2>
 <p>First, let us just rerun the last few cells of the previous chapter, in order to have the previous graph in the memory. That can is done with a custom function <code>calc_notebook</code> in the module <code>functions,py</code>in this directory. <code>d</code> contains the variable from those calculations.</p>
-<div id="f73c4ac4" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> functions</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> functions.calc_notebook(<span class="st">"3-lecture_optport.ipynb"</span>, </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>              [<span class="st">"read_pickle"</span>,<span class="st">"get_matrix"</span>, <span class="st">"cov_matrix"</span>, <span class="st">"A ="</span>, </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="st">"portfolio_front"</span>, <span class="st">"ax.plot"</span>])</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">locals</span>().update(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0aa9f567" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> functions</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> functions.calc_notebook(<span class="st">"3-lecture_optport.ipynb"</span>, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              [<span class="st">"read_pickle"</span>,<span class="st">"get_matrix"</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"cov_matrix"</span>, <span class="st">"A ="</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"portfolio_front"</span>, <span class="st">"ax.plot"</span>])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">locals</span>().update(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Also, we need data on the factors. We could use the data from the <code>equity</code> table, loaded in lecture 3. However, we want one factor observation each date, not one for each stock. Downloading the <code>factors</code>model from Titlon is therefore more convenient. We get this by pasting the script from Titlon below, or you can just paste the username and password if you want.</p>
 <p>If you have all ready run this, you do not need to rerun it, since the data is stored.</p>
-<div id="c67bc28a" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Query script for MySQL client</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymysql</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> pymysql.<span class="ex">connect</span>(host<span class="op">=</span><span class="st">'titlon.uit.no'</span>, </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                                user      <span class="op">=</span> <span class="st">"user@account.com"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                                password  <span class="op">=</span> <span class="st">"%VccvGWz5UjtT9sAuU7og"</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                                database<span class="op">=</span><span class="st">'OSE'</span>)  </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>crsr<span class="op">=</span>con.cursor()</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>crsr.execute(<span class="st">"SET SESSION MAX_EXECUTION_TIME=60000;"</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>crsr.execute(<span class="st">"""</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT  *</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM `OSE`.`factors` </span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE year(`Date`) &gt;= 2016</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY `Date`</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>r<span class="op">=</span>crsr.fetchall()</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>pd.DataFrame(<span class="bu">list</span>(r), </span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            columns<span class="op">=</span>[i[<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> crsr.description])</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>df</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co">#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN,</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'output'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>pd.to_pickle(df,<span class="st">'output/factors.df'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d92e26a6" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Query script for MySQL client</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymysql</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> pymysql.<span class="ex">connect</span>(host<span class="op">=</span><span class="st">'titlon.uit.no'</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            user      <span class="op">=</span> <span class="st">"user@account.com"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            password  <span class="op">=</span> <span class="st">"%VccvGWz5UjtT9sAuU7og"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            database<span class="op">=</span><span class="st">'OSE'</span>)  </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>crsr<span class="op">=</span>con.cursor()</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>crsr.execute(<span class="st">"SET SESSION MAX_EXECUTION_TIME=60000;"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>crsr.execute(<span class="st">"""</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT  *</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM `OSE`.`factors` </span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE year(`Date`) &gt;= 2016</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY `Date`</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>r<span class="op">=</span>crsr.fetchall()</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>pd.DataFrame(<span class="bu">list</span>(r), </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>            columns<span class="op">=</span>[i[<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> crsr.description])</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>df</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#YOU NEED TO BE CONNECTED TO YOUR INSTITUTION VIA VPN,</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># OR BE AT THE INSTITUTION, FOR THIS CODE TO WORK</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">'output'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>pd.to_pickle(df,<span class="st">'output/factors.df'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We then loade the saved file and calculate the means and standard errors, after reducing the frequency from daily to weekly.</p>
-<div id="002223ae" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_pickle(<span class="st">'output/factors.df'</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'Date'</span>])</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.set_index(<span class="st">'Date'</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>df_weekly <span class="op">=</span> df.resample(<span class="st">'W'</span>).<span class="bu">sum</span>()</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>df_weekly <span class="op">=</span> df_weekly[[<span class="st">'SMB'</span>, <span class="st">'HML'</span>, <span class="st">'LIQ'</span>, <span class="st">'MOM'</span>]].dropna()</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[[<span class="st">'SMB'</span>, <span class="st">'HML'</span>, <span class="st">'LIQ'</span>, <span class="st">'MOM'</span>]].dropna()</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> df_weekly.mean()<span class="op">*</span><span class="dv">52</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>std <span class="op">=</span> df_weekly.std()<span class="op">*</span><span class="dv">52</span><span class="op">**</span><span class="fl">0.5</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(std)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(means)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>df_weekly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="1fddbca3" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_pickle(<span class="st">'output/factors.df'</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'Date'</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.set_index(<span class="st">'Date'</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>df_weekly <span class="op">=</span> df.resample(<span class="st">'W'</span>).<span class="bu">sum</span>()</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>df_weekly <span class="op">=</span> df_weekly[[<span class="st">'SMB'</span>, <span class="st">'HML'</span>, </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                            <span class="st">'LIQ'</span>, <span class="st">'MOM'</span>]].dropna()</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[[<span class="st">'SMB'</span>, <span class="st">'HML'</span>, <span class="st">'LIQ'</span>, <span class="st">'MOM'</span>]].dropna()</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> df_weekly.mean()<span class="op">*</span><span class="dv">52</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>std <span class="op">=</span> df_weekly.std()<span class="op">*</span><span class="dv">52</span><span class="op">**</span><span class="fl">0.5</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(std)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(means)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>df_weekly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SMB    0.145195
 HML    0.193652
@@ -526,7 +592,7 @@ LIQ    0.019353
 MOM    0.164041
 dtype: float64</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
 
@@ -633,23 +699,39 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>We can then plot the factors in the existing porfolio frontier</p>
-<div id="e70f841d" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> series <span class="kw">in</span> means.index:</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        ax.scatter(std[series], means[series], label<span class="op">=</span>series)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        ax.text(std[series], means[series], series, fontsize<span class="op">=</span><span class="dv">8</span>, ha<span class="op">=</span><span class="st">'right'</span>, va<span class="op">=</span><span class="st">'bottom'</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div id="54f0d1f7" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> series <span class="kw">in</span> means.index:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>        ax.scatter(std[series], means[series], </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                        label<span class="op">=</span>series)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        ax.text(std[series], means[series], series, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                    fontsize<span class="op">=</span><span class="dv">8</span>, ha<span class="op">=</span><span class="st">'right'</span>, va<span class="op">=</span><span class="st">'bottom'</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 <figure class="figure">
-<p><img src="4-lecture_factors_files/figure-html/cell-7-output-1.png" width="821" height="523" class="figure-img"></p>
+<p><img src="4-lecture_factors_files/figure-html/cell-8-output-1.png" width="2564" height="1635" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Can you construct the optimal portfolio of the stocks and the factors?</p>
 </section>
+</section>
+<section id="literature" class="level1">
+<h1>Literature</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Lintner1965" class="csl-entry" role="listitem">
+Lintner, John. 1965. <span>“The Valuation of Risk Assets and the Selection of Risky Investments in Stock Portfolios and Capital Budgets.”</span> <em>The Review of Economics and Statistics</em> 47 (1): 13–37. <a href="https://doi.org/10.2307/1924119">https://doi.org/10.2307/1924119</a>.
+</div>
+<div id="ref-Mossin1966" class="csl-entry" role="listitem">
+Mossin, Jan. 1966. <span>“Equilibrium in a Capital Asset Market.”</span> <em>Econometrica</em> 34 (4): 768–83. <a href="https://doi.org/10.2307/1910098">https://doi.org/10.2307/1910098</a>.
+</div>
+<div id="ref-Sharpe1964" class="csl-entry" role="listitem">
+Sharpe, William F. 1964. <span>“Capital Asset Prices: A Theory of Market Equilibrium Under Conditions of Risk.”</span> <em>The Journal of Finance</em> 19 (3): 425–42. <a href="https://doi.org/10.2307/2977928">https://doi.org/10.2307/2977928</a>.
+</div>
+</div>
 </section>
 
 </main>

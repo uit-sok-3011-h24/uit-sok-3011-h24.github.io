@@ -3,6 +3,7 @@ title: "5 - Value at Risk (VaR)"
 author: "Espen Sirnes"
 date: "2024-10-30"
 pdf-engine: pdflatex
+bibliography: references.bib
 format:
   pdf:
     number-sections: true
@@ -21,12 +22,13 @@ format:
     equation-numbering: true
   html:
     equation-numbering: true
+  ipynb: default
 ---
 # VaR
 
-Value at Risk, commonly known as VaR, is a foundational concept in risk management, widely used by financial institutions to quantify and control risk exposure. Essentially, VaR answers the question, *"What is the maximum potential loss over a given time period within a specified confidence interval?"* The confidence interval here represents the range within which we expect a certain percentage of returns to fall. For instance, with a 95% confidence interval, we anticipate that only 5% of cases will breach this lower threshold. The closer the model's expected breaches are to the actual empirical frequency, the better the model's accuracy.
+Value at Risk, commonly known as VaR, is a foundational concept in risk management, widely used by financial institutions to quantify and control risk exposure [@RiskMetrics1996]. Essentially, VaR answers the question, *"What is the maximum potential loss over a given time period within a specified confidence interval?"* The confidence interval here represents the range within which we expect a certain percentage of returns to fall. For instance, with a 95% confidence interval, we anticipate that only 5% of cases will breach this lower threshold. The closer the model's expected breaches are to the actual empirical frequency, the better the model's accuracy.
 
-VaR provides a standardized way to assess risk, helping firms to understand potential losses and allocate capital effectively. Regulators also rely heavily on VaR; in fact, this method is embedded directly in EU financial regulations, requiring banks to hold capital reserves proportional to their risk exposure. By setting a standardized measure for risk, VaR supports financial stability and resilience, making it invaluable for both risk managers and regulators.
+VaR provides a standardized way to assess risk, helping firms to understand potential losses and allocate capital effectively [@Jorion2007]. Regulators also rely heavily on VaR; in fact, this method is embedded directly in EU financial regulations, requiring banks to hold capital reserves proportional to their risk exposure [@Ong2007]. By setting a standardized measure for risk, VaR supports financial stability and resilience, making it invaluable for both risk managers and regulators.
 
 In this lecture, we’ll see that VaR is not a single, fixed method. Its accuracy and effectiveness depend on one crucial element: how volatility is predicted. Different approaches to forecasting volatility result in varying VaR outcomes, each with its strengths and limitations. By exploring these nuances, we’ll gain a deeper understanding of both the power and the limitations of VaR as a risk management tool.
 
@@ -97,9 +99,6 @@ def generate_backtest(f, df, name, estimation_win_size):
 
 This setup allows for a flexible approach to testing different VaR models by simply passing different VaR estimation functions into `generate_backtest`. The returned data can then be used to evaluate the model’s effectiveness by comparing predicted breaches against actual outcomes.
 
-Here’s a refined version of the evaluation function and its description, with improved clarity and formatting:
-
----
 
 # Evaluation Function
 
@@ -149,9 +148,7 @@ def evaluate(plt, d95, d99, ret, dates, heading):
 
 This function provides a visual and numerical evaluation of VaR accuracy. The plot shows the 95% and 99% VaR levels alongside the actual returns, with breaches of the 95% VaR highlighted. The function then calculates and prints the percentage of breaches, allowing us to assess how well the model aligns with expected outcomes.
 
-Here’s an improved version with clearer explanations and consistent formatting:
 
----
 
 # Methods for Calculating VaR
 
@@ -159,7 +156,7 @@ Calculating Value at Risk (VaR) fundamentally involves predicting volatility. A 
 
 ## The Normal Distribution Model
 
-The most straightforward approach is to assume that returns follow a normal distribution. We can estimate the standard deviation (volatility) of a sample `x` and apply the normal distribution to compute VaR. This is implemented as follows:
+The most straightforward approach is to assume that returns follow a normal distribution. We can estimate the standard deviation (volatility) of a sample `x` and apply the normal distribution to compute VaR. That in practice just means multiplying the volatility with a number corresponding to the confidence interval, in this case given by the function `norm.ppf(PVALS)`. This is implemented as follows
 
 ```{python}
 PVALS = [0.05, 0.01]  # Confidence intervals (95% and 99%)
@@ -190,7 +187,7 @@ This approach is straightforward and does not assume any specific distribution o
 
 A third method involves modeling volatility based on its past behavior. Using only the volatility from the previous period would imply constant volatility, so we introduce an innovation term—specifically, the squared error from the previous period. This error is added to the previous period's variance and then square-rooted to estimate current volatility. If no prior volatility exists (e.g., in the first period), historical volatility is used.
 
-After estimating the volatility, we can use the normal distribution to calculate VaR for each confidence interval. This type of volatility-based VaR estimation is required for financial firms under EU regulations.
+After estimating the volatility, we can use the normal distribution to calculate VaR for each confidence interval. This type of volatility-based VaR estimation is required for financial firms under EU regulations [@Basel1996].
 
 ```{python}
 def last_volat(x, sigmalist):
@@ -207,7 +204,7 @@ These methods offer varied approaches to calculating VaR, each with specific str
 
 # Evaluation 
 
-We can now easily evaluate the different methods. First the normal distribution:
+We can now easily evaluate the different methods. We first evalueat under the normal distribution. 
 
 ```{python}
 NAME = 'EQNR'
@@ -221,7 +218,8 @@ evaluate(plt, normal95, normal99, ret, dates,
 
 ```
 
-Then the historcal:
+Then we apply the function that simply calculates the empirical distribution of passed returns:
+
 ```{python}
 (hist95, hist99, 
  sigma, dates, ret )= generate_backtest(historical_est, 
@@ -231,7 +229,7 @@ evaluate(plt, hist95, hist99, ret, dates,
 
 ```
 
-And at last, using the previous volatilty
+And at last, we use information about the previous period volatility. 
 ```{python}
 (last95, last99, 
  sigma, dates, ret )= generate_backtest(last_volat, 
@@ -239,3 +237,26 @@ And at last, using the previous volatilty
 evaluate(plt, last95, last99, ret, dates,
 		 'VaR Estimation Using Past Volatility')
 ```
+
+
+# Concluding Remarks
+
+VaR (Value at Risk) provides an effective framework for communicating risk and has undoubtedly become the standard for measuring and controlling market risk. However, its ability to capture real risk depends heavily on its implementation. Risk is not static; it evolves continuously, responding to changing market conditions and external factors.
+
+Dynamic measures can help anticipate shifts in risk, but as we have seen from the examples, they do not always outperform static measures. Predicting changes in risk is inherently challenging, and no single approach guarantees accurate foresight.
+
+A notable example of these limitations is the case of Long-Term Capital Management (LTCM) [@Lowenstein2000]. LTCM was managed by some of the brightest minds in finance, including Nobel laureates Myron Scholes and Robert C. Merton, the inventors of the renowned option pricing formula. Despite their reliance on VaR and a perception that their portfolios were robust and healthy, the Asian financial crisis of 1997 exposed critical flaws in their risk models. The models proved inadequate against unforeseen events, and the fund ultimately had to be liquidated in early 2000.
+
+These experiences serve as a stark reminder that VaR cannot be used uncritically. If a portfolio cannot be rebalanced quickly enough to adapt to shifting market conditions and declining liquidity, VaR offers little protection. 
+
+A skilled risk manager must also guard against the manipulation of VaR. Portfolio managers can exploit the model by selecting securities with hidden risks that VaR calculations fail to capture. A striking example is the Norwegian Oil Fund manager who reportedly earned bonuses amounting to nearly half a billion NOK, seemingly by taking significant risks [@Dahl2010].
+
+High-risk investments often promise high returns, and employees with compensation structures linked to bonuses—without corresponding penalties for losses—are incentivized to take on excessive risk. Such arrangements function like an asymmetric option: they allow individuals to benefit from the upside while avoiding equivalent downside losses, fostering a strong incentive to maximize risk.
+
+To address these challenges, a good risk manager works to minimize opportunities for such manipulation while maintaining vigilance for unobservable risk factors. Managing risk is not just about tools like VaR; it requires judgment, adaptability, and a proactive approach to identifying and mitigating hidden risks.
+
+
+
+
+# Literature
+::: {#refs}

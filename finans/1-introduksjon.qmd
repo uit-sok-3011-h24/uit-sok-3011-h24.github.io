@@ -17,6 +17,8 @@ format:
     titlepage-text-color: "000000"
     titlepage-rule-color: "000000"
     titlepage-rule-height: 2
+  html: default
+  ipynb: default
 ---
 
 
@@ -35,7 +37,7 @@ format:
 
 Det første dere begynner med, er å finne caset deres. Det trengs det ingen forkunskap til
 
-Det er veldig lurt å jobbe med temaet som vi har gått gjennom på forelesning, etter gjeldende forelesning. 
+Det er veldig lurt å jobbe med temaet som vi har gått gjennom på forelesning, etter gjeldende forelesning.
 
 ## I denne forelesningen
 

@@ -3,6 +3,7 @@ title: "3 - Matrices, Optimal Portfolios"
 author: "Espen Sirnes"
 date: "2024-9-18"
 pdf-engine: pdflatex
+bibliography: references.bib
 format:
   pdf:
     number-sections: true
@@ -21,6 +22,7 @@ format:
     equation-numbering: true
   html:
     equation-numbering: true
+  ipynb: default
 ---
 
 This lecture explores the strategic behavior of an investor in the stock market, particularly under the assumption of risk aversion, as discussed in the previous note on utility theory. Risk lovers generally prefer the most risky assets, while risk-neutral investors opt for assets with the highest returns. In contrast, a risk-averse investor seeks to maximize returns without disproportionately increasing volatility, typically measured as variance.
@@ -29,7 +31,7 @@ This lecture explores the strategic behavior of an investor in the stock market,
 
 # Matrices
 
-To calculate optimal portfolios for any number of assets, a basic understanding of matrix algebra is essential. Matrix algebra simplifies the resolution of several equations simultaneously, a process that becomes increasingly complex with the addition of variables. Using matrix functions in software like Excel and various statistical packages allows us to solve systems of equations efficiently without manually computing each one.
+To calculate optimal portfolios for any number of assets, a basic understanding of matrix algebra [@Cayley1858] is essential. Matrix algebra simplifies the resolution of several equations simultaneously, a process that becomes increasingly complex with the addition of variables. Using matrix functions in software like Excel and various statistical packages allows us to solve systems of equations efficiently without manually computing each one.
 
 Matrices not only streamline the computation but also simplify notation, making the formulation of equations for optimal portfolios more manageable.
 
@@ -94,10 +96,9 @@ X = np.random.randint(0,100,(2,2))
 Y = np.random.randint(0,100,(2,2))
 
 # Addition of matrices
-result_add = X + Y
-print(X)
-print(Y)
-print(result_add)
+print(f"X:\n{X}")
+print(f"Y:\n{Y}")
+print(f"X+Y:\n{X+Y}")
 ```
 
 ## Dividing with a Matrix
@@ -112,7 +113,7 @@ $$
 \vdots & \vdots & \ddots & \vdots \\
 0 & 0 & \cdots & 1
 \end{pmatrix}
-$$
+$${#eq-matrix_example}
 
 where $\mathbf{I}$ is the identity matrix. Multiplying any matrix by $\mathbf{I}$ results in the original matrix, akin to multiplying any number by 1.
 
@@ -136,14 +137,13 @@ The foundation we've established for matrix algebra now allows us to efficiently
 $$
 x_{11}a_{1} + x_{12}a_{2} = b_{1} \\
 x_{21}a_{1} + x_{22}a_{2} = b_{2}
-$$
+$${#eq-equation_system}
 
 Here, we know the values of $x$ and $b$ but need to find the values of $a$. These equations can be succinctly expressed using matrix notation:
 
-\begin{equation}
+$$
 \mathbf{X \times a} = \mathbf{b}
-\label{eq:Xab}
-\end{equation}
+$${#eq-Xab}
 
 where $\mathbf{a}$ and $\mathbf{b}$ are column vectors. Let us define the right hand side vector `b` and the coeficient matrix `X` randomly in python as
 
@@ -159,13 +159,13 @@ To solve for $\mathbf{a}$, we use the inverse of $\mathbf{X}$, provided it exist
 
 $$
 \mathbf{X}^{-1} \times \mathbf{X} \times \mathbf{a} = \mathbf{X}^{-1}\mathbf{b}
-$$
+$${#eq-matrix_inverse}
 
 Since we know that $\mathbf{X}^{-1}$ is the solution to $\mathbf{X}^{-1} \times \mathbf{X} = \mathbf{I}$, premultiplying with $\mathbf{X}^{-1}$ yields:
 
 $$
 \mathbf{a} = \mathbf{X}^{-1}\mathbf{b}
-$$
+$${#eq-matrix_inversion}
 
 Hence, we have found an easy way to solve any linear equation. We can test that it works in python. Let us first find `a` using this approach: 
 
@@ -200,7 +200,7 @@ $$
 x_{11} & x_{12} & x_{13} \\
 x_{21} & x_{22} & x_{23}
 \end{pmatrix}
-$$
+$${#eq-matrix_2x3}
 
 transposes to:
 
@@ -211,7 +211,7 @@ x_{11} & x_{21} \\
 x_{12} & x_{22} \\
 x_{13} & x_{23}
 \end{pmatrix}
-$$
+$${#eq-matrix_3x2}
 
 where $^{\prime}$ denotes the transposed matrix. For a column vector $\mathbf{a}$, transposing and then multiplying by itself, $\mathbf{a}^{\prime}\mathbf{a}$, calculates the sum of squares of its components.
 
@@ -226,17 +226,17 @@ Transposition is often used to conform to the requirements of matrix multiplicat
 
 # Calculus and matrices
 
-Deriving matrices follows similar principles to deriving polynomials. For instance:
+Deriving matrices follows similar principles to deriving polynomials [@Cayley1858]. For instance:
 
 $$
 \frac{d\left( a^{2} \sigma^{2} \right)}{da} = 2a \sigma^{2}
-$$
+$${#eq-scalar_deriv}
 
 applies to scalar variables, and for a matrix $\Sigma$ and a column vector $\mathbf{a}$, we have:
 
 $$
 \frac{d\left(\mathbf{a}^{\prime}{\Sigma}\mathbf{a}\right)}{d\mathbf{a}^{\prime}} =2{\Sigma}\mathbf{a}
-$$
+$${#eq-matrix_deriv}
 
 assuming ${\Sigma}$ is symmetric. In practical terms, the derivative with respect to `a` here, given some values for `a`, is
 
@@ -254,13 +254,13 @@ We can rewrite the matrix formulation in scalar form, to check that the rule is 
 
 $$
 \mathbf{a}^{\prime} {\Sigma} \mathbf{a} = \sum_{j=0}^{N} a_j \left( \sum_{i=0}^{N} a_i \sigma_{ij} \right)
-$$
+$${#eq-matrix_vec_matr_vec_prod}
 
 You can verify that 
 
 $$
 \frac{d(\mathbf{a}^{\prime} {\Sigma} \mathbf{a}) }{d\mathbf{a}}= 2 [\sum_{i=0}^{N} a_i \sigma_{i0}, ..., \sum_{i=0}^{N} a_i \sigma_{iN}]
-$$
+$${#eq-matrix_vec_matr_vec_prod_long}
 
 
 
@@ -271,7 +271,7 @@ We remember from above the previous chapter that with one asset, the optimal por
 
 $$
 a_{opt}=\frac{(\mu -r)}{\lambda \sigma^2}
-$$
+$${#eq-opt_port}
 
 From this we concluded that:
 
@@ -279,7 +279,7 @@ From this we concluded that:
 2. The larger the expected return of the asset, the more should be invested.
 3. The greater the risk associated with the asset, represented by $\sigma^2$, the less should be invested.
 
-Now, let us consider the optimal investments if we have more than one asset.
+Now, let us consider the optimal investments if we have more than one asset, as developed by @Markowitz1952.
 
 ## Optimal Portfolios with Any Number of Assets
 
@@ -287,19 +287,19 @@ Let us now assume that the investor in the previous section has a portfolio of $
 
 $$
 W_1 = \mathbf{a}'\mathbf{x} - \mathbf{1}r
-$$
+$${#eq-opt_port}
 
 where $\mathbf{a}$ represents the portfolio weights, $\mathbf{x}$ represents the returns, and $\mathbf{1}$ is a column vector of ones, such that $\mathbf{1}r$ is a column vector of the risk-free interest rate $r$. Recall from earlier that the investor aims to maximize the difference between expected return and variance:
 
 $$
 \max_{\mathbf{a}} Z = \mathbb{E}W_1 - \lambda \frac{1}{2} \operatorname{var}(W_1)  
-$$
+$${#eq-opt_port_max_prob}
 
 $\mathbf{x}$ now is a column vector of many normally distributed variables with different variances and expectations. We denote the expected returns by $\mu_i$ for asset $i$, and the associated vector of these returns by $\mathbf{\mu}$. Given a portfolio $\mathbf{a}$, the expected return on the portfolio then becomes:
 
 $$
 \mathbb{E}W_1 = \mathbf{a}^{\prime}(\mathbb{E}\mathbf{x}-\mathbf{1}r) = \mathbf{a}^{\prime}({\mu} - \mathbf{1}r)
-$$
+$${#eq-opt_port_FOC}
 
 
 For the variance, the risk free return $r$ is not relevant, since means are subtracted anyway. We define the covariance matrix, all the combinations of variance and covariance between the stocks as
@@ -314,7 +314,7 @@ $$
 \sigma_1N & \cdots & \cdots & \sigma_{NN}
 \end{bmatrix}
 \mathbf{a}
-$$
+$${#eq-covar_matrix}
 
 
 Where $\sigma_{ij}$ is the covariance between $i$ and $j$, and $\sigma_i^2$ is the variance of asset $i$. This is the covariance matrix, denoted by the capital sigma, ${\Sigma}$.
@@ -325,32 +325,32 @@ We have now derived expressions for $\mathbb{E}(W_1)$ and $\operatorname{var}(W_
 
 $$
 \max_{\mathbf{a}} Z = \mathbf{a}^{\prime}({\mu} - \mathbf{1}r) - \lambda \frac{1}{2} \mathbf{a}^{\prime}{\Sigma}\mathbf{a}
-$$
+$${#eq-opt_port_max_problem}
 
 Taking the derivative with respect to $\mathbf{a}^{\prime}$ yields the $N$ first order conditions:
 
 $$
 \frac{dZ}{d\mathbf{a}} = ({\mu} - \mathbf{1}r) - \lambda {\Sigma a} = 0
-$$
+$${#eq-opt_port_FOC}
 
 Hence, in optimum:
 
 $$
 {\Sigma} \mathbf{a}= \frac{1}{\lambda}({\mu} - \mathbf{1}r)
-$$
+$${#eq-opt_port_FOC2}
 
 By premultiplying with the inverse of ${\Sigma}$, we obtain the optimal portfolio:
 
 $$
 \mathbf{a_{opt}} = \frac{1}{\lambda} {\Sigma}^{-1}({\mu} - \mathbf{1}r)
-$$
+$${#eq-opt_port_sol}
 
 
 Note that this formula looks very similar to the formula for an optimal portfolio with only one asset:
 
 $$
 a_{opt} = \frac{\mu - r}{\lambda \sigma^2}
-$$
+$${#eq-opt_port_scalar}
 
 In general, we may draw the same conclusions as in the case of one asset:
 
@@ -360,7 +360,7 @@ In general, we may draw the same conclusions as in the case of one asset:
 
 # Empirical example - optimal porfolio and the portfolio front
 
-We will create an optimal portfolio and draw the "portfolio front" -  which are the smallest possible volatility of a set of assets, for all return leves. We use the script feature of Titlon to fetch the data, and storing it in `'output/stocks.df'`
+We will now create an optimal portfolio using data from Titlon, and draw the "portfolio front" [@Markowitz1952]. The portfolio front are the smallest possible volatility of a set of assets, for all return leves. We use the script feature of Titlon to fetch the data, and storing it in `'output/stocks.df'`
 
 ```{python}
 #| eval: false
@@ -369,9 +369,9 @@ import os
 #Query script for MySQL client
 import pymysql
 con = pymysql.connect(host='titlon.uit.no', 
-										user="user@name.com", 
-										password="passwordfromtitlon", 
-										database='OSE')  
+					user="user@name.com", 
+					password="passwordfromtitlon", 
+					database='OSE')  
 crsr=con.cursor()
 crsr.execute("SET SESSION MAX_EXECUTION_TIME=60000;")
 crsr.execute("""
@@ -408,12 +408,27 @@ df = pd.read_pickle('output/stocks.df')
 # Defining annual risk free rate. 
 rf = df['NOWA_DayLnrate'].mean()*7
 
-isin_with_first_date = df[df['Date'] == df['Date'].min()]['ISIN'].unique()
-isin_with_last_date = df[df['Date'] == df['Date'].max()]['ISIN'].unique()
-valid_isins = set(isin_with_first_date).intersection(isin_with_last_date)
+# Identifying the ISINs with dates both at the beginning
+# and the end of the data set
+isin_with_first_date = (
+	df[df['Date'] == df['Date'].min()]['ISIN'].unique()
+	)
+isin_with_last_date = (
+	df[df['Date'] == df['Date'].max()]['ISIN'].unique()
+	)
+
+valid_isins = (
+	set(isin_with_first_date)
+	.intersection(isin_with_last_date)
+	)
+
+
 df = df[df['ISIN'].isin(valid_isins)]
 
-df['Name (ISIN)'] =df['Name'].str.upper().str.strip() + '(' + df['ISIN'] + ')'
+# creating a new column - the combination of Name and ISIN
+df['Name (ISIN)'] = (
+	df['Name'].str.upper().str.strip() + '(' + df['ISIN'] + ')'
+	)
 
 # keeping only the most traded shares
 res = (
@@ -438,10 +453,11 @@ def get_matrix(df, field):
 	import pandas as pd
 	df['Date'] = pd.to_datetime(df['Date'])
 	df_unique = df.drop_duplicates(
-									subset=['Date', 'ISIN'])
+						subset=['Date', 'ISIN'])
+
 	pivot_df = df_unique.pivot(index='Date', 
-									columns='Symbol', 
-									values=field)
+								columns='Symbol', 
+								values=field)
 
 	pivot_df = pivot_df.dropna()
 
@@ -480,24 +496,22 @@ It turns out that by defining a few simple scalars, there is a reasonably simple
 
 $$
 A = \mathbf{1}^{\prime}{\Sigma}^{-1}\mathbf{1}
+$${#eq-opt_port_A}
+
 $$
-
-
-\begin{equation}
 B = \mathbf{1}^{\prime}{\Sigma}^{-1}{\mu-\mathbf{1}r}
-\label{eq:B}
-\end{equation}
-
+$${#eq-opt_port_B}
 
 $$
 C = {\mu-\mathbf{1}r}^{\prime}{\Sigma}^{-1}{\mu-\mathbf{1}r}
-$$
+$${#eq-opt_port_C}
 
 With these definition, the portfolio front, representing all minimum variance portfolios for a given expected return and a total investment of 1, is
 
 $$
 {\sigma}_{opt} =\frac{1}{A}+\frac{ \left(\mu_{opt}-\frac{B}{A}\right)^2}{C-\frac{B^2}{A}} 
-$$
+$${#eq-opt_port_front}
+
 where $\mu_{opt}={\mu}^{\prime}\mathbf{a}$ 
 
 This formula automatically ensures that the sum of all the portfolio weights are 1. Now, let us define these variables, and the function. A, B and C in python:
@@ -524,9 +538,10 @@ def portfolio_front(expected_excess_return, a, b, c):
 	minimum_volatility = minimum_variance**0.5
 	return minimum_volatility
 ```
-Let us plot this
+
 
 With a defined portfolio frontier function, we can now plot the portfolio frontier. To make the weekly returns comparable on an annual scale, we multiply them by a scaling factor, `plot_scale`, set to 52. We can simply multiply the returns, because returns in Titlon are conveniently defined as log returns, calculated as $\log(x_{t}) - \log(x_{t-1})$, rather than the typical relative return $\frac{x_{t} - x_{t-1}}{x_{t-1}}$.
+
 
 ```{python}
 from matplotlib import pyplot as plt
@@ -539,8 +554,9 @@ rp_values = np.linspace(0, MAX_AXIS-rf, 100)
 sigma_values = portfolio_front(rp_values, A, B, C)
 
 #plotting, after annualizing the weekly data
-ax.plot(plot_scale**0.5*(sigma_values), plot_scale*(rp_values+rf), 
-						label='Efficient Frontier')
+ax.plot(plot_scale**0.5*(sigma_values), 
+			plot_scale*(rp_values+rf), 
+			label='Efficient Frontier')
 
 #plot settings:
 ax.set_xlim([0, np.max(sigma_values*plot_scale**0.5)])
@@ -558,34 +574,31 @@ Let us now add the point for the optimal portfolio. The optimal portfolio is
 
 $$
 \mathbf{a}_{opt} = \frac{1}{\lambda}{\Sigma}^{-1}({\mu} - \mathbf{1}r)
-$$
+$${#eq-opt_port_sol2}
 
 The total cost (sum) of this portfolio is
-
-\begin{equation}
+$$
 \mathbf{1}^{\prime}\mathbf{a}_{opt} = \frac{1}{\lambda} \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r) = B
-\label{eq:sum_eq}
-\end{equation}
+$${#eq-sum_eq}
 
 Where the last equality follows from Equation \ref{eq:B}. The normalized optimal portfolio is then
 
-\begin{equation}
+$$
 \mathbf{a}_{norm}  = \frac{ {\Sigma}^{-1}({\mu} - \mathbf{1}r) }
 { \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)} = \frac{ 1 }
 {B}{\Sigma}^{-1}({\mu} - \mathbf{1}r)
-\label{eq:norm_opt}
-\end{equation}
+$${#eq-norm_opt}
 
 The expected return of the optimal portfolio on the frontier, is then 
 
 $$
 \mu_{port}=({\mu} - \mathbf{1}r)^{\prime}\mathbf{a_{norm}}  = \frac{({\mu} - \mathbf{1}r)^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)}{ \mathbf{1}^{\prime}{\Sigma}^{-1}({\mu} - \mathbf{1}r)} 
-$$
+$${#eq-opt_port_sol_exp_ret}
 
 Which is simply, according to the previous definitions of B and C:
 $$
 \mu_{port}=\frac{C}{B}
-$$
+$${#eq-opt_port_sol_exp_ret_simple}
 
 Let us add that to the plot
 ```{python}
@@ -603,14 +616,17 @@ fig
 ```
 
 ## Adding the tangency line
-Let us now draw a tangency line from the risk free interest rate `rf` to the optimal portfolio point. The slope will be the Sharp-ratio
+Let us now draw a tangency line from the risk free interest rate `rf` to the optimal portfolio point. The slope will be the Sharp-ratio [@Sharpe1964]
 
 $$
 S=\frac{C/B}{f(C/B)}
-$$
+$${#eq-opt_port_sol_sharpe}
 
 where $f(C/B)$ is the portfolio front function `portfolio_front(C/B, A, B, C)` at `C/B`
 ```{python}
+#| label: fig-cml
+#| fig-cap: "Capital Market Line and Portfolio Front"
+#| 
 sigma_range = np.linspace(0, np.max(sigma_values), 100)
 
 # Plotting the portfolio front, after annualizing the 
@@ -624,6 +640,11 @@ ax.legend()
 
 fig
 ```
+
+@fig-cml illustrates the concept of the separation theorem as described by @Tobin1958. Once the optimal portfolio is identified, it can be combined with a risk-free asset, allowing the investor to choose any point on the red capital allocation line.
+
+The optimal portfolio represents the tangency point of this line with the portfolio front. Investors cannot select any asset above or to the left of the portfolio front, as such positions are not feasible. Any point within the front is considered inefficient, as better trade-offs between risk and return are attainable. The capital allocation line, therefore, must begin at the risk-free return and have the steepest possible slope while touching the portfolio front, as depicted in @fig-cml.
+
 
 ## Adding the stocks spanning the portfolio front
 It is interesting to check where the original stocks that span the front, are in the picture. Let us add the cooridnates of these. We first calcualate their mean and standard devaition, and then plot them.
@@ -646,7 +667,7 @@ Finally, we might want to evaluate the actual amounts that we should invest in e
 $$
 \mathbf{a}_{norm}  = \frac{1}
 {B} {\Sigma}^{-1}({\mu} - \mathbf{1}r) 
-$$
+$${#eq-opt_port_sol_norm2}
 
 where $B$ is the sum of the optimal portfolio, as previously defined in \ref{eq:B}
 
@@ -665,7 +686,9 @@ pd.to_pickle(X_df, 'output/X.df')
 # inserting the portfolio into a data frame for display
 d = {}
 for i in range(len(opt_port)):
-	d[X_df.columns[i]] = [f"{np.round(opt_port[i][0]*100,0)}%"]
+	d[X_df.columns[i]] = [
+			f"{np.round(opt_port[i][0]*100,0)}%"
+		]
 
 print("Hence the optimal portfolio in this case is")
 pd.DataFrame(d)
@@ -676,7 +699,7 @@ pd.DataFrame(d)
 
 ***Coding Challenges:***
 
-- **Challenge 1**: Obtain a three or four return series for portfolios, for example your portfolio, the market portfolio and the factors at titlon and calculate the variance-covariance matrix and the means
+- **Challenge 1**: Obtain a three or four time series with asset returns, and calculate the variance-covariance matrix and the means
 
 - **Challenge 2**: Use your calculated covariance matrix and means, and the code provided above, to draw a portfolio front. 
 
@@ -684,3 +707,6 @@ pd.DataFrame(d)
 
 - **Challenge 4**: Calculate the optimal portfolio and place it in the chart, together with the capital market line  
 
+
+# Literature
+::: {#refs}
